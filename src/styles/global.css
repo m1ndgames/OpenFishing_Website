@@ -1,0 +1,198 @@
+/*
+ * Landing-page stylesheet. This is the ONLY place Tailwind is imported, so
+ * Tailwind's preflight/utilities never leak into Starlight's /docs pages.
+ */
+@import 'tailwindcss';
+@import './theme.css';
+
+/* Expose the ocean tokens to Tailwind. `inline` makes utilities resolve to the
+ * var() directly, so `bg-base`, `text-accent`, etc. react to theme switching. */
+@theme inline {
+  --color-base: var(--of-bg-base);
+  --color-surface: var(--of-bg-surface);
+  --color-elevated: var(--of-bg-elevated);
+  --color-overlay: var(--of-bg-overlay);
+  --color-hover: var(--of-bg-hover);
+
+  --color-line-subtle: var(--of-border-subtle);
+  --color-line: var(--of-border);
+  --color-line-strong: var(--of-border-strong);
+
+  --color-bright: var(--of-text-bright);
+  --color-body: var(--of-text);
+  --color-muted: var(--of-text-2);
+  --color-muted-2: var(--of-text-3);
+  --color-muted-3: var(--of-text-4);
+
+  --color-accent: var(--of-accent);
+  --color-accent-solid: var(--of-accent-solid);
+  --color-accent-hover: var(--of-accent-hover);
+  --color-accent-dark: var(--of-accent-dark);
+  --color-ink: var(--of-ink);
+
+  --color-danger: var(--of-danger);
+  --color-success: var(--of-success);
+  --color-warning: var(--of-warning);
+
+  --font-heading: var(--font-heading);
+  --font-sans: var(--font-sans);
+  --font-mono: var(--font-mono);
+
+  --radius-control: 9px;
+  --radius-card: 14px;
+  --radius-pill: 20px;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+
+  body {
+    background-color: var(--of-bg-base);
+    color: var(--of-text);
+    font-family: var(--font-sans);
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
+    color: var(--of-text-bright);
+    font-weight: 400;
+    line-height: 1.1;
+  }
+
+  ::selection {
+    background: var(--of-accent-bg-hover);
+    color: var(--of-text-bright);
+  }
+}
+
+@layer components {
+  /* Primary button — §3.5 */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--of-accent-solid);
+    color: var(--of-ink);
+    font-weight: 700;
+    border-radius: var(--radius-control);
+    padding: 0.7rem 1.25rem;
+    border: none;
+    cursor: pointer;
+    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .btn-primary:hover {
+    background: var(--of-accent-hover);
+    box-shadow: 0 8px 28px var(--of-accent-glow);
+  }
+
+  /* Ghost / secondary button — §3.5 */
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--of-bg-elevated);
+    color: var(--of-text-2);
+    font-weight: 600;
+    border-radius: var(--radius-control);
+    padding: 0.7rem 1.25rem;
+    border: 1px solid var(--of-border);
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+  .btn-ghost:hover {
+    border-color: var(--of-border-strong);
+    color: var(--of-text-bright);
+    background: var(--of-bg-hover);
+  }
+
+  /* Text / link button — §3.5 */
+  .btn-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--of-accent);
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-text:hover {
+    color: var(--of-accent-hover);
+  }
+
+  /* Card — §3.5 */
+  .card {
+    background: var(--of-bg-surface);
+    border: 1px solid var(--of-border-subtle);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+  }
+  .card-hover:hover {
+    border-color: var(--of-accent-border);
+    box-shadow: 0 8px 32px var(--of-accent-glow);
+  }
+
+  /* Chip / pill — §3.5 */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: var(--radius-pill);
+    font-size: 0.72rem;
+    padding: 3px 10px;
+    border: 1px solid var(--of-border);
+    color: var(--of-text-2);
+    background: transparent;
+  }
+  .chip-active {
+    background: var(--of-accent-bg-hover);
+    border-color: var(--of-accent-border);
+    color: var(--of-accent);
+  }
+
+  /* Badge (count) — §3.5 */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-pill);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    background: var(--of-accent-bg-hover);
+    border: 1px solid var(--of-accent-border);
+    color: var(--of-accent);
+  }
+}
+
+/* Focus ring — §3.5 (kept outside @layer so it always wins) */
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--of-accent-bg-hover);
+  border-radius: var(--radius-control);
+}

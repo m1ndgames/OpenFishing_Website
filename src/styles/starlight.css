@@ -1,0 +1,80 @@
+/*
+ * Ocean palette for Starlight (/docs). Maps Starlight's design tokens onto the
+ * OpenFishing "Ocean" theme for both dark (default) and light. Kept independent
+ * of the landing-page stylesheet so Tailwind never leaks in here.
+ */
+
+/* Dark (default) */
+:root {
+  --sl-color-accent-low: #0e2a3a;
+  --sl-color-accent: #06b6d4;
+  --sl-color-accent-high: #67e8f9;
+
+  --sl-color-white: #e0eaf8;
+  --sl-color-gray-1: #e0eaf8;
+  --sl-color-gray-2: #c2dce8;
+  --sl-color-gray-3: #8ab8cc;
+  --sl-color-gray-4: #5d8fa8;
+  --sl-color-gray-5: #243f5e;
+  --sl-color-gray-6: #172f4a;
+  --sl-color-gray-7: #0f2238;
+  --sl-color-black: #060d17;
+
+  --sl-color-bg: #060d17;
+  --sl-color-bg-nav: #0b1a2c;
+  --sl-color-bg-sidebar: #0b1a2c;
+  --sl-color-bg-inline-code: #0f2238;
+  --sl-color-hairline-light: #172f4a;
+  --sl-color-hairline: #172f4a;
+  --sl-color-hairline-shade: #243f5e;
+
+  --sl-color-text: #c2dce8;
+  --sl-color-text-accent: #22d3ee;
+
+  --sl-font: 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Light — accent darkened to an accessible teal (WCAG AA on white surfaces). */
+:root[data-theme='light'] {
+  --sl-color-accent-low: #dceef7;
+  --sl-color-accent: #0b6675;
+  --sl-color-accent-high: #084f5b;
+
+  --sl-color-white: #0a1e2e;
+  --sl-color-gray-1: #0a1e2e;
+  --sl-color-gray-2: #1a3448;
+  --sl-color-gray-3: #2d5268;
+  --sl-color-gray-4: #4d7a94;
+  --sl-color-gray-5: #aacad9;
+  --sl-color-gray-6: #cde0ec;
+  --sl-color-gray-7: #f2f8fb;
+  --sl-color-black: #ffffff;
+
+  --sl-color-bg: #eaf3f8;
+  --sl-color-bg-nav: #ffffff;
+  --sl-color-bg-sidebar: #ffffff;
+  --sl-color-bg-inline-code: #f2f8fb;
+  --sl-color-hairline-light: #cde0ec;
+  --sl-color-hairline: #cde0ec;
+  --sl-color-hairline-shade: #aacad9;
+
+  --sl-color-text: #1a3448;
+  --sl-color-text-accent: #0b6675;
+}
+
+/* Carter One headings, to match the app + landing page */
+.sl-markdown-content h1,
+.sl-markdown-content h2,
+.sl-markdown-content h3,
+.sl-markdown-content h4,
+h1.hero-title,
+.page-title {
+  font-family: 'Carter One', ui-sans-serif, system-ui, sans-serif;
+  font-weight: 400;
+}
+
+/* Accent-tinted card hover to echo the landing feel */
+.sl-markdown-content a {
+  text-underline-offset: 0.2em;
+}

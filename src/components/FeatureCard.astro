@@ -1,0 +1,65 @@
+---
+interface Props {
+  title: string;
+  icon: string; // inline SVG markup
+  badge?: string; // e.g. "optional"
+}
+const { title, icon, badge } = Astro.props;
+---
+
+<article class="card card-hover feature">
+  <div class="feature-icon" set:html={icon} aria-hidden="true"></div>
+  <div class="feature-body">
+    <h3 class="feature-title">
+      {title}
+      {badge && <span class="chip feature-badge">{badge}</span>}
+    </h3>
+    <p class="feature-desc"><slot /></p>
+  </div>
+</article>
+
+<style>
+  .feature {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    height: 100%;
+  }
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 11px;
+    background: var(--of-accent-bg-hover);
+    border: 1px solid var(--of-accent-border);
+    color: var(--of-accent);
+  }
+  .feature-icon :global(svg) {
+    width: 22px;
+    height: 22px;
+  }
+  .feature-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--of-text-bright);
+    margin: 0 0 0.35rem;
+  }
+  .feature-badge {
+    font-weight: 500;
+    color: var(--of-text-3);
+    text-transform: lowercase;
+  }
+  .feature-desc {
+    color: var(--of-text-2);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+</style>

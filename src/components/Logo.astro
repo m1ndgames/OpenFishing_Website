@@ -1,0 +1,25 @@
+---
+// Inline wordmark so `fill: currentColor` follows the element's `color`.
+// Set `color: var(--of-accent)` on a parent (or via the `class` prop) to tint it.
+import logo from '../assets/openfishing-logo.svg?raw';
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className, title = 'OpenFishing' } = Astro.props;
+---
+
+<span class:list={['of-logo', className]} role="img" aria-label={title} set:html={logo} />
+
+<style>
+  .of-logo {
+    display: inline-flex;
+    line-height: 0;
+  }
+  .of-logo :global(svg) {
+    height: 100%;
+    width: auto;
+    display: block;
+  }
+</style>
