@@ -1,0 +1,18 @@
+# OpenFishing marketing + docs website (static, served by nginx).
+#
+# This container serves ONLY the website (openfishing.org). It is completely
+# separate from the OpenFishing *app*:
+#   - openfishing.org        → this container (the site you build here)
+#   - demo.openfishing.org   → a SEPARATE OpenFishing app instance (not this)
+#
+# Wire it up in your reverse proxy (nginx / Caddy / Traefik): terminate TLS
+# there and forward the openfishing.org host to this service's published port
+# (8080 below). demo.openfishing.org should point at your running app instead.
+services:
+  web:
+    build: .
+    image: openfishing-website:latest
+    container_name: openfishing-website
+    restart: unless-stopped
+    ports:
+      - "8080:80"

@@ -141,3 +141,13 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Astro
+.astro/
+dist/
+
+# Generated at build time (prebuild rasterizes scripts/og.svg)
+public/og-image.png
+
+# JetBrains IDE
+.idea/

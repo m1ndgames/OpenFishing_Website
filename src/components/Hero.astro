@@ -1,0 +1,151 @@
+---
+import { SITE } from '../consts';
+---
+
+<section class="hero">
+  <div class="hero-glow" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <span class="chip chip-active hero-eyebrow">Self-hosted fishing log</span>
+      <h1 class="hero-title">Your tackle box,<br /><span class="accent">organized.</span></h1>
+      <p class="hero-sub">
+        A self-hosted fishing log for your lures, spots, catches &amp; tackle — with an
+        interactive map, an automatic Bite&nbsp;Index weather score, and one-click backups.
+        Your data, your server.
+      </p>
+      <div class="hero-cta">
+        <a class="btn-primary" href={SITE.demo} target="_blank" rel="noopener">Try the live demo</a>
+        <a class="btn-ghost" href={SITE.docs}>Get started</a>
+        <a class="btn-text" href={SITE.github} target="_blank" rel="noopener">
+          View on GitHub
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+        </a>
+      </div>
+      <p class="trust">Self-hosted · Open source · No cloud · Runs in Docker.</p>
+    </div>
+
+    <div class="hero-shot card">
+      <div class="shot-bar" aria-hidden="true">
+        <span></span><span></span><span></span>
+      </div>
+      <img
+        src="/screenshots/hero.jpg"
+        width="1600"
+        height="900"
+        alt="OpenFishing lure library showing a grid of photo cards with tags and catch counts"
+        fetchpriority="high"
+        onerror="this.closest('.hero-shot')?.classList.add('shot-missing')"
+      />
+      <div class="shot-fallback" aria-hidden="true">Lure library preview</div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    border-bottom: 1px solid var(--of-border-subtle);
+  }
+  .hero-glow {
+    position: absolute;
+    inset: -30% 0 auto 0;
+    height: 520px;
+    background: radial-gradient(60% 60% at 50% 0%, var(--of-accent-glow), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner {
+    position: relative;
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(3rem, 7vw, 5.5rem) 1.25rem;
+    display: grid;
+    grid-template-columns: 1.05fr 1fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+  .hero-eyebrow {
+    margin-bottom: 1.25rem;
+  }
+  .hero-title {
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    letter-spacing: 0.5px;
+    margin: 0 0 1.1rem;
+  }
+  .hero-title .accent {
+    color: var(--of-accent);
+  }
+  .hero-sub {
+    color: var(--of-text-2);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 34rem;
+    margin: 0 0 1.75rem;
+  }
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+  .trust {
+    color: var(--of-text-2);
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .hero-shot {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35), 0 0 0 1px var(--of-border-subtle);
+  }
+  .shot-bar {
+    display: flex;
+    gap: 6px;
+    padding: 10px 12px;
+    background: var(--of-bg-elevated);
+    border-bottom: 1px solid var(--of-border-subtle);
+  }
+  .shot-bar span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--of-border-strong);
+  }
+  .hero-shot img {
+    display: block;
+    width: 100%;
+    height: calc(100% - 36px);
+    object-fit: cover;
+    object-position: top center;
+  }
+  .shot-fallback {
+    display: none;
+    position: absolute;
+    inset: 36px 0 0 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--of-text-3);
+    font-family: var(--font-heading);
+    font-size: 1.1rem;
+    background: linear-gradient(160deg, var(--of-bg-surface), var(--of-bg-elevated));
+  }
+  .hero-shot.shot-missing img {
+    display: none;
+  }
+  .hero-shot.shot-missing .shot-fallback {
+    display: flex;
+  }
+
+  @media (max-width: 900px) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+    .hero-shot {
+      order: -1;
+    }
+  }
+</style>

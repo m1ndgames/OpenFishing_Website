@@ -1,0 +1,208 @@
+---
+// Screenshots captured from the live demo by scripts/screenshots.mjs.
+// Each <img> falls back to a themed placeholder tile if the file is missing.
+const shots = [
+  { src: '/screenshots/lure-grid.jpg', label: 'Lure library', alt: 'Grid of lure photo cards with tags, species and catch counts' },
+  { src: '/screenshots/catch-detail.jpg', label: 'Catch detail', alt: 'A single catch with its map location and Bite Index score' },
+  { src: '/screenshots/spot-map.jpg', label: 'Spot map', alt: 'Interactive map with saved fishing-spot markers' },
+  { src: '/screenshots/stats.jpg', label: 'Stats', alt: 'Statistics dashboard of catch and gear trends' },
+  { src: '/screenshots/chatbot.jpg', label: 'AI assistant', alt: 'The optional AI chatbot answering a question about the data' },
+];
+---
+
+<section class="shots">
+  <div class="shots-inner">
+    <header class="section-head">
+      <span class="chip chip-active">Screenshots</span>
+      <h2>See it in action.</h2>
+      <p>A look around the app — captured from the live demo.</p>
+    </header>
+
+    <div class="shot-grid" id="shot-grid">
+      {
+        shots.map((shot, i) => (
+          <button
+            class="card card-hover shot-tile"
+            data-src={shot.src}
+            data-alt={shot.alt}
+            style={`grid-area: s${i + 1}`}
+            aria-label={`View ${shot.label} screenshot`}
+          >
+            <img
+              src={shot.src}
+              alt={shot.alt}
+              loading="lazy"
+              onerror="this.closest('.shot-tile')?.classList.add('missing')"
+            />
+            <span class="shot-caption">{shot.label}</span>
+            <span class="shot-ph" aria-hidden="true">{shot.label}</span>
+          </button>
+        ))
+      }
+    </div>
+    {/* TODO: real captures are written to public/screenshots/*.png by `npm run screenshots`. */}
+  </div>
+
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot" hidden>
+    <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+    <img id="lightbox-img" src="" alt="" />
+  </div>
+</section>
+
+<style>
+  .shots {
+    border-bottom: 1px solid var(--of-border-subtle);
+  }
+  .shots-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(3.5rem, 7vw, 5.5rem) 1.25rem;
+  }
+  .section-head {
+    text-align: center;
+    max-width: 42rem;
+    margin: 0 auto 2.5rem;
+  }
+  .section-head .chip {
+    margin-bottom: 1rem;
+  }
+  .section-head h2 {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    margin: 0 0 0.75rem;
+  }
+  .section-head p {
+    color: var(--of-text-2);
+    margin: 0;
+  }
+
+  .shot-grid {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas: 's1 s2' 's3 s4' 's5 s5';
+  }
+  @media (min-width: 900px) {
+    .shot-grid {
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-areas: 's1 s1 s2' 's3 s4 s2' 's3 s5 s5';
+    }
+  }
+
+  .shot-tile {
+    position: relative;
+    padding: 0;
+    cursor: zoom-in;
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(160deg, var(--of-bg-surface), var(--of-bg-elevated));
+  }
+  .shot-tile img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+  }
+  .shot-caption {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--of-text-bright);
+    background: color-mix(in srgb, var(--of-bg-base) 70%, transparent);
+    backdrop-filter: blur(4px);
+    border: 1px solid var(--of-border);
+    border-radius: var(--radius-pill);
+    padding: 3px 10px;
+  }
+  .shot-ph {
+    display: none;
+    position: absolute;
+    inset: 0;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    color: var(--of-text-3);
+    font-size: 1.05rem;
+  }
+  .shot-tile.missing {
+    cursor: default;
+  }
+  .shot-tile.missing img,
+  .shot-tile.missing .shot-caption {
+    display: none;
+  }
+  .shot-tile.missing .shot-ph {
+    display: flex;
+  }
+
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: color-mix(in srgb, var(--of-bg-base) 88%, transparent);
+    backdrop-filter: blur(6px);
+  }
+  .lightbox[hidden] {
+    display: none;
+  }
+  .lightbox img {
+    max-width: min(1100px, 92vw);
+    max-height: 86vh;
+    border-radius: 12px;
+    border: 1px solid var(--of-border-strong);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    width: 42px;
+    height: 42px;
+    font-size: 1.6rem;
+    line-height: 1;
+    color: var(--of-text-bright);
+    background: var(--of-bg-elevated);
+    border: 1px solid var(--of-border);
+    border-radius: var(--radius-control);
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  const grid = document.getElementById('shot-grid');
+  const lb = document.getElementById('lightbox') as HTMLElement | null;
+  const lbImg = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const close = document.getElementById('lightbox-close');
+
+  function openLightbox(src: string, alt: string) {
+    if (!lb || !lbImg) return;
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    if (!lb) return;
+    lb.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  grid?.querySelectorAll('.shot-tile').forEach((tile) => {
+    tile.addEventListener('click', () => {
+      if (tile.classList.contains('missing')) return;
+      openLightbox(tile.getAttribute('data-src') || '', tile.getAttribute('data-alt') || '');
+    });
+  });
+  close?.addEventListener('click', closeLightbox);
+  lb?.addEventListener('click', (e) => {
+    if (e.target === lb) closeLightbox();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeLightbox();
+  });
+</script>

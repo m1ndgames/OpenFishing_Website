@@ -1,0 +1,97 @@
+/*
+ * OpenFishing "Ocean" design tokens — copied verbatim from the app
+ * (src/routes/layout.css / src/lib/themes.ts). Dark is the default (:root);
+ * light mode is opted into via [data-theme="light"].
+ *
+ * These are consumed two ways:
+ *   1. Directly via var(--of-*) in component recipe classes (global.css).
+ *   2. Mapped into Tailwind theme colors via `@theme inline` (global.css),
+ *      so utilities like `bg-base` / `text-accent` follow the active theme.
+ */
+
+:root {
+  /* Ocean — DARK (default) */
+  --of-bg-base: #060d17;
+  --of-bg-surface: #0b1a2c;
+  --of-bg-elevated: #0f2238;
+  --of-bg-overlay: #0d1f35;
+  --of-bg-hover: #132841;
+
+  --of-border-subtle: #172f4a;
+  --of-border: #243f5e;
+  --of-border-strong: #2d5270;
+
+  --of-text-bright: #e0eaf8;
+  --of-text: #c2dce8;
+  --of-text-2: #8ab8cc;
+  --of-text-3: #5d8fa8;
+  --of-text-4: #3d6a84;
+
+  --of-accent: #22d3ee;
+  --of-accent-solid: #06b6d4;
+  --of-accent-hover: #67e8f9;
+  --of-accent-dark: #0891b2;
+  --of-accent-bg: rgba(6, 182, 212, 0.08);
+  --of-accent-bg-hover: rgba(6, 182, 212, 0.14);
+  --of-accent-glow: rgba(6, 182, 212, 0.1);
+  --of-accent-border: rgba(6, 182, 212, 0.25);
+
+  --of-ink: #030a12;
+  --of-danger: #f87171;
+  --of-success: #4ade80;
+  --of-warning: #fbbf24;
+  --of-warning-solid: #f59e0b;
+
+  /* Typography */
+  --font-heading: 'Carter One', sans-serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Radii */
+  --radius-control: 9px;
+  --radius-card: 14px;
+  --radius-pill: 20px;
+
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  /* Ocean — LIGHT */
+  --of-bg-base: #eaf3f8;
+  --of-bg-surface: #ffffff;
+  --of-bg-elevated: #f2f8fb;
+  --of-bg-overlay: #e8f2f8;
+  --of-bg-hover: #dceef7;
+
+  --of-border-subtle: #cde0ec;
+  --of-border: #aacad9;
+  --of-border-strong: #7aaec4;
+
+  --of-text-bright: #0a1e2e;
+  --of-text: #1a3448;
+  --of-text-2: #2d5268;
+  --of-text-3: #4d7a94;
+  --of-text-4: #6894a8;
+
+  /* Spec light accent is #0891b2, but as text on pale tinted surfaces and as a
+   * button fill under white text it falls below WCAG AA (§8). We darken the
+   * light-mode accent to an accessible teal — the bright-cyan identity is a
+   * dark-mode trait; on light backgrounds a deeper teal is both on-brand and AA. */
+  --of-accent: #0b6675;
+  --of-accent-solid: #0b6675;
+  --of-accent-hover: #095463;
+  --of-accent-dark: #073e49;
+  /* accent alpha layers use the dark-mode cyan rgba, which reads well on light too */
+  --of-accent-bg: rgba(8, 145, 178, 0.08);
+  --of-accent-bg-hover: rgba(8, 145, 178, 0.14);
+  --of-accent-glow: rgba(8, 145, 178, 0.12);
+  --of-accent-border: rgba(8, 145, 178, 0.28);
+
+  --of-ink: #ffffff;
+  --of-danger: #dc2626;
+  --of-success: #16a34a;
+  --of-warning: #b45309;
+  --of-warning-solid: #d97706;
+
+  color-scheme: light;
+}

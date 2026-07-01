@@ -1,0 +1,24 @@
+---
+// Inline square mark (fish/hook icon). `fill: currentColor` follows `color`.
+import mark from '../assets/openfishing-mark.svg?raw';
+
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className, title = 'OpenFishing' } = Astro.props;
+---
+
+<span class:list={['of-mark', className]} role="img" aria-label={title} set:html={mark} />
+
+<style>
+  .of-mark {
+    display: inline-flex;
+    line-height: 0;
+  }
+  .of-mark :global(svg) {
+    height: 100%;
+    width: 100%;
+    display: block;
+  }
+</style>

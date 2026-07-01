@@ -1,0 +1,64 @@
+---
+import { SITE } from '../consts';
+---
+
+<section class="demo">
+  <div class="demo-inner">
+    <div class="demo-card">
+      <div class="demo-copy">
+        <span class="badge">Read-only</span>
+        <h2>Take it for a cast.</h2>
+        <p>
+          Explore a fully populated OpenFishing instance — lures, spots, catches, the map and
+          the Bite&nbsp;Index — no signup required. The demo runs in read-only mode, so writes
+          are disabled.
+        </p>
+      </div>
+      <a class="btn-primary demo-btn" href={SITE.demo} target="_blank" rel="noopener">
+        Open the live demo
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .demo-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(2.5rem, 5vw, 4rem) 1.25rem;
+  }
+  .demo-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border-radius: 16px;
+    background: linear-gradient(135deg, var(--of-accent-bg), var(--of-accent-bg-hover));
+    border: 1px solid var(--of-accent-border);
+    box-shadow: 0 8px 40px var(--of-accent-glow);
+  }
+  .demo-copy {
+    max-width: 40rem;
+  }
+  .demo-copy .badge {
+    margin-bottom: 0.85rem;
+  }
+  .demo-copy h2 {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin: 0 0 0.5rem;
+  }
+  .demo-copy p {
+    color: var(--of-text-2);
+    margin: 0;
+    line-height: 1.6;
+  }
+  .demo-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+</style>

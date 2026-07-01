@@ -1,0 +1,182 @@
+---
+import Mark from './Mark.astro';
+import { SITE } from '../consts';
+
+const year = new Date().getFullYear();
+
+const cols = [
+  {
+    title: 'Product',
+    links: [
+      { label: 'Features', href: '#features' },
+      { label: 'Live demo', href: SITE.demo },
+      { label: 'Documentation', href: SITE.docs },
+    ],
+  },
+  {
+    title: 'Docs',
+    links: [
+      { label: 'Quick start', href: '/docs/getting-started/quick-start' },
+      { label: 'Installation', href: '/docs/getting-started/installation' },
+      { label: 'Environment variables', href: '/docs/configuration/environment-variables' },
+      { label: 'REST API', href: '/docs/api/rest-api' },
+    ],
+  },
+  {
+    title: 'Project',
+    links: [
+      { label: 'GitHub', href: SITE.github },
+      { label: 'Issues', href: `${SITE.github}/issues` },
+      { label: 'License (AGPL)', href: `${SITE.github}/blob/main/LICENSE.md` },
+    ],
+  },
+];
+---
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-mark"><Mark /></span>
+      <p class="footer-blurb">
+        A privacy-first, self-hosted fishing log for anglers. Organize lures, mark spots, log
+        catches, track tackle — all on your own server.
+      </p>
+      <div class="footer-image">
+        <span class="footer-image-label">Container image</span>
+        <code>{SITE.image}</code>
+      </div>
+    </div>
+
+    <div class="footer-cols">
+      {
+        cols.map((col) => (
+          <nav class="footer-col" aria-label={col.title}>
+            <h3>{col.title}</h3>
+            <ul>
+              {col.links.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    {...l.href.startsWith('http') ? { rel: 'noopener', target: '_blank' } : {}}
+                  >
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© {year} OpenFishing · Released under the AGPL-3.0 license.</p>
+    <p>Self-hosted · Open source · No cloud.</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--of-bg-surface);
+    border-top: 1px solid var(--of-border-subtle);
+  }
+  .footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: clamp(3rem, 6vw, 4.5rem) 1.25rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1.4fr 2fr;
+    gap: 2.5rem;
+  }
+  .footer-mark {
+    display: inline-flex;
+    width: 44px;
+    height: 44px;
+    color: var(--of-accent);
+    margin-bottom: 1rem;
+  }
+  .footer-blurb {
+    color: var(--of-text-2);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    max-width: 26rem;
+    margin: 0 0 1.25rem;
+  }
+  .footer-image {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .footer-image-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--of-text-3);
+  }
+  .footer-image code {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--of-accent);
+    background: var(--of-accent-bg);
+    border: 1px solid var(--of-accent-border);
+    border-radius: 7px;
+    padding: 0.35rem 0.6rem;
+    width: fit-content;
+  }
+  .footer-cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .footer-col h3 {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--of-text-3);
+    margin: 0 0 0.9rem;
+  }
+  .footer-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+  .footer-col a {
+    color: var(--of-text-2);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s ease;
+  }
+  .footer-col a:hover {
+    color: var(--of-accent);
+  }
+  .footer-bottom {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    border-top: 1px solid var(--of-border-subtle);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    color: var(--of-text-3);
+    font-size: 0.82rem;
+  }
+  .footer-bottom p {
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .footer-inner {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .footer-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>
