@@ -6,7 +6,6 @@ import { SITE } from '../consts';
   <div class="demo-inner">
     <div class="demo-card">
       <div class="demo-copy">
-        <span class="badge">Read-only</span>
         <h2>Take it for a cast.</h2>
         <p>
           Explore a fully populated OpenFishing instance — lures, spots, catches, the map and
@@ -25,6 +24,12 @@ import { SITE } from '../consts';
 </section>
 
 <style>
+  .demo {
+    background: linear-gradient(135deg, var(--of-accent-bg), var(--of-accent-bg-hover));
+    border-top: 1px solid var(--of-accent-border);
+    border-bottom: 1px solid var(--of-accent-border);
+    box-shadow: 0 8px 40px var(--of-accent-glow);
+  }
   .demo-inner {
     max-width: 72rem;
     margin: 0 auto;
@@ -36,17 +41,9 @@ import { SITE } from '../consts';
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 1.5rem;
-    padding: clamp(1.5rem, 4vw, 2.5rem);
-    border-radius: 16px;
-    background: linear-gradient(135deg, var(--of-accent-bg), var(--of-accent-bg-hover));
-    border: 1px solid var(--of-accent-border);
-    box-shadow: 0 8px 40px var(--of-accent-glow);
   }
   .demo-copy {
     max-width: 40rem;
-  }
-  .demo-copy .badge {
-    margin-bottom: 0.85rem;
   }
   .demo-copy h2 {
     font-size: clamp(1.5rem, 3vw, 2rem);

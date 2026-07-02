@@ -21,12 +21,12 @@ const inner = logoRaw
   .replace(/<\/svg>\s*$/, '')
   .replace(/currentColor/g, ACCENT);
 
-// Scale the wordmark to ~760px wide, centered a bit above middle.
+// Scale the wordmark to ~860px wide, centered vertically.
 const [, , vbW, vbH] = viewBox.split(/\s+/).map(Number);
-const logoW = 760;
+const logoW = 860;
 const logoH = (logoW * vbH) / vbW;
 const logoX = (W - logoW) / 2;
-const logoY = H / 2 - logoH / 2 - 34;
+const logoY = (H - logoH) / 2;
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
   <defs>
@@ -45,10 +45,6 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   <svg x="${logoX}" y="${logoY}" width="${logoW}" height="${logoH}" viewBox="${viewBox}">
     ${inner}
   </svg>
-  <text x="${W / 2}" y="${logoY + logoH + 78}" text-anchor="middle"
-        font-family="'DM Sans', Arial, sans-serif" font-size="34" fill="#8ab8cc" letter-spacing="0.5">
-    Self-hosted fishing log · lures · spots · catches · tackle
-  </text>
 </svg>`;
 
 await mkdir(join(root, 'public'), { recursive: true });

@@ -63,6 +63,8 @@
 
   body {
     background-color: var(--of-bg-base);
+    background-image: radial-gradient(60% 500px at 50% 0%, var(--of-accent-glow), transparent 100%);
+    background-repeat: no-repeat;
     color: var(--of-text);
     font-family: var(--font-sans);
     font-weight: 400;

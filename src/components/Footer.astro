@@ -1,5 +1,5 @@
 ---
-import Mark from './Mark.astro';
+import Logo from './Logo.astro';
 import { SITE } from '../consts';
 
 const year = new Date().getFullYear();
@@ -36,7 +36,7 @@ const cols = [
 <footer class="footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <span class="footer-mark"><Mark /></span>
+      <Logo class="footer-logo" />
       <p class="footer-blurb">
         A privacy-first, self-hosted fishing log for anglers. Organize lures, mark spots, log
         catches, track tackle — all on your own server.
@@ -72,7 +72,6 @@ const cols = [
 
   <div class="footer-bottom">
     <p>© {year} OpenFishing · Released under the AGPL-3.0 license.</p>
-    <p>Self-hosted · Open source · No cloud.</p>
   </div>
 </footer>
 
@@ -89,12 +88,12 @@ const cols = [
     grid-template-columns: 1.4fr 2fr;
     gap: 2.5rem;
   }
-  .footer-mark {
-    display: inline-flex;
-    width: 44px;
-    height: 44px;
+  .footer-logo {
+    height: 48px;
+    width: auto;
     color: var(--of-accent);
     margin-bottom: 1rem;
+    display: block;
   }
   .footer-blurb {
     color: var(--of-text-2);
@@ -160,7 +159,7 @@ const cols = [
     padding: 1.25rem;
     border-top: 1px solid var(--of-border-subtle);
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
     gap: 0.5rem;
     color: var(--of-text-3);
@@ -177,6 +176,15 @@ const cols = [
     }
     .footer-cols {
       grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .footer-inner {
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+    }
+    .footer-cols {
+      grid-template-columns: 1fr;
     }
   }
 </style>

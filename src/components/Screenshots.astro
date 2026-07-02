@@ -1,6 +1,6 @@
 ---
-// Screenshots captured from the live demo by scripts/screenshots.mjs.
-// Each <img> falls back to a themed placeholder tile if the file is missing.
+import { SITE } from '../consts';
+
 const shots = [
   { src: '/screenshots/lure-grid.jpg', label: 'Lure library', alt: 'Grid of lure photo cards with tags, species and catch counts' },
   { src: '/screenshots/catch-detail.jpg', label: 'Catch detail', alt: 'A single catch with its map location and Bite Index score' },
@@ -13,7 +13,6 @@ const shots = [
 <section class="shots">
   <div class="shots-inner">
     <header class="section-head">
-      <span class="chip chip-active">Screenshots</span>
       <h2>See it in action.</h2>
       <p>A look around the app — captured from the live demo.</p>
     </header>
@@ -25,7 +24,6 @@ const shots = [
             class="card card-hover shot-tile"
             data-src={shot.src}
             data-alt={shot.alt}
-            style={`grid-area: s${i + 1}`}
             aria-label={`View ${shot.label} screenshot`}
           >
             <img
@@ -39,8 +37,16 @@ const shots = [
           </button>
         ))
       }
+
+      <!-- Demo CTA tile -->
+      <a class="card shot-tile shot-demo" href={SITE.demo} target="_blank" rel="noopener" aria-label="Open live demo">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="demo-label">Try the live demo</span>
+        <span class="demo-sub">No signup required</span>
+      </a>
     </div>
-    {/* TODO: real captures are written to public/screenshots/*.png by `npm run screenshots`. */}
   </div>
 
   <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot" hidden>
@@ -52,6 +58,7 @@ const shots = [
 <style>
   .shots {
     border-bottom: 1px solid var(--of-border-subtle);
+    background: radial-gradient(60% 500px at 50% 0%, var(--of-accent-glow), transparent 100%);
   }
   .shots-inner {
     max-width: 72rem;
@@ -62,9 +69,6 @@ const shots = [
     text-align: center;
     max-width: 42rem;
     margin: 0 auto 2.5rem;
-  }
-  .section-head .chip {
-    margin-bottom: 1rem;
   }
   .section-head h2 {
     font-size: clamp(1.6rem, 3.5vw, 2.2rem);
@@ -78,13 +82,16 @@ const shots = [
   .shot-grid {
     display: grid;
     gap: 1rem;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-areas: 's1 s2' 's3 s4' 's5 s5';
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 480px) {
+    .shot-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (min-width: 900px) {
     .shot-grid {
       grid-template-columns: repeat(3, 1fr);
-      grid-template-areas: 's1 s1 s2' 's3 s4 s2' 's3 s5 s5';
     }
   }
 
@@ -125,15 +132,35 @@ const shots = [
     color: var(--of-text-3);
     font-size: 1.05rem;
   }
-  .shot-tile.missing {
-    cursor: default;
-  }
+  .shot-tile.missing { cursor: default; }
   .shot-tile.missing img,
-  .shot-tile.missing .shot-caption {
-    display: none;
-  }
-  .shot-tile.missing .shot-ph {
+  .shot-tile.missing .shot-caption { display: none; }
+  .shot-tile.missing .shot-ph { display: flex; }
+
+  .shot-demo {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    text-decoration: none;
+    color: var(--of-accent);
+    background: linear-gradient(135deg, var(--of-accent-bg), var(--of-accent-bg-hover));
+    border: 1px solid var(--of-accent-border) !important;
+    cursor: pointer;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+  .shot-demo:hover {
+    box-shadow: 0 0 0 1px var(--of-accent-border), 0 8px 32px var(--of-accent-glow);
+  }
+  .demo-label {
+    font-family: var(--font-heading);
+    font-size: 1.15rem;
+    color: var(--of-text-bright);
+  }
+  .demo-sub {
+    font-size: 0.8rem;
+    color: var(--of-text-2);
   }
 
   .lightbox {
@@ -147,9 +174,7 @@ const shots = [
     background: color-mix(in srgb, var(--of-bg-base) 88%, transparent);
     backdrop-filter: blur(6px);
   }
-  .lightbox[hidden] {
-    display: none;
-  }
+  .lightbox[hidden] { display: none; }
   .lightbox img {
     max-width: min(1100px, 92vw);
     max-height: 86vh;
@@ -199,10 +224,6 @@ const shots = [
     });
   });
   close?.addEventListener('click', closeLightbox);
-  lb?.addEventListener('click', (e) => {
-    if (e.target === lb) closeLightbox();
-  });
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeLightbox();
-  });
+  lb?.addEventListener('click', (e) => { if (e.target === lb) closeLightbox(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 </script>
