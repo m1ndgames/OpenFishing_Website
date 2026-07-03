@@ -1,25 +1,35 @@
 ---
 import { SITE } from '../consts';
+import { useTranslations, fill } from '../i18n/utils';
+import { defaultLang, type Lang } from '../i18n/ui';
 
-const shots = [
-  { src: '/screenshots/lure-grid.jpg', label: 'Lure library', alt: 'Grid of lure photo cards with tags, species and catch counts' },
-  { src: '/screenshots/catch-detail.jpg', label: 'Catch detail', alt: 'A single catch with its map location and Bite Index score' },
-  { src: '/screenshots/spot-map.jpg', label: 'Spot map', alt: 'Interactive map with saved fishing-spot markers' },
-  { src: '/screenshots/stats.jpg', label: 'Stats', alt: 'Statistics dashboard of catch and gear trends' },
-  { src: '/screenshots/chatbot.jpg', label: 'AI assistant', alt: 'The optional AI chatbot answering a question about the data' },
+interface Props {
+  lang?: Lang;
+}
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
+
+// Screenshot sources — order MUST match `shots.items` in src/i18n/ui.ts.
+const shotSrcs = [
+  '/screenshots/lure-grid.jpg',
+  '/screenshots/catch-detail.jpg',
+  '/screenshots/spot-map.jpg',
+  '/screenshots/stats.jpg',
+  '/screenshots/chatbot.jpg',
 ];
+const shots = t.shots.items.map((item, i) => ({ ...item, src: shotSrcs[i] }));
 ---
 
 <section class="shots">
   <div class="shots-inner">
     <div class="shot-grid" id="shot-grid">
       {
-        shots.map((shot, i) => (
+        shots.map((shot) => (
           <button
             class="card card-hover shot-tile"
             data-src={shot.src}
             data-alt={shot.alt}
-            aria-label={`View ${shot.label} screenshot`}
+            aria-label={fill(t.shots.viewAria, { label: shot.label })}
           >
             <img
               src={shot.src}
@@ -34,18 +44,18 @@ const shots = [
       }
 
       <!-- Demo CTA tile -->
-      <a class="card shot-tile shot-demo" href={SITE.demo} target="_blank" rel="noopener" aria-label="Open live demo">
+      <a class="card shot-tile shot-demo" href={SITE.demo} target="_blank" rel="noopener" aria-label={t.shots.openDemoAria}>
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <span class="demo-label">Try the live demo</span>
-        <span class="demo-sub">No signup required</span>
+        <span class="demo-label">{t.shots.demoLabel}</span>
+        <span class="demo-sub">{t.shots.demoSub}</span>
       </a>
     </div>
   </div>
 
-  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot" hidden>
-    <button class="lightbox-close" id="lightbox-close" aria-label="Close">&times;</button>
+  <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label={t.shots.dialogLabel} hidden>
+    <button class="lightbox-close" id="lightbox-close" aria-label={t.shots.close}>&times;</button>
     <img id="lightbox-img" src="" alt="" />
   </div>
 </section>

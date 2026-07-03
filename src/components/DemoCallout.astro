@@ -1,18 +1,26 @@
 ---
 import { SITE } from '../consts';
+import { useTranslations } from '../i18n/utils';
+import { defaultLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 ---
 
 <section class="demo">
   <div class="demo-inner">
     <div class="demo-card">
       <div class="demo-copy">
-        <h2>Take it for a cast.</h2>
+        <h2>{t.demo.heading}</h2>
         <p>
-          Explore a fully populated OpenFishing instance
+          {t.demo.text}
         </p>
       </div>
       <a class="btn-primary demo-btn" href={SITE.demo} target="_blank" rel="noopener">
-        Open the live demo
+        {t.demo.cta}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>

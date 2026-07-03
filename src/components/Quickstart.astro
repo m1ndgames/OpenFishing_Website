@@ -1,5 +1,13 @@
 ---
 import { SITE } from '../consts';
+import { useTranslations, localeUrl } from '../i18n/utils';
+import { defaultLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 
 const cmd = `docker run -d -p 3000:3000 \\
   -v openfishing-db:/app/data \\
@@ -10,13 +18,12 @@ const cmd = `docker run -d -p 3000:3000 \\
 <section class="qs">
   <div class="qs-inner">
     <div class="qs-copy">
-      <h2>Up and running in one command.</h2>
+      <h2>{t.qs.heading}</h2>
       <p>
-        OpenFishing ships as a single container. Point two volumes at persistent storage for
-        the SQLite database and your uploads, and you're fishing.
+        {t.qs.text}
       </p>
-      <a class="btn-text" href={SITE.docs}>
-        Full docs
+      <a class="btn-text" href={localeUrl(lang, SITE.docs)}>
+        {t.qs.docs}
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
         </svg>
@@ -27,7 +34,7 @@ const cmd = `docker run -d -p 3000:3000 \\
       <div class="qs-code-bar">
         <span class="qs-dot"></span><span class="qs-dot"></span><span class="qs-dot"></span>
         <span class="qs-file">docker run</span>
-        <button id="copy-run" class="qs-copy-btn" type="button" aria-label="Copy command">Copy</button>
+        <button id="copy-run" class="qs-copy-btn" type="button" aria-label={t.qs.copyAria} data-copied={t.qs.copied}>{t.qs.copy}</button>
       </div>
       <pre><code id="run-cmd">{cmd}</code></pre>
     </div>
@@ -132,7 +139,7 @@ const cmd = `docker run -d -p 3000:3000 \\
     try {
       await navigator.clipboard.writeText(code.textContent);
       const prev = btn.textContent;
-      btn.textContent = 'Copied!';
+      btn.textContent = btn.getAttribute('data-copied') || 'Copied!';
       setTimeout(() => (btn.textContent = prev), 1500);
     } catch (e) {}
   });
