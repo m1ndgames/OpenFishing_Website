@@ -1,36 +1,36 @@
 ---
 import Logo from './Logo.astro';
 import { SITE } from '../consts';
+import { useTranslations, localeUrl } from '../i18n/utils';
+import { defaultLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+const { lang = defaultLang } = Astro.props;
+const t = useTranslations(lang);
 
 const year = new Date().getFullYear();
 
-const cols = [
-  {
-    title: 'Product',
-    links: [
-      { label: 'Features', href: '#features' },
-      { label: 'Live demo', href: SITE.demo },
-      { label: 'Documentation', href: SITE.docs },
-    ],
-  },
-  {
-    title: 'Docs',
-    links: [
-      { label: 'Quick start', href: '/docs/getting-started/quick-start' },
-      { label: 'Installation', href: '/docs/getting-started/installation' },
-      { label: 'Environment variables', href: '/docs/configuration/environment-variables' },
-      { label: 'REST API', href: '/docs/api/rest-api' },
-    ],
-  },
-  {
-    title: 'Project',
-    links: [
-      { label: 'GitHub', href: SITE.github },
-      { label: 'Issues', href: `${SITE.github}/issues` },
-      { label: 'License (AGPL)', href: `${SITE.github}/blob/main/LICENSE.md` },
-    ],
-  },
+// Localize internal doc links; leave anchors and external links untouched.
+const loc = (href: string) => (href.startsWith('/docs') ? localeUrl(lang, href) : href);
+
+// Link hrefs per column — order MUST match `footer.cols[n].links` in src/i18n/ui.ts.
+const colHrefs = [
+  ['#features', SITE.demo, SITE.docs],
+  [
+    '/docs/getting-started/quick-start',
+    '/docs/getting-started/installation',
+    '/docs/configuration/environment-variables',
+    '/docs/api/rest-api',
+  ],
+  [SITE.github, `${SITE.github}/issues`, `${SITE.github}/blob/main/LICENSE.md`],
 ];
+
+const cols = t.footer.cols.map((col, ci) => ({
+  title: col.title,
+  links: col.links.map((label, li) => ({ label, href: loc(colHrefs[ci][li]) })),
+}));
 ---
 
 <footer class="footer">
@@ -38,12 +38,9 @@ const cols = [
     <div class="footer-brand">
       <Logo class="footer-logo" />
       <p class="footer-blurb">
-        A privacy-first, self-hosted fishing log for anglers. Organize lures, mark spots, log
-        catches, track tackle — all on your own server.
+        {t.footer.blurb}
       </p>
       <div class="footer-image">
-        <span class="footer-image-label">Container image</span>
-        <code>{SITE.image}</code>
       </div>
     </div>
 
@@ -71,7 +68,7 @@ const cols = [
   </div>
 
   <div class="footer-bottom">
-    <p>© {year} OpenFishing · Released under the AGPL-3.0 license.</p>
+    <p>© {year} OpenFishing · {t.footer.rights}</p>
   </div>
 </footer>
 
