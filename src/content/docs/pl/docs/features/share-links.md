@@ -4,17 +4,23 @@ description: Publikuj publiczne strony tylko do odczytu dla przynęty, łowiska 
 ---
 
 **Linki udostępniania** pozwalają opublikować pojedynczą **przynętę**, **łowisko** lub **połów** jako publiczną
-stronę tylko do odczytu — przydatne, by pochwalić się połowem lub udostępnić przynętę znajomemu bez dawania mu
+stronę tylko do odczytu: przydatne, by pochwalić się połowem lub udostępnić przynętę znajomemu bez dawania mu
 dostępu do całej instancji.
 
-## Jak to działa
+:::note
+Linki udostępniania wymagają logowania. Gdy ustawisz `ADMIN_PASSWORD` (zobacz [Wielu użytkowników i uwierzytelnianie](/pl/docs/multi-user/authentication)),
+każda przynęta, łowisko i połów ma przycisk **Utwórz link udostępniania**; bez logowania go nie ma.
+:::
 
-- Utwórz link udostępniania dla dowolnej pojedynczej przynęty, łowiska lub połowu.
-- Link otwiera stronę **tylko do odczytu** pokazującą wyłącznie ten element.
-- **Odwołaj** link w dowolnym momencie, aby ponownie usunąć stronę.
+## Tworzenie linku
 
-Ujawniany jest tylko konkretny element, który udostępniasz; reszta Twoich danych pozostaje prywatna.
+1. Otwórz przynętę, łowisko lub połów.
+2. Wybierz **Utwórz link udostępniania**, potem **Kopiuj**, i wyślij link.
+3. Aby zdjąć stronę, wybierz **Usuń link**.
+
+Link otwiera stronę **tylko do odczytu** z samym tym elementem; reszta danych pozostaje prywatna.
+Powstaje z Twojego `BASE_URL`, więc adres z sieci domowej działa tylko w tej sieci.
 
 ## Powiązane
 
-- Linki udostępniania są tylko do odczytu, w duchu podobne do [trybu demonstracyjnego](/pl/docs/demo/demo-mode).
+- Linki udostępniania działają dla [przynęt](/pl/docs/features/lures), [łowisk](/pl/docs/features/spots) i [połowów](/pl/docs/features/catches).

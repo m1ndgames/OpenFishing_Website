@@ -9,14 +9,16 @@ const require = createRequire(import.meta.url);
 const axePath = require.resolve('axe-core/axe.min.js');
 const axeSource = require('node:fs').readFileSync(axePath, 'utf8');
 
-const BASE = 'http://localhost:4321';
+// Own port, so a dev server already running on :4321 is never tested by mistake.
+const PORT = 4330;
+const BASE = `http://localhost:${PORT}`;
 const PATHS = [
   ['/', 'Landing'],
   ['/docs/getting-started/introduction/', 'Docs'],
 ];
 
 // Start `astro preview`
-const server = spawn('npm', ['run', 'preview'], { stdio: 'ignore', shell: true });
+const server = spawn('npm', ['run', 'preview', '--', '--port', String(PORT)], { stdio: 'ignore', shell: true });
 
 async function waitForServer(timeoutMs = 30000) {
   const start = Date.now();

@@ -1,16 +1,26 @@
 ---
-title: Temas e aparência
-description: O tema ocean com aparência escura, clara e do sistema, configurável por utilizador ou globalmente.
+title: "Temas e aparência"
+description: "Quatro temas de cor, cada um escuro e claro, escolhidos por pessoa nas Definições."
 ---
 
-O OpenFishing vem com o tema **Ocean** — um fundo azul-marinho profundo com um acento ciano vibrante (o mesmo
-aspeto que esta documentação usa).
+O OpenFishing tem quatro temas de cor, cada um em versão escura e clara. Escolhe ambos em
+**Definições → Aparência**, onde também defines o [idioma](/pt/docs/features/languages) da aplicação.
 
-## Aparência
+## Temas
 
-- **Escura, clara ou do sistema** — escolhe uma aparência fixa ou segue a preferência do teu sistema operativo.
-- **Por utilizador vs global** — no modo [multiutilizador](/pt/docs/multi-user/authentication) cada utilizador
-  pode definir a sua própria aparência; no modo de inquilino único a escolha é global.
+- **Ocean**: azul-marinho profundo com destaque ciano. O predefinido, e o aspeto deste site.
+- **Forest**: destaque verde.
+- **Sunset**: destaque laranja.
+- **Dusk**: destaque violeta.
 
-O site que estás a ler espelha a aplicação: o modo escuro é o predefinido, com um interruptor no canto superior
-direito que conserva a tua escolha.
+## Escuro, claro ou sistema
+
+Escolhe **Escuro**, **Claro** ou **Sistema** para seguir a definição do telemóvel ou computador.
+
+## A quem se aplica
+
+Com o [início de sessão](/pt/docs/multi-user/authentication) ativo, cada pessoa escolhe o seu tema e aparência. Sem início
+de sessão, a escolha vale para todos os que usam a instância.
+
+O admin define a **Aparência predefinida** em **Definições → Admin**: o modo de cor e o tema do ecrã de início de sessão e
+de quem ainda não escolheu os seus.

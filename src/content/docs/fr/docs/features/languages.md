@@ -1,24 +1,20 @@
 ---
-title: Langues (i18n)
-description: OpenFishing est disponible en 9 langues avec un sélecteur à drapeaux.
+title: "Langues"
+description: "OpenFishing est disponible en 9 langues ; choisissez la vôtre dans les paramètres."
+next: false
 ---
 
-OpenFishing est entièrement internationalisé et livré en **9 langues**, avec un **sélecteur à drapeaux** dans
-l'interface pour changer de langue à tout moment.
+OpenFishing est disponible en **9 langues**. Choisissez la vôtre dans **Paramètres → Apparence**, la page où vous
+choisissez aussi un [thème](/fr/docs/features/themes).
 
-## Langues prises en charge
+- English
+- Deutsch
+- Français
+- Español
+- Italiano
+- Nederlands
+- Polski
+- Português
+- Українська
 
-| Code | Langue |
-|---|---|
-| `EN` | Anglais |
-| `DE` | Allemand |
-| `FR` | Français |
-| `ES` | Espagnol |
-| `IT` | Italien |
-| `NL` | Néerlandais |
-| `PL` | Polonais |
-| `PT` | Portugais |
-| `UK` | Ukrainien |
-
-Le changement de langue fonctionne même en [mode démo](/fr/docs/demo/demo-mode), où les autres écritures sont
-bloquées.
+Le changement de langue fonctionne aussi en [mode démo](/fr/docs/demo/demo-mode).

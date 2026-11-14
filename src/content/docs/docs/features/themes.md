@@ -1,17 +1,26 @@
 ---
-title: Themes & appearance
-description: The ocean theme with dark, light and system appearance, configurable per-user or globally.
+title: "Themes & appearance"
+description: "Four colour themes, each in dark and light, chosen per person in Settings."
 ---
 
-OpenFishing ships with the **Ocean** theme — a deep-navy background with a bright cyan accent
-(the same look this documentation uses).
+OpenFishing comes with four colour themes, each in a dark and a light version. Pick both
+under **Settings → Appearance**, where you also set the app's [language](/docs/features/languages).
 
-## Appearance
+## Themes
 
-- **Dark, light, or system** — choose a fixed appearance or follow your operating system's
-  preference.
-- **Per-user vs global** — in [multi-user](/docs/multi-user/authentication) mode each user can
-  set their own appearance; in single-tenant mode the choice is global.
+- **Ocean**: deep navy with a cyan accent. The default, and the look of this website.
+- **Forest**: green accent.
+- **Sunset**: orange accent.
+- **Dusk**: violet accent.
 
-The website you're reading mirrors the app: dark mode is the default, with a toggle in the
-top-right that persists your choice.
+## Dark, light or system
+
+Choose **Dark**, **Light**, or **System** to follow your phone's or computer's setting.
+
+## Who it applies to
+
+With [login](/docs/multi-user/authentication) turned on, everyone picks their own theme and appearance. Without login,
+the choice applies to everyone using the instance.
+
+The admin sets the **Default appearance** in **Settings → Admin**: the colour mode and theme for the login screen and
+for anyone who hasn't chosen their own.

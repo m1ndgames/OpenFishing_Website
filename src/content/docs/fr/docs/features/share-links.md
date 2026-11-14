@@ -4,17 +4,24 @@ description: Publiez des pages publiques en lecture seule pour un leurre, un spo
 ---
 
 Les **liens de partage** vous permettent de publier un seul **leurre**, **spot** ou **prise** sous forme de page
-publique en lecture seule — pratique pour montrer une prise ou partager un leurre avec un ami sans lui donner
+publique en lecture seule : pratique pour montrer une prise ou partager un leurre avec un ami sans lui donner
 accès à toute votre instance.
 
-## Comment ça marche
+:::note
+Les liens de partage nécessitent la connexion. Avec `ADMIN_PASSWORD` défini (voir [Multi-utilisateur & authentification](/fr/docs/multi-user/authentication)),
+chaque leurre, spot et prise affiche **Créer un lien de partage** ; sans connexion, le bouton n'apparaît pas.
+:::
 
-- Créez un lien de partage pour n'importe quel leurre, spot ou prise individuel.
-- Le lien ouvre une page **en lecture seule** montrant uniquement cet élément.
-- **Révoquez** le lien à tout moment pour retirer à nouveau la page.
+## Créer un lien de partage
 
-Seul l'élément spécifique que vous partagez est exposé ; le reste de vos données reste privé.
+1. Ouvrez le leurre, le spot ou la prise.
+2. Sélectionnez **Créer un lien de partage**, puis **Copier**, et envoyez le lien.
+3. Pour retirer la page, sélectionnez **Supprimer le lien**.
+
+Le lien ouvre une page en **lecture seule** avec uniquement cet élément ; le reste de vos données reste
+privé. Il est construit à partir de votre `BASE_URL` : une adresse du réseau local ne s'ouvre que sur ce
+réseau.
 
 ## Associé
 
-- Les liens de partage sont en lecture seule, dans le même esprit que le [mode démo](/fr/docs/demo/demo-mode).
+- Les liens de partage existent pour les [leurres](/fr/docs/features/lures), les [spots](/fr/docs/features/spots) et les [prises](/fr/docs/features/catches).

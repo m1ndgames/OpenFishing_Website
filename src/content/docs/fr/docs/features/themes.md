@@ -1,17 +1,26 @@
 ---
-title: Thèmes & apparence
-description: Le thème ocean avec apparence sombre, claire et système, configurable par utilisateur ou globalement.
+title: "Thèmes & apparence"
+description: "Quatre thèmes de couleur, chacun en sombre et en clair, choisis par personne dans les paramètres."
 ---
 
-OpenFishing est livré avec le thème **Ocean** — un fond bleu marine profond avec un accent cyan vif (le même
-style que celui de cette documentation).
+OpenFishing propose quatre thèmes de couleur, chacun en version sombre et claire. Choisissez-les
+dans **Paramètres → Apparence**, où vous réglez aussi la [langue](/fr/docs/features/languages) de l'application.
 
-## Apparence
+## Thèmes
 
-- **Sombre, claire ou système** — choisissez une apparence fixe ou suivez la préférence de votre système
-  d'exploitation.
-- **Par utilisateur vs global** — en mode [multi-utilisateur](/fr/docs/multi-user/authentication), chaque
-  utilisateur peut définir sa propre apparence ; en mode mono-locataire, le choix est global.
+- **Ocean**: bleu marine profond avec un accent cyan. Le thème par défaut, et celui de ce site.
+- **Forest**: accent vert.
+- **Sunset**: accent orange.
+- **Dusk**: accent violet.
 
-Le site que vous lisez reflète l'application : le mode sombre est l'apparence par défaut, avec un bouton en haut
-à droite qui conserve votre choix.
+## Sombre, clair ou système
+
+Choisissez **Sombre**, **Clair** ou **Système** pour suivre le réglage de votre téléphone ou ordinateur.
+
+## À qui ça s'applique
+
+Avec la [connexion](/fr/docs/multi-user/authentication) activée, chacun choisit son thème et son apparence. Sans connexion,
+le choix vaut pour tous les utilisateurs de l'instance.
+
+L'admin règle l'**Apparence par défaut** dans **Paramètres → Admin** : le mode de couleur et le thème de l'écran de
+connexion et de tous ceux qui n'ont pas fait leur choix.

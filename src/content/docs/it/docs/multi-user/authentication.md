@@ -1,54 +1,59 @@
 ---
 title: Multiutente e autenticazione
-description: Abilita il login per ospitare amici e familiari, con isolamento per utente, quote, un pannello di amministrazione e reset password via SMTP.
+description: Attiva l'accesso per ospitare amici e famiglia, crea account, imposta quote di spazio e gestisci le password dimenticate.
 ---
 
-Per impostazione predefinita OpenFishing funziona in modalità **single-tenant e completamente aperta** — senza
-login. Imposta la variabile d'ambiente **`ADMIN_PASSWORD`** per attivare la **modalità multiutente**.
+Di base OpenFishing ha **una sola collezione condivisa e nessun accesso**: chiunque possa aprire
+il suo indirizzo può usarlo. Su una rete di casa di cui ti fidi va bene. Per ospitare amici e
+famiglia, o per raggiungere OpenFishing da internet, attiva l'accesso.
 
-## Abilitare il login
+## Attivare l'accesso
 
-Imposta `ADMIN_PASSWORD` (vedi [Variabili d'ambiente](/it/docs/configuration/environment-variables)):
+Il file compose di [Installare OpenFishing](/it/docs/getting-started/installation) contiene già la
+riga, disattivata con un `#`:
 
-```yaml
-environment:
-  - ADMIN_PASSWORD=change_me
+```yaml title="docker-compose.yml"
+    environment:
+      # Accesso: togli #, metti password
+      # - ADMIN_PASSWORD=
 ```
 
-Una volta impostata, appare una schermata di login. Gli utenti accedono con la loro **email/nome utente +
-password**.
-
-:::note
-`AUTH_PASSWORD` è un nome di ripiego **deprecato** per `ADMIN_PASSWORD`. Usa `ADMIN_PASSWORD`.
-:::
+Togli il `# ` davanti a `- ADMIN_PASSWORD=`, scrivi la tua password subito dopo l'`=` ed esegui
+`docker compose up -d`. Compare una schermata di accesso: entra con il nome utente **admin** e
+quella password.
 
 ## L'account admin
 
-- L'account **`admin`** esiste sempre quando l'autenticazione è abilitata.
-- Il suo nome utente è sempre `admin`; la sua password è quella impostata in `ADMIN_PASSWORD`.
-- Viene **risincronizzato dalla variabile d'ambiente a ogni avvio**, quindi modificare la variabile e riavviare
-  aggiorna la password.
+- Il nome utente è sempre `admin`.
+- La password è quella scritta in `ADMIN_PASSWORD`. OpenFishing la rilegge a ogni avvio: per
+  cambiarla, modifica la riga ed esegui di nuovo `docker compose up -d`.
 
-## Il pannello di amministrazione
+## Aggiungere un familiare
 
-Gli admin hanno un pannello a **`/settings/admin`** per gestire l'istanza:
+1. Entra come `admin` e apri **Impostazioni → Admin**.
+2. In **Crea utente**, compila **E-mail**, **Nome utente** e **Password**.
+3. Lascia **Quota (MB)** vuota per caricamenti illimitati, o inserisci un numero.
+4. Scegli **Crea**.
 
-- **Utenti** — creare, abilitare/disabilitare e gestire gli account.
-- **Quote di archiviazione** — limitare quanto ogni utente può caricare.
-- **Interruttore chatbot** — abilitare/disabilitare le [funzioni di IA](/it/docs/ai/ai-features) per utente.
-- **Token API** — gestire i token Bearer dell'[API REST](/it/docs/api/rest-api).
+Mandagli l'indirizzo, il suo nome utente e la password. Entra con e-mail o nome utente e può
+scegliere una nuova password in **Impostazioni → Il mio account → Cambia password**.
 
-## Isolamento dei dati per utente
+## Chi vede cosa
 
-Le esche, gli spot, le catture e l'attrezzatura di ogni utente sono **isolati** — gli utenti vedono solo i propri dati.
+Ogni account ha le proprie esche, spot, catture e attrezzatura. Nessuno vede quelle degli altri.
 
-## Reset password (SMTP)
+## Gestire gli account
 
-Se configuri SMTP (almeno `SMTP_HOST` e `SMTP_FROM`), gli utenti possono reimpostare le password dimenticate
-via email. Senza SMTP configurato, l'opzione di reset è nascosta. Vedi le
-[variabili SMTP](/it/docs/configuration/environment-variables).
+**Impostazioni → Admin** elenca tutti gli account. Per ognuno puoi modificare nome utente ed email,
+cambiare la quota di spazio e inserire una nuova password nel campo **Reimposta password**, poi selezionare
+**Salva**. Puoi anche attivare o disattivare il [chatbot IA](/it/docs/ai/ai-features), **Rigenera token** per l'[API
+REST](/it/docs/api/rest-api), **Disattivare** l'account o **Eliminarlo**. L'eliminazione cancella per sempre l'account
+e tutti i suoi dati.
 
-## Quote di archiviazione per utente
+## Password dimenticate
 
-Gli admin possono impostare **quote di archiviazione** per utente dal pannello di amministrazione, così nessun
-singolo utente può riempire il disco con gli upload.
+- **Un familiare:** l'admin inserisce una nuova password nel campo **Reimposta password** di quell'account in **Impostazioni → Admin** e seleziona **Salva**. Con l'e-mail
+  configurata (almeno `SMTP_HOST` e `SMTP_FROM`, vedi
+  [Variabili d'ambiente](/it/docs/configuration/environment-variables)), la schermata di accesso
+  offre anche un link via e-mail.
+- **L'admin:** cambia `ADMIN_PASSWORD` ed esegui `docker compose up -d`.

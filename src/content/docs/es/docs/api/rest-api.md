@@ -1,47 +1,60 @@
 ---
 title: API REST
-description: La API JSON de solo lectura de OpenFishing con autenticación por token Bearer por usuario y una interfaz Swagger integrada.
+description: "La API JSON de solo lectura de OpenFishing: un token por cuenta, los endpoints y la interfaz Swagger integrada."
 ---
 
-OpenFishing expone una **API JSON de solo lectura** en **`/api/v1/*`**, para que puedas extraer tus datos a
-otras herramientas.
+OpenFishing tiene una **API JSON de solo lectura** para llevar tus señuelos, puntos, capturas y
+aparejos a otras herramientas: una hoja de cálculo, un panel doméstico, un script. A través de
+ella no se puede cambiar nada.
 
-## Autenticación
+## Consigue tu token
 
-- La autenticación es **por usuario** mediante un token Bearer:
+- **Con inicio de sesión:** cada cuenta tiene su propio token. Cópialo en **Ajustes → Mi cuenta →
+  Token API**. **Regenerar token** crea uno nuevo; el anterior deja de funcionar.
+- **Sin inicio de sesión** (una sola colección compartida, ver [Multiusuario y autenticación](/es/docs/multi-user/authentication)):
+  la API también está abierta y no necesita token.
 
-  ```http
-  Authorization: Bearer <apiToken>
-  ```
+Envía el token en la cabecera `Authorization`:
 
-- Cuando la [autenticación](/es/docs/multi-user/authentication) está **deshabilitada** (modo de un solo
-  inquilino abierto), la API también está abierta — no se requiere token.
-- En modo multiusuario, genera y gestiona los tokens de API desde el panel de administración.
+```http
+Authorization: Bearer <tu token>
+```
 
-## Endpoints de recursos
+## Endpoints
 
-Cada recurso admite un endpoint de **lista** y uno **por id**:
+Cada recurso tiene una lista y un elemento individual:
 
-| Recurso | Lista | Por ID |
-|---|---|---|
-| Señuelos | `GET /api/v1/lures` | `GET /api/v1/lures/{id}` |
-| Puntos | `GET /api/v1/spots` | `GET /api/v1/spots/{id}` |
-| Capturas | `GET /api/v1/catches` | `GET /api/v1/catches/{id}` |
-| Cañas | `GET /api/v1/rods` | `GET /api/v1/rods/{id}` |
-| Carretes | `GET /api/v1/reels` | `GET /api/v1/reels/{id}` |
-| Líneas | `GET /api/v1/lines` | `GET /api/v1/lines/{id}` |
-| Equipos | `GET /api/v1/combos` | `GET /api/v1/combos/{id}` |
+- `GET /api/v1/<resource>` los lista.
+- `GET /api/v1/<resource>/{id}` devuelve uno.
 
-La API es **de solo lectura** — no hay endpoints de escritura.
+Los recursos son `lures`, `spots`, `catches`, `rods`, `reels`, `lines` y `combos`. Con inicio de
+sesión, solo obtienes los datos de tu propia cuenta.
 
-## Interfaz Swagger y especificación OpenAPI
+## Pruébala en el navegador
 
-- Explora y prueba la API de forma interactiva con la **interfaz Swagger integrada en `/api-docs`**.
-- La **especificación OpenAPI** en bruto se sirve en **`/api/openapi`**.
+- **`/api-docs`** en tu instancia abre una interfaz Swagger donde puedes probar cada endpoint.
+- **`/api/openapi`** sirve la especificación OpenAPI, para herramientas que generan clientes.
 
 ## Ejemplo
 
 ```bash
 curl -H "Authorization: Bearer $OPENFISHING_TOKEN" \
-  https://fishing.yourdomain.com/api/v1/lures
+  http://192.168.1.50:3000/api/v1/lures
+```
+
+Devuelve JSON. Cada señuelo trae todos sus campos; aquí, abreviado:
+
+```json
+[
+  {
+    "id": "6f1c2b7e-3d4a-4b8e-9f21-0a5c7d9e1b34",
+    "lureNumber": 1,
+    "name": "Perch shad",
+    "brand": "Example",
+    "color": "Perch",
+    "favourite": true,
+    "lost": false,
+    "tags": ["perch", "river"]
+  }
+]
 ```

@@ -1,27 +1,29 @@
 ---
-title: Modo demo
-description: O que o DEMO_MODE faz — uma instância só de leitura com as escritas bloqueadas — e como a demo pública o usa.
+title: "Modo demo"
+description: "O que faz o DEMO_MODE (uma instância só de leitura, sem gravar) e como a demo pública o usa."
 ---
 
-O **modo demo** torna uma instância do OpenFishing **só de leitura**. Define a variável de ambiente
-**`DEMO_MODE`** com qualquer valor para o ativar (consulta
-[Variáveis de ambiente](/pt/docs/configuration/environment-variables)).
+O **modo demo** deixa uma instância do OpenFishing **só de leitura**: pode-se ver tudo, mas não
+mudar nada. A demo pública funciona assim.
+
+## Ativar
+
+```yaml title="docker-compose.yml"
+    environment:
+      - DEMO_MODE=1
+```
+
+**Qualquer valor o ativa, mesmo `false` ou `0`.** Para o desligar, apaga a linha e executa
+`docker compose up -d`. Ver [Variáveis de ambiente](/pt/docs/configuration/environment-variables).
 
 ## O que faz
 
-- **Todas as escritas estão bloqueadas** — os visitantes podem navegar por tudo mas não podem criar, editar ou
-  eliminar.
-- Um **banner** indica que a instância é uma demo, e tentar escrever mostra um **toast** a explicar que as
-  escritas estão desativadas.
-- **A mudança de idioma continua a funcionar**, para que os visitantes possam ver a demo em qualquer um dos
-  [9 idiomas](/pt/docs/features/languages).
+- **Nada pode ser gravado**: os visitantes veem tudo, mas não podem criar, editar nem eliminar.
+- Um **aviso** («Modo demo») indica que é uma demo, e uma tentativa de gravar mostra uma mensagem curta a explicar porque não resultou.
+- **Mudar de idioma continua a funcionar**, por isso a demo pode ser vista nos [9 idiomas](/pt/docs/features/languages).
+- O **chatbot de IA** não responde; mostra «O chatbot de IA está desativado nesta demonstração.»
 
 ## A demo pública
 
-A demo oficial em **[demo.openfishing.org](https://demo.openfishing.org)** corre neste modo. É uma instância
-totalmente preenchida que podes explorar livremente sem afetar quaisquer dados.
-
-```yaml
-environment:
-  - DEMO_MODE=1
-```
+A demo oficial em **[demo.openfishing.org](https://demo.openfishing.org)** corre neste modo. Está
+cheia de dados de exemplo e podes explorá-la à vontade sem mudar nada.

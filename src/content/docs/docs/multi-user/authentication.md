@@ -1,53 +1,58 @@
 ---
 title: Multi-user & authentication
-description: Enable login to host friends and family, with per-user isolation, quotas, an admin panel and SMTP password reset.
+description: Turn on login to host friends and family, add accounts, set storage quotas and handle forgotten passwords.
 ---
 
-By default OpenFishing runs **single-tenant and fully open** — no login. Set the
-**`ADMIN_PASSWORD`** environment variable to turn on **multi-user mode**.
+Out of the box OpenFishing has **one shared collection and no login**: anyone who can open its
+address can use it. That's fine on a home network you trust. To host friends and family, or to
+reach OpenFishing from the internet, turn on login.
 
-## Enabling login
+## Turn on login
 
-Set `ADMIN_PASSWORD` (see [Environment variables](/docs/configuration/environment-variables)):
+The compose file from [Install OpenFishing](/docs/getting-started/installation) already has the
+line, switched off with a `#`:
 
-```yaml
-environment:
-  - ADMIN_PASSWORD=change_me
+```yaml title="docker-compose.yml"
+    environment:
+      # Login: remove #, add a password
+      # - ADMIN_PASSWORD=
 ```
 
-Once set, a login screen appears. Users sign in with their **email/username + password**.
-
-:::note
-`AUTH_PASSWORD` is a **deprecated** fallback name for `ADMIN_PASSWORD`. Use `ADMIN_PASSWORD`.
-:::
+Remove the `# ` in front of `- ADMIN_PASSWORD=`, type your own password right after the `=`, and
+run `docker compose up -d`. A login screen appears: sign in with the username **admin** and
+that password.
 
 ## The admin account
 
-- The **`admin`** account always exists when auth is enabled.
-- Its username is always `admin`; its password is whatever `ADMIN_PASSWORD` is set to.
-- It is **re-synced from the environment variable on every boot**, so changing the variable and
-  restarting updates the password.
+- The username is always `admin`.
+- The password is whatever `ADMIN_PASSWORD` says. OpenFishing reads it every time it starts, so
+  to change it, edit the line and run `docker compose up -d` again.
 
-## The admin panel
+## Add a family member
 
-Admins get a panel at **`/settings/admin`** to manage the instance:
+1. Sign in as `admin` and open **Settings → Admin**.
+2. Under **Create user**, fill in **Email**, **Username** and **Password**.
+3. Leave **Quota (MB)** empty for no upload limit, or enter a number.
+4. Select **Create**.
 
-- **Users** — create, enable/disable and manage accounts.
-- **Storage quotas** — cap how much each user can upload.
-- **Chatbot toggle** — enable/disable [AI features](/docs/ai/ai-features) per user.
-- **API tokens** — manage [REST API](/docs/api/rest-api) Bearer tokens.
+Send them the address, their username and the password. They sign in with their email or
+username and can choose a new password under **Settings → My Account → Change password**.
 
-## Per-user data isolation
+## Who sees what
 
-Each user's lures, spots, catches and tackle are **isolated** — users only see their own data.
+Each account has its own lures, spots, catches and tackle. Nobody sees anyone else's.
 
-## Password reset (SMTP)
+## Manage accounts
 
-If you configure SMTP (at least `SMTP_HOST` and `SMTP_FROM`), users can reset forgotten
-passwords by email. Without SMTP configured, the reset option is hidden. See the
-[SMTP variables](/docs/configuration/environment-variables).
+**Settings → Admin** lists every account. For each one you can edit the username and email, change the
+storage quota and set a new password in the **Reset password** field, then select **Save**. You can also turn
+the [AI chatbot](/docs/ai/ai-features) on or off, **Regenerate token** for the [REST API](/docs/api/rest-api), **Disable** the
+account or **Delete** it. Deleting removes the account and all its data for good.
 
-## Per-user storage quotas
+## Forgotten passwords
 
-Admins can set **storage quotas** per user from the admin panel, so no single user can fill
-the disk with uploads.
+- **A family member:** the admin types a new password into that account's **Reset password** field in **Settings → Admin** and selects **Save**. With email set
+  up (at least `SMTP_HOST` and `SMTP_FROM`, see
+  [Environment variables](/docs/configuration/environment-variables)), the login screen also
+  offers a reset link by email.
+- **The admin:** change `ADMIN_PASSWORD` and run `docker compose up -d`.

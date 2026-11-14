@@ -1,6 +1,6 @@
 // Landing-page translation dictionaries for the 9 languages the app supports.
 // English (`en`) is the source of truth and the default/root locale.
-// Structured lists (features, screenshots, footer columns) are stored as arrays
+// Structured lists (features, footer columns) are stored as arrays
 // and zipped by index with the icons/links kept in their components.
 
 export const languages = {
@@ -25,10 +25,6 @@ export interface FeatureText {
   desc: string;
   badge?: string;
 }
-export interface ShotText {
-  label: string;
-  alt: string;
-}
 export interface FooterCol {
   title: string;
   links: string[];
@@ -41,23 +37,55 @@ export interface Dict {
     titleAccent: string;
     sub: string;
     ctaDemo: string;
-    ctaStart: string;
-    ctaGithub: string;
-    openDemo: string;
-    slideAlts: string[];
+    ctaInstall: string;
+    /** Shown under the demo button wherever it appears. */
+    demoNote: string;
+    /** The three promises, stated once, under the CTAs. */
+    facts: string[];
+    shotAlt: string;
   };
-  features: { heading: string; items: FeatureText[] };
-  demo: { heading: string; text: string; cta: string };
-  qs: { heading: string; text: string; docs: string; copy: string; copied: string; copyAria: string };
-  shots: {
-    items: ShotText[];
-    viewAria: string;
-    demoLabel: string;
-    demoSub: string;
-    openDemoAria: string;
-    close: string;
-    dialogLabel: string;
+  /** `core` = the four compartments; `fishing` / `server` = the grouped extras; `extras` fills `{languages}`. */
+  features: {
+    heading: string;
+    core: FeatureText[];
+    fishingHeading: string;
+    fishing: FeatureText[];
+    serverHeading: string;
+    server: FeatureText[];
+    extras: string;
   };
+  demo: { heading: string; text: string };
+  qs: {
+    heading: string;
+    /** Label above the prerequisites checklist. */
+    needs: string;
+    /** The three prerequisites (machine, Docker, CPU architecture). */
+    reqs: string[];
+    /** Where the data lives, after the checklist. */
+    stays: string;
+    /** Reassurance line just above the installation-guide link. */
+    newToDocker: string;
+    /** `{url}` is replaced by the local address. */
+    afterRun: string;
+    /** Small label above the install heading (the second act). */
+    kicker: string;
+    docs: string;
+    /** Link to the source repository. */
+    source: string;
+    terminal: string;
+    copy: string;
+    copied: string;
+    copyAria: string;
+    copyFailed: string;
+  };
+  github: string;
+  /** Screen-reader hint appended to links that open a new tab. */
+  newTab: string;
+  themeToggle: string;
+  /** Keyboard skip link to the main content. */
+  skip: string;
+  /** Credit shown on screenshots that contain OpenStreetMap tiles. */
+  mapCredit: string;
   footer: { blurb: string; cols: FooterCol[]; rights: string };
   lang: { switch: string };
 }
@@ -72,68 +100,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Your tackle box,',
       titleAccent: 'organized.',
-      sub: 'A self-hosted fishing log for your lures, spots, catches & tackle',
+      sub: 'A fishing log for your lures, spots, catches and tackle that runs on your own server. Your spots stay yours.',
       ctaDemo: 'Try the live demo',
-      ctaStart: 'Get started',
-      ctaGithub: 'View on GitHub',
-      openDemo: 'Open live demo',
-      slideAlts: [
-        'OpenFishing lure library showing a grid of photo cards with tags and catch counts',
-        'A single catch with its map location and Bite Index score',
-        'Interactive map with saved fishing-spot markers',
-        'Statistics dashboard of catch and gear trends',
+      ctaInstall: 'How to install',
+      demoNote: 'No signup · read-only sample data',
+      facts: [
+        'Free & open source',
+        'Runs on your NAS or home server',
+        'No cloud, no account, no telemetry',
       ],
+      shotAlt: 'A catch in OpenFishing: a perch on the measuring mat with its length, the lure that caught it, the Bite Index and the spot on the map',
     },
     features: {
-      heading: 'Everything an angler needs...',
-      items: [
-        { title: 'Lure library', desc: 'Photo cards with tags, favourites, lost-lure tracking, printable QR labels, and fast client-side filtering & search.' },
-        { title: 'Fishing spots', desc: 'Mark your spots on an interactive map with GPS coordinates and photos.' },
-        { title: 'Catch log', desc: 'Species, weight & length, GPS location, catch notes.' },
-        { title: 'Tackle box', desc: 'Rods, reels, lines, and combos — with full line-spool history.' },
-        { title: 'Stats & insights', desc: 'Spot trends across your catches and gear over time.' },
-        { title: 'AI assistant', badge: 'optional', desc: 'A self-hosted chatbot that answers questions about your data, provides fish & lure identification from an image — via a LiteLLM sidecar. Your keys, your infra.' },
-        { title: 'Multi-user mode', badge: 'optional', desc: 'Turn on login to host friends & family: per-user data isolation, storage quotas and admin panel.' },
-        { title: 'Share links', desc: 'Publish a read-only page for any lure, spot, or catch.' },
-        { title: 'REST API', desc: 'A read-only JSON API with Bearer tokens and a built-in Swagger UI.' },
-        { title: 'Backup & restore', desc: 'One-click ZIP export/import — per-user or full-instance.' },
-        { title: '9 languages', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Themes', desc: 'Features several themes including a light/dark mode.' },
+      heading: "What's in the box",
+      core: [
+        { title: 'Lure library', desc: 'Every lure gets a number, a photo and a printable QR label. Mark favourites, log lost lures and see what each one caught.' },
+        { title: 'Fishing spots', desc: 'Pin your spots on a map with GPS and photos. They stay on your server.' },
+        { title: 'Catch log', desc: 'Species, length, weight, place and the lure that did it. Each catch gets a Bite Index: a score from 0 to 10 for how good the weather was for fishing.' },
+        { title: 'Tackle box', desc: 'Rods, reels, lines and combos, with the full history of every line spool.' },
       ],
+      fishingHeading: 'For your fishing',
+      fishing: [
+        { title: 'Stats & insights', desc: 'Personal bests, top lures and trends over time.' },
+        { title: 'AI assistant', badge: 'optional', desc: 'Ask about your log or identify a fish from a photo. Uses your own AI provider; your keys stay on your server.' },
+        { title: 'Share links', desc: 'A read-only page for any lure, spot or catch.' },
+      ],
+      serverHeading: 'For your server',
+      server: [
+        { title: 'Multi-user mode', badge: 'optional', desc: 'Host friends and family, each with a private log.' },
+        { title: 'Backup & restore', desc: 'One-click ZIP export and import.' },
+        { title: 'REST API', desc: 'Read-only JSON API for your own scripts.' },
+      ],
+      extras: 'Available in: {languages}. Dark, light or follows your system.',
     },
-    demo: { heading: 'Take it for a cast.', text: 'Explore a fully populated OpenFishing instance', cta: 'Open the live demo' },
+    demo: { heading: 'Take it for a cast.', text: "Open a lure, follow it to the fish it caught and the spot where it bit. It's all sample data, so click anything." },
     qs: {
       heading: 'Up and running in one command.',
-      text: "OpenFishing ships as a single container. Point two volumes at persistent storage for the SQLite database and your uploads, and you're fishing.",
-      docs: 'Full docs',
+      kicker: 'Ready to host it?',
+      needs: 'You need:',
+      reqs: [
+        'A computer that stays on, such as a NAS, a mini PC or a home server',
+        'Docker installed on it',
+        'A 64-bit Intel or AMD processor (amd64)',
+      ],
+      stays: 'Everything you log stays on that machine: one SQLite database and your photos, in the two volumes the command creates. Back those up and you have it all.',
+      newToDocker: 'New to Docker? The installation guide walks you through it.',
+      afterRun: 'Then open {url} in your browser.',
+      docs: 'Installation guide with docker-compose',
+      source: 'Source code on GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Copy',
       copied: 'Copied!',
       copyAria: 'Copy command',
-    },
-    shots: {
-      items: [
-        { label: 'Lure library', alt: 'Grid of lure photo cards with tags, species and catch counts' },
-        { label: 'Catch detail', alt: 'A single catch with its map location and Bite Index score' },
-        { label: 'Spot map', alt: 'Interactive map with saved fishing-spot markers' },
-        { label: 'Stats', alt: 'Statistics dashboard of catch and gear trends' },
-        { label: 'AI assistant', alt: 'The optional AI chatbot answering a question about the data' },
-      ],
-      viewAria: 'View {label} screenshot',
-      demoLabel: 'Try the live demo',
-      demoSub: 'No signup required',
-      openDemoAria: 'Open live demo',
-      close: 'Close',
-      dialogLabel: 'Screenshot',
+      copyFailed: "Couldn't copy. The command is selected, so copy it by hand.",
     },
     footer: {
-      blurb: 'A self-hosted fishing log for anglers. Organize lures, mark spots, log catches, track tackle.',
+      blurb: 'A fishing log that lives on your own server. Free and open source.',
       cols: [
         { title: 'Product', links: ['Features', 'Live demo', 'Documentation'] },
-        { title: 'Docs', links: ['Quick start', 'Installation', 'Environment variables', 'REST API'] },
+        { title: 'Docs', links: ['Installation', 'Environment variables', 'REST API', 'FAQ & troubleshooting'] },
         { title: 'Project', links: ['GitHub', 'Issues', 'License (AGPL)'] },
       ],
       rights: 'Released under the AGPL-3.0 license.',
     },
+    github: 'View on GitHub',
+    newTab: '(opens in a new tab)',
+    themeToggle: 'Switch light/dark theme',
+    skip: 'Skip to content',
+    mapCredit: 'Map © OpenStreetMap contributors',
     lang: { switch: 'Change language' },
   },
 
@@ -146,68 +180,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Deine Angelbox,',
       titleAccent: 'organisiert.',
-      sub: 'Ein selbst gehostetes Angeltagebuch für deine Köder, Angelstellen, Fänge & Ausrüstung',
+      sub: 'Ein Angeltagebuch für deine Köder, Angelstellen, Fänge und Ausrüstung, das auf deinem eigenen Server läuft. Deine Stellen bleiben deine.',
       ctaDemo: 'Live-Demo ausprobieren',
-      ctaStart: 'Loslegen',
-      ctaGithub: 'Auf GitHub ansehen',
-      openDemo: 'Live-Demo öffnen',
-      slideAlts: [
-        'OpenFishing-Köderbibliothek mit einem Raster aus Fotokarten mit Tags und Fangzahlen',
-        'Ein einzelner Fang mit Kartenstandort und Bissindex-Wert',
-        'Interaktive Karte mit gespeicherten Angelstellen-Markierungen',
-        'Statistik-Dashboard mit Fang- und Ausrüstungstrends',
+      ctaInstall: 'Zur Installation',
+      demoNote: 'Ohne Anmeldung · nur lesbare Beispieldaten',
+      facts: [
+        'Kostenlos & Open Source',
+        'Läuft auf deinem NAS oder Homeserver',
+        'Keine Cloud, kein Konto, keine Telemetrie',
       ],
+      shotAlt: 'Ein Fang in OpenFishing: ein Barsch auf der Messmatte mit Länge, dem fängigen Köder, dem Beissindex und der Stelle auf der Karte',
     },
     features: {
-      heading: 'Alles, was ein Angler braucht ...',
-      items: [
-        { title: 'Köderbibliothek', desc: 'Fotokarten mit Tags, Favoriten, Verlust-Tracking, druckbaren QR-Etiketten und schneller clientseitiger Filterung & Suche.' },
-        { title: 'Angelstellen', desc: 'Markiere deine Stellen auf einer interaktiven Karte mit GPS-Koordinaten und Fotos.' },
-        { title: 'Fangbuch', desc: 'Art, Gewicht & Länge, GPS-Standort, Fangnotizen.' },
-        { title: 'Ausrüstung', desc: 'Ruten, Rollen, Schnüre und Combos — mit vollständiger Spulen-Historie.' },
-        { title: 'Statistiken & Einblicke', desc: 'Erkenne Trends bei deinen Fängen und deiner Ausrüstung über die Zeit.' },
-        { title: 'KI-Assistent', badge: 'optional', desc: 'Ein selbst gehosteter Chatbot, der Fragen zu deinen Daten beantwortet und Fische & Köder aus einem Bild erkennt — über einen LiteLLM-Sidecar. Deine Schlüssel, deine Infrastruktur.' },
-        { title: 'Mehrbenutzer-Modus', badge: 'optional', desc: 'Aktiviere den Login, um Freunde & Familie zu hosten: benutzerbezogene Datentrennung, Speicherkontingente und Admin-Panel.' },
-        { title: 'Freigabelinks', desc: 'Veröffentliche eine schreibgeschützte Seite für jeden Köder, jede Stelle oder jeden Fang.' },
-        { title: 'REST-API', desc: 'Eine schreibgeschützte JSON-API mit Bearer-Tokens und integrierter Swagger-UI.' },
-        { title: 'Sicherung & Wiederherstellung', desc: 'Ein-Klick-ZIP-Export/-Import — pro Benutzer oder für die gesamte Instanz.' },
-        { title: '9 Sprachen', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Themes', desc: 'Bietet mehrere Themes inklusive Hell-/Dunkelmodus.' },
+      heading: 'Was in der Box steckt',
+      core: [
+        { title: 'Köderbibliothek', desc: 'Jeder Köder bekommt eine Nummer, ein Foto und ein druckbares QR-Etikett. Markiere Favoriten, erfasse verlorene Köder und sieh, was jeder gefangen hat.' },
+        { title: 'Angelstellen', desc: 'Markiere deine Stellen mit GPS und Fotos auf einer Karte. Sie bleiben auf deinem Server.' },
+        { title: 'Fangbuch', desc: 'Art, Länge, Gewicht, Ort und der fängige Köder. Jeder Fang bekommt einen Beissindex: eine Wertung von 0 bis 10, wie gut das Wetter zum Angeln war.' },
+        { title: 'Ausrüstung', desc: 'Ruten, Rollen, Schnüre und Combos, mit der kompletten Historie jeder Schnurspule.' },
       ],
+      fishingHeading: 'Fürs Angeln',
+      fishing: [
+        { title: 'Statistiken & Einblicke', desc: 'Persönliche Bestleistungen, Top-Köder und Trends über die Zeit.' },
+        { title: 'KI-Assistent', badge: 'optional', desc: 'Frag dein Tagebuch oder bestimme einen Fisch per Foto. Nutzt deinen eigenen KI-Anbieter; deine Schlüssel bleiben auf deinem Server.' },
+        { title: 'Freigabelinks', desc: 'Eine schreibgeschützte Seite für jeden Köder, jede Stelle, jeden Fang.' },
+      ],
+      serverHeading: 'Für deinen Server',
+      server: [
+        { title: 'Mehrbenutzer-Modus', badge: 'optional', desc: 'Hoste Freunde und Familie, jeder mit eigenem privatem Tagebuch.' },
+        { title: 'Sicherung & Wiederherstellung', desc: 'ZIP-Export und -Import mit einem Klick.' },
+        { title: 'REST-API', desc: 'Schreibgeschützte JSON-API für deine eigenen Skripte.' },
+      ],
+      extras: 'Verfügbar in: {languages}. Dunkel, hell oder wie dein System.',
     },
-    demo: { heading: 'Wirf die Angel aus.', text: 'Erkunde eine vollständig befüllte OpenFishing-Instanz', cta: 'Live-Demo öffnen' },
+    demo: { heading: 'Wirf die Angel aus.', text: 'Öffne einen Köder, folge ihm zum gefangenen Fisch und zur Stelle, an der er gebissen hat. Alles Beispieldaten, also klick dich ruhig durch.' },
     qs: {
       heading: 'In einem einzigen Befehl einsatzbereit.',
-      text: 'OpenFishing wird als einzelner Container ausgeliefert. Richte zwei Volumes auf persistenten Speicher für die SQLite-Datenbank und deine Uploads ein — und schon kann es losgehen.',
-      docs: 'Vollständige Doku',
+      kicker: 'Bereit, es selbst zu hosten?',
+      needs: 'Du brauchst:',
+      reqs: [
+        'Einen Rechner, der dauerhaft läuft, etwa ein NAS, einen Mini-PC oder einen Homeserver',
+        'Docker darauf installiert',
+        'Einen 64-Bit-Prozessor von Intel oder AMD (amd64)',
+      ],
+      stays: 'Alles, was du einträgst, bleibt auf diesem Rechner: eine SQLite-Datenbank und deine Fotos, in den zwei Volumes, die der Befehl anlegt. Sicherst du die, hast du alles.',
+      newToDocker: 'Neu bei Docker? Die Installationsanleitung führt dich Schritt für Schritt.',
+      afterRun: 'Dann öffne {url} im Browser.',
+      docs: 'Installationsanleitung mit docker-compose',
+      source: 'Quellcode auf GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Kopieren',
       copied: 'Kopiert!',
       copyAria: 'Befehl kopieren',
-    },
-    shots: {
-      items: [
-        { label: 'Köderbibliothek', alt: 'Raster aus Köder-Fotokarten mit Tags, Arten und Fangzahlen' },
-        { label: 'Fang-Detail', alt: 'Ein einzelner Fang mit Kartenstandort und Bissindex-Wert' },
-        { label: 'Stellenkarte', alt: 'Interaktive Karte mit gespeicherten Angelstellen-Markierungen' },
-        { label: 'Statistiken', alt: 'Statistik-Dashboard mit Fang- und Ausrüstungstrends' },
-        { label: 'KI-Assistent', alt: 'Der optionale KI-Chatbot beantwortet eine Frage zu den Daten' },
-      ],
-      viewAria: 'Screenshot {label} ansehen',
-      demoLabel: 'Live-Demo ausprobieren',
-      demoSub: 'Keine Anmeldung erforderlich',
-      openDemoAria: 'Live-Demo öffnen',
-      close: 'Schließen',
-      dialogLabel: 'Screenshot',
+      copyFailed: 'Kopieren fehlgeschlagen. Der Befehl ist markiert, kopiere ihn von Hand.',
     },
     footer: {
-      blurb: 'Ein selbst gehostetes Angeltagebuch für Angler. Köder verwalten, Stellen markieren, Fänge protokollieren, Ausrüstung im Blick behalten.',
+      blurb: 'Ein Angeltagebuch, das auf deinem eigenen Server lebt. Kostenlos und Open Source.',
       cols: [
         { title: 'Produkt', links: ['Funktionen', 'Live-Demo', 'Dokumentation'] },
-        { title: 'Doku', links: ['Schnellstart', 'Installation', 'Umgebungsvariablen', 'REST-API'] },
+        { title: 'Doku', links: ['Installation', 'Umgebungsvariablen', 'REST-API', 'FAQ & Fehlerbehebung'] },
         { title: 'Projekt', links: ['GitHub', 'Issues', 'Lizenz (AGPL)'] },
       ],
       rights: 'Veröffentlicht unter der AGPL-3.0-Lizenz.',
     },
+    github: 'Auf GitHub ansehen',
+    newTab: '(öffnet in neuem Tab)',
+    themeToggle: 'Hell/Dunkel umschalten',
+    skip: 'Zum Inhalt springen',
+    mapCredit: 'Karte © OpenStreetMap-Mitwirkende',
     lang: { switch: 'Sprache ändern' },
   },
 
@@ -220,68 +260,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Votre boîte à pêche,',
       titleAccent: 'organisée.',
-      sub: 'Un carnet de pêche auto-hébergé pour vos leurres, spots, prises et matériel',
+      sub: 'Un carnet de pêche pour vos leurres, spots, prises et matériel, hébergé sur votre propre serveur. Vos spots restent les vôtres.',
       ctaDemo: 'Essayer la démo en ligne',
-      ctaStart: 'Commencer',
-      ctaGithub: 'Voir sur GitHub',
-      openDemo: 'Ouvrir la démo en ligne',
-      slideAlts: [
-        'Bibliothèque de leurres OpenFishing affichant une grille de fiches photo avec tags et nombre de prises',
-        "Une prise unique avec son emplacement sur la carte et son score d'indice de touche",
-        'Carte interactive avec des marqueurs de spots de pêche enregistrés',
-        'Tableau de bord statistique des tendances de prises et de matériel',
+      ctaInstall: 'Comment installer',
+      demoNote: "Sans inscription · données d'exemple en lecture seule",
+      facts: [
+        'Gratuit et open source',
+        'Tourne sur votre NAS ou serveur domestique',
+        'Pas de cloud, pas de compte, pas de télémétrie',
       ],
+      shotAlt: "Une prise dans OpenFishing : une perche sur le tapis de mesure avec sa taille, le leurre qui l'a prise, l'indice de morsure et le coin sur la carte",
     },
     features: {
-      heading: "Tout ce dont un pêcheur a besoin...",
-      items: [
-        { title: 'Bibliothèque de leurres', desc: 'Fiches photo avec tags, favoris, suivi des leurres perdus, étiquettes QR imprimables et filtrage & recherche rapides côté client.' },
-        { title: 'Spots de pêche', desc: 'Marquez vos spots sur une carte interactive avec coordonnées GPS et photos.' },
-        { title: 'Carnet de prises', desc: 'Espèce, poids et longueur, position GPS, notes de prise.' },
-        { title: 'Matériel', desc: "Cannes, moulinets, lignes et ensembles — avec l'historique complet des bobines." },
-        { title: 'Statistiques et analyses', desc: 'Repérez les tendances de vos prises et de votre matériel au fil du temps.' },
-        { title: 'Assistant IA', badge: 'optionnel', desc: "Un chatbot auto-hébergé qui répond aux questions sur vos données et identifie poissons & leurres à partir d'une image — via un sidecar LiteLLM. Vos clés, votre infrastructure." },
-        { title: 'Mode multi-utilisateur', badge: 'optionnel', desc: "Activez la connexion pour héberger amis & famille : isolation des données par utilisateur, quotas de stockage et panneau d'administration." },
-        { title: 'Liens de partage', desc: "Publiez une page en lecture seule pour n'importe quel leurre, spot ou prise." },
-        { title: 'API REST', desc: 'Une API JSON en lecture seule avec jetons Bearer et une interface Swagger intégrée.' },
-        { title: 'Sauvegarde et restauration', desc: "Export/import ZIP en un clic — par utilisateur ou pour toute l'instance." },
-        { title: '9 langues', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Thèmes', desc: 'Propose plusieurs thèmes, dont un mode clair/sombre.' },
+      heading: "Ce qu'il y a dans la boîte",
+      core: [
+        { title: 'Bibliothèque de leurres', desc: 'Chaque leurre reçoit un numéro, une photo et une étiquette QR imprimable. Marquez vos favoris, notez les leurres perdus et voyez ce que chacun a pris.' },
+        { title: 'Spots de pêche', desc: 'Placez vos spots sur une carte avec GPS et photos. Ils restent sur votre serveur.' },
+        { title: 'Carnet de prises', desc: 'Espèce, taille, poids, lieu et leurre utilisé. Chaque prise reçoit un indice de morsure : une note de 0 à 10 qui dit si la météo était favorable à la pêche.' },
+        { title: 'Matériel', desc: "Cannes, moulinets, lignes et ensembles, avec l'historique complet de chaque bobine." },
       ],
+      fishingHeading: 'Pour votre pêche',
+      fishing: [
+        { title: 'Statistiques et analyses', desc: 'Records personnels, meilleurs leurres et tendances dans le temps.' },
+        { title: 'Assistant IA', badge: 'optionnel', desc: "Interrogez votre carnet ou identifiez un poisson sur photo. Utilise votre propre fournisseur d'IA ; vos clés restent sur votre serveur." },
+        { title: 'Liens de partage', desc: "Une page en lecture seule pour n'importe quel leurre, spot ou prise." },
+      ],
+      serverHeading: 'Pour votre serveur',
+      server: [
+        { title: 'Mode multi-utilisateur', badge: 'optionnel', desc: 'Hébergez amis et famille, chacun avec son carnet privé.' },
+        { title: 'Sauvegarde et restauration', desc: 'Export et import ZIP en un clic.' },
+        { title: 'API REST', desc: 'API JSON en lecture seule pour vos propres scripts.' },
+      ],
+      extras: 'Disponible en : {languages}. Sombre, clair ou selon votre système.',
     },
-    demo: { heading: 'Lancez votre ligne.', text: 'Explorez une instance OpenFishing entièrement remplie', cta: 'Ouvrir la démo en ligne' },
+    demo: { heading: 'Lancez votre ligne.', text: "Ouvrez un leurre, suivez-le jusqu'au poisson qu'il a pris et au spot où il a mordu. Ce sont des données d'exemple : cliquez partout." },
     qs: {
       heading: 'Opérationnel en une seule commande.',
-      text: "OpenFishing est livré sous forme d'un conteneur unique. Pointez deux volumes vers un stockage persistant pour la base de données SQLite et vos fichiers, et vous voilà prêt à pêcher.",
-      docs: 'Documentation complète',
+      kicker: "Prêt à l'héberger ?",
+      needs: 'Il vous faut :',
+      reqs: [
+        'Un ordinateur allumé en permanence, comme un NAS, un mini-PC ou un serveur domestique',
+        'Docker installé dessus',
+        'Un processeur 64 bits Intel ou AMD (amd64)',
+      ],
+      stays: 'Tout ce que vous enregistrez reste sur cette machine : une base SQLite et vos photos, dans les deux volumes créés par la commande. Sauvegardez-les et vous avez tout.',
+      newToDocker: "Débutant avec Docker ? Le guide d'installation vous accompagne pas à pas.",
+      afterRun: 'Ouvrez ensuite {url} dans votre navigateur.',
+      docs: "Guide d'installation avec docker-compose",
+      source: 'Code source sur GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Copier',
       copied: 'Copié !',
       copyAria: 'Copier la commande',
-    },
-    shots: {
-      items: [
-        { label: 'Bibliothèque de leurres', alt: 'Grille de fiches photo de leurres avec tags, espèces et nombre de prises' },
-        { label: 'Détail de prise', alt: "Une prise unique avec son emplacement sur la carte et son score d'indice de touche" },
-        { label: 'Carte des spots', alt: 'Carte interactive avec des marqueurs de spots de pêche enregistrés' },
-        { label: 'Statistiques', alt: 'Tableau de bord statistique des tendances de prises et de matériel' },
-        { label: 'Assistant IA', alt: "Le chatbot IA optionnel répondant à une question sur les données" },
-      ],
-      viewAria: "Voir la capture d'écran {label}",
-      demoLabel: 'Essayer la démo en ligne',
-      demoSub: 'Aucune inscription requise',
-      openDemoAria: 'Ouvrir la démo en ligne',
-      close: 'Fermer',
-      dialogLabel: "Capture d'écran",
+      copyFailed: 'Échec de la copie. La commande est sélectionnée, copiez-la manuellement.',
     },
     footer: {
-      blurb: 'Un carnet de pêche auto-hébergé pour les pêcheurs. Organisez vos leurres, marquez vos spots, enregistrez vos prises, suivez votre matériel.',
+      blurb: 'Un carnet de pêche qui vit sur votre propre serveur. Gratuit et open source.',
       cols: [
         { title: 'Produit', links: ['Fonctionnalités', 'Démo en ligne', 'Documentation'] },
-        { title: 'Documentation', links: ['Démarrage rapide', 'Installation', "Variables d'environnement", 'API REST'] },
+        { title: 'Documentation', links: ['Installation', "Variables d'environnement", 'API REST', 'FAQ & dépannage'] },
         { title: 'Projet', links: ['GitHub', 'Tickets', 'Licence (AGPL)'] },
       ],
       rights: 'Distribué sous licence AGPL-3.0.',
     },
+    github: 'Voir sur GitHub',
+    newTab: "(s'ouvre dans un nouvel onglet)",
+    themeToggle: 'Basculer le thème clair/sombre',
+    skip: 'Aller au contenu',
+    mapCredit: 'Carte © contributeurs d’OpenStreetMap',
     lang: { switch: 'Changer de langue' },
   },
 
@@ -294,68 +340,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Tu caja de pesca,',
       titleAccent: 'organizada.',
-      sub: 'Un diario de pesca autoalojado para tus señuelos, puntos, capturas y aparejos',
+      sub: 'Un diario de pesca para tus señuelos, puntos, capturas y aparejos que funciona en tu propio servidor. Tus puntos siguen siendo tuyos.',
       ctaDemo: 'Probar la demo en vivo',
-      ctaStart: 'Empezar',
-      ctaGithub: 'Ver en GitHub',
-      openDemo: 'Abrir la demo en vivo',
-      slideAlts: [
-        'Biblioteca de señuelos de OpenFishing con una cuadrícula de tarjetas con fotos, etiquetas y recuentos de capturas',
-        'Una captura individual con su ubicación en el mapa y su puntuación del Índice de picada',
-        'Mapa interactivo con marcadores de puntos de pesca guardados',
-        'Panel de estadísticas con tendencias de capturas y equipo',
+      ctaInstall: 'Cómo instalarlo',
+      demoNote: 'Sin registro · datos de ejemplo de solo lectura',
+      facts: [
+        'Gratis y de código abierto',
+        'Funciona en tu NAS o servidor doméstico',
+        'Sin nube, sin cuenta, sin telemetría',
       ],
+      shotAlt: 'Una captura en OpenFishing: una perca sobre la regla de medir con su longitud, el señuelo que la pescó, el Índice de picada y el lugar en el mapa',
     },
     features: {
-      heading: 'Todo lo que un pescador necesita...',
-      items: [
-        { title: 'Biblioteca de señuelos', desc: 'Tarjetas con fotos, etiquetas, favoritos, seguimiento de señuelos perdidos, etiquetas QR imprimibles y filtrado y búsqueda rápidos en el cliente.' },
-        { title: 'Puntos de pesca', desc: 'Marca tus puntos en un mapa interactivo con coordenadas GPS y fotos.' },
-        { title: 'Registro de capturas', desc: 'Especie, peso y longitud, ubicación GPS, notas de la captura.' },
-        { title: 'Aparejos', desc: 'Cañas, carretes, líneas y equipos — con historial completo de bobinas.' },
-        { title: 'Estadísticas e información', desc: 'Detecta tendencias en tus capturas y tu equipo a lo largo del tiempo.' },
-        { title: 'Asistente de IA', badge: 'opcional', desc: 'Un chatbot autoalojado que responde preguntas sobre tus datos e identifica peces y señuelos a partir de una imagen — mediante un sidecar de LiteLLM. Tus claves, tu infraestructura.' },
-        { title: 'Modo multiusuario', badge: 'opcional', desc: 'Activa el inicio de sesión para alojar a amigos y familia: aislamiento de datos por usuario, cuotas de almacenamiento y panel de administración.' },
-        { title: 'Enlaces para compartir', desc: 'Publica una página de solo lectura para cualquier señuelo, punto o captura.' },
-        { title: 'API REST', desc: 'Una API JSON de solo lectura con tokens Bearer y una interfaz Swagger integrada.' },
-        { title: 'Copia de seguridad y restauración', desc: 'Exportación/importación ZIP con un clic — por usuario o de toda la instancia.' },
-        { title: '9 idiomas', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Temas', desc: 'Ofrece varios temas, incluido un modo claro/oscuro.' },
+      heading: 'Qué hay en la caja',
+      core: [
+        { title: 'Biblioteca de señuelos', desc: 'Cada señuelo recibe un número, una foto y una etiqueta QR imprimible. Marca favoritos, registra los perdidos y mira qué ha pescado cada uno.' },
+        { title: 'Puntos de pesca', desc: 'Marca tus puntos en un mapa con GPS y fotos. Se quedan en tu servidor.' },
+        { title: 'Registro de capturas', desc: 'Especie, longitud, peso, lugar y señuelo usado. Cada captura recibe un Índice de picada: una nota de 0 a 10 según lo favorable que era el tiempo para pescar.' },
+        { title: 'Aparejos', desc: 'Cañas, carretes, líneas y equipos, con el historial completo de cada bobina.' },
       ],
+      fishingHeading: 'Para tu pesca',
+      fishing: [
+        { title: 'Estadísticas e información', desc: 'Récords personales, mejores señuelos y tendencias a lo largo del tiempo.' },
+        { title: 'Asistente de IA', badge: 'opcional', desc: 'Pregunta por tu diario o identifica un pez con una foto. Usa tu propio proveedor de IA; tus claves se quedan en tu servidor.' },
+        { title: 'Enlaces para compartir', desc: 'Una página de solo lectura para cualquier señuelo, punto o captura.' },
+      ],
+      serverHeading: 'Para tu servidor',
+      server: [
+        { title: 'Modo multiusuario', badge: 'opcional', desc: 'Aloja a amigos y familia, cada uno con su diario privado.' },
+        { title: 'Copia de seguridad y restauración', desc: 'Exportación e importación ZIP con un clic.' },
+        { title: 'API REST', desc: 'API JSON de solo lectura para tus propios scripts.' },
+      ],
+      extras: 'Disponible en: {languages}. Oscuro, claro o según tu sistema.',
     },
-    demo: { heading: 'Lánzate a probarlo.', text: 'Explora una instancia de OpenFishing totalmente poblada', cta: 'Abrir la demo en vivo' },
+    demo: { heading: 'Lánzate a probarlo.', text: 'Abre un señuelo, síguelo hasta el pez que pescó y el punto donde picó. Son datos de ejemplo, así que pulsa lo que quieras.' },
     qs: {
       heading: 'En marcha con un solo comando.',
-      text: 'OpenFishing se distribuye como un único contenedor. Apunta dos volúmenes a almacenamiento persistente para la base de datos SQLite y tus archivos, y listo para pescar.',
-      docs: 'Documentación completa',
+      kicker: '¿Listo para alojarlo?',
+      needs: 'Necesitas:',
+      reqs: [
+        'Un equipo que esté siempre encendido, como un NAS, un mini PC o un servidor doméstico',
+        'Docker instalado en él',
+        'Un procesador de 64 bits Intel o AMD (amd64)',
+      ],
+      stays: 'Todo lo que registres se queda en ese equipo: una base de datos SQLite y tus fotos, en los dos volúmenes que crea el comando. Haz copia de ellos y lo tienes todo.',
+      newToDocker: '¿Nuevo en Docker? La guía de instalación te acompaña paso a paso.',
+      afterRun: 'Después abre {url} en tu navegador.',
+      docs: 'Guía de instalación con docker-compose',
+      source: 'Código fuente en GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Copiar',
       copied: '¡Copiado!',
       copyAria: 'Copiar comando',
-    },
-    shots: {
-      items: [
-        { label: 'Biblioteca de señuelos', alt: 'Cuadrícula de tarjetas con fotos de señuelos con etiquetas, especies y recuentos de capturas' },
-        { label: 'Detalle de captura', alt: 'Una captura individual con su ubicación en el mapa y su puntuación del Índice de picada' },
-        { label: 'Mapa de puntos', alt: 'Mapa interactivo con marcadores de puntos de pesca guardados' },
-        { label: 'Estadísticas', alt: 'Panel de estadísticas con tendencias de capturas y equipo' },
-        { label: 'Asistente de IA', alt: 'El chatbot de IA opcional respondiendo una pregunta sobre los datos' },
-      ],
-      viewAria: 'Ver la captura de pantalla {label}',
-      demoLabel: 'Probar la demo en vivo',
-      demoSub: 'Sin registro',
-      openDemoAria: 'Abrir la demo en vivo',
-      close: 'Cerrar',
-      dialogLabel: 'Captura de pantalla',
+      copyFailed: 'No se pudo copiar. El comando está seleccionado; cópialo a mano.',
     },
     footer: {
-      blurb: 'Un diario de pesca autoalojado para pescadores. Organiza señuelos, marca puntos, registra capturas, controla tus aparejos.',
+      blurb: 'Un diario de pesca que vive en tu propio servidor. Gratis y de código abierto.',
       cols: [
         { title: 'Producto', links: ['Funciones', 'Demo en vivo', 'Documentación'] },
-        { title: 'Documentación', links: ['Inicio rápido', 'Instalación', 'Variables de entorno', 'API REST'] },
+        { title: 'Documentación', links: ['Instalación', 'Variables de entorno', 'API REST', 'FAQ y solución de problemas'] },
         { title: 'Proyecto', links: ['GitHub', 'Incidencias', 'Licencia (AGPL)'] },
       ],
       rights: 'Publicado bajo la licencia AGPL-3.0.',
     },
+    github: 'Ver en GitHub',
+    newTab: '(se abre en una pestaña nueva)',
+    themeToggle: 'Cambiar tema claro/oscuro',
+    skip: 'Saltar al contenido',
+    mapCredit: 'Mapa © colaboradores de OpenStreetMap',
     lang: { switch: 'Cambiar idioma' },
   },
 
@@ -368,68 +420,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'La tua cassetta da pesca,',
       titleAccent: 'organizzata.',
-      sub: 'Un diario di pesca self-hosted per le tue esche, spot, catture e attrezzatura',
+      sub: 'Un diario di pesca per le tue esche, spot, catture e attrezzatura che gira sul tuo server. I tuoi spot restano tuoi.',
       ctaDemo: 'Prova la demo dal vivo',
-      ctaStart: 'Inizia',
-      ctaGithub: 'Vedi su GitHub',
-      openDemo: 'Apri la demo dal vivo',
-      slideAlts: [
-        'Libreria di esche di OpenFishing con una griglia di schede fotografiche con tag e conteggi delle catture',
-        "Una singola cattura con la sua posizione sulla mappa e il punteggio dell'Indice di abboccata",
-        'Mappa interattiva con segnaposti degli spot di pesca salvati',
-        'Dashboard statistica delle tendenze di catture e attrezzatura',
+      ctaInstall: 'Come installarlo',
+      demoNote: 'Senza registrazione · dati di esempio in sola lettura',
+      facts: [
+        'Gratuito e open source',
+        'Gira sul tuo NAS o server di casa',
+        'Niente cloud, niente account, niente telemetria',
       ],
+      shotAlt: "Una cattura in OpenFishing: un persico sul tappetino di misura con la lunghezza, l'esca che l'ha preso, l'Indice di abboccata e il posto sulla mappa",
     },
     features: {
-      heading: 'Tutto ciò che serve a un pescatore...',
-      items: [
-        { title: 'Libreria di esche', desc: 'Schede fotografiche con tag, preferiti, tracciamento delle esche perse, etichette QR stampabili e filtri e ricerca rapidi lato client.' },
-        { title: 'Spot di pesca', desc: 'Segna i tuoi spot su una mappa interattiva con coordinate GPS e foto.' },
-        { title: 'Registro catture', desc: 'Specie, peso e lunghezza, posizione GPS, note sulla cattura.' },
-        { title: 'Attrezzatura', desc: 'Canne, mulinelli, fili e combo — con lo storico completo delle bobine.' },
-        { title: 'Statistiche e approfondimenti', desc: 'Individua le tendenze delle tue catture e della tua attrezzatura nel tempo.' },
-        { title: 'Assistente IA', badge: 'opzionale', desc: "Un chatbot self-hosted che risponde a domande sui tuoi dati e identifica pesci ed esche da un'immagine — tramite un sidecar LiteLLM. Le tue chiavi, la tua infrastruttura." },
-        { title: 'Modalità multiutente', badge: 'opzionale', desc: 'Attiva il login per ospitare amici e famiglia: isolamento dei dati per utente, quote di archiviazione e pannello di amministrazione.' },
-        { title: 'Link di condivisione', desc: 'Pubblica una pagina di sola lettura per qualsiasi esca, spot o cattura.' },
-        { title: 'API REST', desc: "Un'API JSON di sola lettura con token Bearer e un'interfaccia Swagger integrata." },
-        { title: 'Backup e ripristino', desc: "Esportazione/importazione ZIP con un clic — per utente o per l'intera istanza." },
-        { title: '9 lingue', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Temi', desc: 'Offre diversi temi, inclusa una modalità chiara/scura.' },
+      heading: "Cosa c'è nella cassetta",
+      core: [
+        { title: 'Libreria di esche', desc: "Ogni esca ha un numero, una foto e un'etichetta QR stampabile. Segna le preferite, registra quelle perse e guarda cosa ha catturato ognuna." },
+        { title: 'Spot di pesca', desc: 'Segna i tuoi spot su una mappa con GPS e foto. Restano sul tuo server.' },
+        { title: 'Registro catture', desc: 'Specie, lunghezza, peso, luogo ed esca usata. Ogni cattura riceve un Indice di abboccata: un punteggio da 0 a 10 su quanto il meteo era favorevole alla pesca.' },
+        { title: 'Attrezzatura', desc: 'Canne, mulinelli, fili e combo, con lo storico completo di ogni bobina.' },
       ],
+      fishingHeading: 'Per la tua pesca',
+      fishing: [
+        { title: 'Statistiche e approfondimenti', desc: 'Record personali, esche migliori e tendenze nel tempo.' },
+        { title: 'Assistente IA', badge: 'opzionale', desc: 'Fai domande sul tuo diario o identifica un pesce da una foto. Usa il tuo fornitore di IA; le chiavi restano sul tuo server.' },
+        { title: 'Link di condivisione', desc: 'Una pagina in sola lettura per qualsiasi esca, spot o cattura.' },
+      ],
+      serverHeading: 'Per il tuo server',
+      server: [
+        { title: 'Modalità multiutente', badge: 'opzionale', desc: 'Ospita amici e famiglia, ognuno con il proprio diario privato.' },
+        { title: 'Backup e ripristino', desc: 'Esportazione e importazione ZIP con un clic.' },
+        { title: 'API REST', desc: 'API JSON in sola lettura per i tuoi script.' },
+      ],
+      extras: 'Disponibile in: {languages}. Scuro, chiaro o come il tuo sistema.',
     },
-    demo: { heading: 'Provalo subito.', text: "Esplora un'istanza di OpenFishing completamente popolata", cta: 'Apri la demo dal vivo' },
+    demo: { heading: 'Provalo subito.', text: "Apri un'esca, seguila fino al pesce che ha catturato e allo spot dove ha abboccato. Sono dati di esempio: clicca dove vuoi." },
     qs: {
       heading: 'Operativo con un solo comando.',
-      text: 'OpenFishing viene distribuito come un unico container. Punta due volumi verso uno storage persistente per il database SQLite e i tuoi upload, e sei pronto a pescare.',
-      docs: 'Documentazione completa',
+      kicker: 'Pronto a ospitarlo?',
+      needs: 'Ti serve:',
+      reqs: [
+        'Un computer sempre acceso, come un NAS, un mini PC o un server di casa',
+        'Docker installato',
+        'Un processore a 64 bit Intel o AMD (amd64)',
+      ],
+      stays: 'Tutto ciò che registri resta su quel computer: un database SQLite e le tue foto, nei due volumi creati dal comando. Fai il backup di quelli e hai tutto.',
+      newToDocker: "Nuovo a Docker? La guida all'installazione ti accompagna passo passo.",
+      afterRun: 'Poi apri {url} nel browser.',
+      docs: "Guida all'installazione con docker-compose",
+      source: 'Codice sorgente su GitHub (AGPL-3.0)',
+      terminal: 'Terminale',
       copy: 'Copia',
       copied: 'Copiato!',
       copyAria: 'Copia comando',
-    },
-    shots: {
-      items: [
-        { label: 'Libreria di esche', alt: 'Griglia di schede fotografiche di esche con tag, specie e conteggi delle catture' },
-        { label: 'Dettaglio cattura', alt: "Una singola cattura con la sua posizione sulla mappa e il punteggio dell'Indice di abboccata" },
-        { label: 'Mappa degli spot', alt: 'Mappa interattiva con segnaposti degli spot di pesca salvati' },
-        { label: 'Statistiche', alt: 'Dashboard statistica delle tendenze di catture e attrezzatura' },
-        { label: 'Assistente IA', alt: 'Il chatbot IA opzionale che risponde a una domanda sui dati' },
-      ],
-      viewAria: 'Visualizza lo screenshot {label}',
-      demoLabel: 'Prova la demo dal vivo',
-      demoSub: 'Nessuna registrazione richiesta',
-      openDemoAria: 'Apri la demo dal vivo',
-      close: 'Chiudi',
-      dialogLabel: 'Screenshot',
+      copyFailed: 'Copia non riuscita. Il comando è selezionato: copialo a mano.',
     },
     footer: {
-      blurb: "Un diario di pesca self-hosted per i pescatori. Organizza le esche, segna gli spot, registra le catture, tieni traccia dell'attrezzatura.",
+      blurb: 'Un diario di pesca che vive sul tuo server. Gratuito e open source.',
       cols: [
         { title: 'Prodotto', links: ['Funzionalità', 'Demo dal vivo', 'Documentazione'] },
-        { title: 'Documentazione', links: ['Avvio rapido', 'Installazione', "Variabili d'ambiente", 'API REST'] },
+        { title: 'Documentazione', links: ['Installazione', "Variabili d'ambiente", 'API REST', 'FAQ e risoluzione dei problemi'] },
         { title: 'Progetto', links: ['GitHub', 'Issue', 'Licenza (AGPL)'] },
       ],
       rights: 'Distribuito sotto licenza AGPL-3.0.',
     },
+    github: 'Vedi su GitHub',
+    newTab: '(si apre in una nuova scheda)',
+    themeToggle: 'Cambia tema chiaro/scuro',
+    skip: 'Vai al contenuto',
+    mapCredit: 'Mappa © collaboratori di OpenStreetMap',
     lang: { switch: 'Cambia lingua' },
   },
 
@@ -442,68 +500,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Jouw viskoffer,',
       titleAccent: 'georganiseerd.',
-      sub: 'Een zelf-gehost vislogboek voor je kunstaas, stekken, vangsten en uitrusting',
+      sub: 'Een vislogboek voor je kunstaas, stekken, vangsten en uitrusting dat op je eigen server draait. Je stekken blijven van jou.',
       ctaDemo: 'Probeer de live demo',
-      ctaStart: 'Aan de slag',
-      ctaGithub: 'Bekijk op GitHub',
-      openDemo: 'Live demo openen',
-      slideAlts: [
-        'OpenFishing-kunstaasbibliotheek met een raster van fotokaarten met tags en vangstaantallen',
-        'Eén vangst met kaartlocatie en Beetindex-score',
-        'Interactieve kaart met opgeslagen visstek-markeringen',
-        'Statistiekdashboard met vangst- en uitrustingstrends',
+      ctaInstall: 'Zo installeer je het',
+      demoNote: 'Zonder aanmelding · alleen-lezen voorbeelddata',
+      facts: [
+        'Gratis en open source',
+        'Draait op je NAS of thuisserver',
+        'Geen cloud, geen account, geen telemetrie',
       ],
+      shotAlt: 'Een vangst in OpenFishing: een baars op de meetmat met de lengte, het aas waarmee hij gevangen is, de Bijt-index en de plek op de kaart',
     },
     features: {
-      heading: 'Alles wat een visser nodig heeft...',
-      items: [
-        { title: 'Kunstaasbibliotheek', desc: 'Fotokaarten met tags, favorieten, tracking van verloren aas, printbare QR-labels en snel filteren en zoeken aan de clientzijde.' },
-        { title: 'Visstekken', desc: "Markeer je stekken op een interactieve kaart met GPS-coördinaten en foto's." },
-        { title: 'Vangstlogboek', desc: 'Soort, gewicht en lengte, GPS-locatie, vangstnotities.' },
-        { title: 'Uitrusting', desc: "Hengels, molens, lijnen en combo's — met volledige spoelgeschiedenis." },
-        { title: 'Statistieken en inzichten', desc: 'Ontdek trends in je vangsten en uitrusting door de tijd heen.' },
-        { title: 'AI-assistent', badge: 'optioneel', desc: 'Een zelf-gehoste chatbot die vragen over je gegevens beantwoordt en vissen en aas herkent op basis van een afbeelding — via een LiteLLM-sidecar. Jouw sleutels, jouw infrastructuur.' },
-        { title: 'Multi-usermodus', badge: 'optioneel', desc: 'Zet inloggen aan om vrienden en familie te hosten: gegevensisolatie per gebruiker, opslagquota en beheerpaneel.' },
-        { title: 'Deellinks', desc: 'Publiceer een alleen-lezen pagina voor elk kunstaas, elke stek of elke vangst.' },
-        { title: 'REST-API', desc: 'Een alleen-lezen JSON-API met Bearer-tokens en een ingebouwde Swagger-UI.' },
-        { title: 'Back-up en herstel', desc: 'ZIP-export/-import met één klik — per gebruiker of voor de hele instantie.' },
-        { title: '9 talen', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: "Thema's", desc: "Biedt meerdere thema's, waaronder een licht/donker-modus." },
+      heading: 'Wat zit er in de koffer',
+      core: [
+        { title: 'Kunstaasbibliotheek', desc: 'Elk kunstaas krijgt een nummer, een foto en een printbaar QR-label. Markeer favorieten, houd verloren aas bij en zie wat elk aas heeft gevangen.' },
+        { title: 'Visstekken', desc: "Zet je stekken op een kaart met GPS en foto's. Ze blijven op je eigen server." },
+        { title: 'Vangstlogboek', desc: 'Soort, lengte, gewicht, plek en het gebruikte aas. Elke vangst krijgt een Bijt-index: een score van 0 tot 10 voor hoe gunstig het weer was om te vissen.' },
+        { title: 'Uitrusting', desc: "Hengels, molens, lijnen en combo's, met de volledige geschiedenis van elke spoel." },
       ],
+      fishingHeading: 'Voor het vissen',
+      fishing: [
+        { title: 'Statistieken en inzichten', desc: 'Persoonlijke records, beste kunstaas en trends door de tijd.' },
+        { title: 'AI-assistent', badge: 'optioneel', desc: 'Stel vragen over je logboek of herken een vis op een foto. Gebruikt je eigen AI-aanbieder; je sleutels blijven op je server.' },
+        { title: 'Deellinks', desc: 'Een alleen-lezen pagina voor elk kunstaas, elke stek of vangst.' },
+      ],
+      serverHeading: 'Voor je server',
+      server: [
+        { title: 'Multi-usermodus', badge: 'optioneel', desc: 'Host vrienden en familie, elk met een eigen privélogboek.' },
+        { title: 'Back-up en herstel', desc: 'ZIP-export en -import met één klik.' },
+        { title: 'REST-API', desc: 'Alleen-lezen JSON-API voor je eigen scripts.' },
+      ],
+      extras: 'Beschikbaar in: {languages}. Donker, licht of volgens je systeem.',
     },
-    demo: { heading: 'Gooi je hengel uit.', text: 'Verken een volledig gevulde OpenFishing-instantie', cta: 'Live demo openen' },
+    demo: { heading: 'Gooi je hengel uit.', text: 'Open een kunstaas, volg het naar de vis die het ving en de stek waar hij beet. Het is allemaal voorbeelddata, dus klik gerust overal op.' },
     qs: {
       heading: 'Draaiend met één commando.',
-      text: 'OpenFishing wordt geleverd als één container. Richt twee volumes op persistente opslag voor de SQLite-database en je uploads, en je kunt vissen.',
-      docs: 'Volledige documentatie',
+      kicker: 'Klaar om het zelf te hosten?',
+      needs: 'Je hebt nodig:',
+      reqs: [
+        'Een computer die altijd aan staat, zoals een NAS, een mini-pc of een thuisserver',
+        'Docker daarop geïnstalleerd',
+        'Een 64-bit processor van Intel of AMD (amd64)',
+      ],
+      stays: 'Alles wat je vastlegt, blijft op die computer: één SQLite-database en je foto’s, in de twee volumes die het commando aanmaakt. Maak daar een back-up van en je hebt alles.',
+      newToDocker: 'Nieuw met Docker? De installatiegids helpt je stap voor stap.',
+      afterRun: 'Open daarna {url} in je browser.',
+      docs: 'Installatiegids met docker-compose',
+      source: 'Broncode op GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Kopiëren',
       copied: 'Gekopieerd!',
       copyAria: 'Commando kopiëren',
-    },
-    shots: {
-      items: [
-        { label: 'Kunstaasbibliotheek', alt: 'Raster van kunstaas-fotokaarten met tags, soorten en vangstaantallen' },
-        { label: 'Vangstdetail', alt: 'Eén vangst met kaartlocatie en Beetindex-score' },
-        { label: 'Stekkenkaart', alt: 'Interactieve kaart met opgeslagen visstek-markeringen' },
-        { label: 'Statistieken', alt: 'Statistiekdashboard met vangst- en uitrustingstrends' },
-        { label: 'AI-assistent', alt: 'De optionele AI-chatbot beantwoordt een vraag over de gegevens' },
-      ],
-      viewAria: 'Screenshot {label} bekijken',
-      demoLabel: 'Probeer de live demo',
-      demoSub: 'Geen registratie nodig',
-      openDemoAria: 'Live demo openen',
-      close: 'Sluiten',
-      dialogLabel: 'Screenshot',
+      copyFailed: 'Kopiëren mislukt. De opdracht is geselecteerd; kopieer hem handmatig.',
     },
     footer: {
-      blurb: 'Een zelf-gehost vislogboek voor vissers. Organiseer kunstaas, markeer stekken, leg vangsten vast, houd je uitrusting bij.',
+      blurb: 'Een vislogboek dat op je eigen server woont. Gratis en open source.',
       cols: [
         { title: 'Product', links: ['Functies', 'Live demo', 'Documentatie'] },
-        { title: 'Documentatie', links: ['Snelstart', 'Installatie', 'Omgevingsvariabelen', 'REST-API'] },
+        { title: 'Documentatie', links: ['Installatie', 'Omgevingsvariabelen', 'REST-API', 'FAQ & probleemoplossing'] },
         { title: 'Project', links: ['GitHub', 'Issues', 'Licentie (AGPL)'] },
       ],
       rights: 'Uitgebracht onder de AGPL-3.0-licentie.',
     },
+    github: 'Bekijk op GitHub',
+    newTab: '(opent in een nieuw tabblad)',
+    themeToggle: 'Licht/donker thema wisselen',
+    skip: 'Naar de inhoud',
+    mapCredit: 'Kaart © OpenStreetMap-bijdragers',
     lang: { switch: 'Taal wijzigen' },
   },
 
@@ -516,68 +580,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Twoja skrzynka wędkarska,',
       titleAccent: 'uporządkowana.',
-      sub: 'Samodzielnie hostowany dziennik wędkarski na przynęty, łowiska, połowy i sprzęt',
+      sub: 'Dziennik wędkarski na przynęty, łowiska, połowy i sprzęt, który działa na Twoim własnym serwerze. Twoje łowiska zostają Twoje.',
       ctaDemo: 'Wypróbuj demo na żywo',
-      ctaStart: 'Rozpocznij',
-      ctaGithub: 'Zobacz na GitHubie',
-      openDemo: 'Otwórz demo na żywo',
-      slideAlts: [
-        'Biblioteka przynęt OpenFishing z siatką kart ze zdjęciami, tagami i liczbą połowów',
-        'Pojedynczy połów z lokalizacją na mapie i wynikiem Indeksu brań',
-        'Interaktywna mapa z zapisanymi znacznikami łowisk',
-        'Panel statystyk z trendami połowów i sprzętu',
+      ctaInstall: 'Jak zainstalować',
+      demoNote: 'Bez rejestracji · przykładowe dane tylko do odczytu',
+      facts: [
+        'Darmowy i open source',
+        'Działa na Twoim NAS-ie lub serwerze domowym',
+        'Bez chmury, bez konta, bez telemetrii',
       ],
+      shotAlt: 'Połów w OpenFishing: okoń na macie do mierzenia z długością, przynętą, na którą go złowiono, Indeksem brania i miejscem na mapie',
     },
     features: {
-      heading: 'Wszystko, czego potrzebuje wędkarz...',
-      items: [
-        { title: 'Biblioteka przynęt', desc: 'Karty ze zdjęciami, tagami, ulubionymi, śledzeniem utraconych przynęt, drukowalnymi etykietami QR oraz szybkim filtrowaniem i wyszukiwaniem po stronie klienta.' },
-        { title: 'Łowiska', desc: 'Oznaczaj swoje łowiska na interaktywnej mapie ze współrzędnymi GPS i zdjęciami.' },
-        { title: 'Dziennik połowów', desc: 'Gatunek, waga i długość, lokalizacja GPS, notatki o połowie.' },
-        { title: 'Sprzęt', desc: 'Wędki, kołowrotki, żyłki i zestawy — z pełną historią szpul.' },
-        { title: 'Statystyki i analizy', desc: 'Dostrzegaj trendy w swoich połowach i sprzęcie w czasie.' },
-        { title: 'Asystent AI', badge: 'opcjonalnie', desc: 'Samodzielnie hostowany chatbot, który odpowiada na pytania o Twoje dane i rozpoznaje ryby oraz przynęty ze zdjęcia — poprzez sidecar LiteLLM. Twoje klucze, Twoja infrastruktura.' },
-        { title: 'Tryb wielu użytkowników', badge: 'opcjonalnie', desc: 'Włącz logowanie, aby hostować znajomych i rodzinę: izolacja danych na użytkownika, limity pamięci i panel administracyjny.' },
-        { title: 'Linki udostępniania', desc: 'Opublikuj stronę tylko do odczytu dla dowolnej przynęty, łowiska lub połowu.' },
-        { title: 'API REST', desc: 'API JSON tylko do odczytu z tokenami Bearer i wbudowanym interfejsem Swagger.' },
-        { title: 'Kopia zapasowa i przywracanie', desc: 'Eksport/import ZIP jednym kliknięciem — na użytkownika lub całej instancji.' },
-        { title: '9 języków', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Motywy', desc: 'Oferuje kilka motywów, w tym tryb jasny/ciemny.' },
+      heading: 'Co jest w skrzynce',
+      core: [
+        { title: 'Biblioteka przynęt', desc: 'Każda przynęta dostaje numer, zdjęcie i etykietę QR do druku. Oznaczaj ulubione, zapisuj zgubione i sprawdzaj, co złowiła każda z nich.' },
+        { title: 'Łowiska', desc: 'Zaznaczaj łowiska na mapie z GPS i zdjęciami. Zostają na Twoim serwerze.' },
+        { title: 'Dziennik połowów', desc: 'Gatunek, długość, waga, miejsce i użyta przynęta. Każdy połów dostaje Indeks brania: ocenę od 0 do 10, jak sprzyjająca wędkowaniu była pogoda.' },
+        { title: 'Sprzęt', desc: 'Wędki, kołowrotki, żyłki i zestawy, z pełną historią każdej szpuli.' },
       ],
+      fishingHeading: 'Do wędkowania',
+      fishing: [
+        { title: 'Statystyki i analizy', desc: 'Rekordy osobiste, najlepsze przynęty i trendy w czasie.' },
+        { title: 'Asystent AI', badge: 'opcjonalnie', desc: 'Pytaj o swój dziennik lub rozpoznaj rybę ze zdjęcia. Korzysta z Twojego własnego dostawcy AI; klucze zostają na Twoim serwerze.' },
+        { title: 'Linki udostępniania', desc: 'Strona tylko do odczytu dla dowolnej przynęty, łowiska lub połowu.' },
+      ],
+      serverHeading: 'Dla Twojego serwera',
+      server: [
+        { title: 'Tryb wielu użytkowników', badge: 'opcjonalnie', desc: 'Hostuj znajomych i rodzinę, każdy z własnym prywatnym dziennikiem.' },
+        { title: 'Kopia zapasowa i przywracanie', desc: 'Eksport i import ZIP jednym kliknięciem.' },
+        { title: 'API REST', desc: 'API JSON tylko do odczytu dla Twoich własnych skryptów.' },
+      ],
+      extras: 'Dostępny w językach: {languages}. Ciemny, jasny lub zgodny z systemem.',
     },
-    demo: { heading: 'Zarzuć wędkę.', text: 'Poznaj w pełni wypełnioną instancję OpenFishing', cta: 'Otwórz demo na żywo' },
+    demo: { heading: 'Zarzuć wędkę.', text: 'Otwórz przynętę, przejdź do ryby, którą złowiła, i do łowiska, gdzie było branie. To przykładowe dane, więc klikaj śmiało.' },
     qs: {
       heading: 'Gotowe do działania jedną komendą.',
-      text: 'OpenFishing jest dostarczany jako pojedynczy kontener. Wskaż dwa wolumeny na trwałą pamięć dla bazy SQLite i przesłanych plików — i możesz łowić.',
-      docs: 'Pełna dokumentacja',
+      kicker: 'Gotowy, by hostować go u siebie?',
+      needs: 'Potrzebujesz:',
+      reqs: [
+        'Komputera, który stale działa, np. NAS-a, mini PC lub serwera domowego',
+        'Zainstalowanego na nim Dockera',
+        '64-bitowego procesora Intel lub AMD (amd64)',
+      ],
+      stays: 'Wszystko, co zapiszesz, zostaje na tym komputerze: jedna baza SQLite i Twoje zdjęcia, w dwóch wolumenach tworzonych przez polecenie. Zrób ich kopię i masz wszystko.',
+      newToDocker: 'Nie znasz Dockera? Instrukcja instalacji poprowadzi Cię krok po kroku.',
+      afterRun: 'Następnie otwórz {url} w przeglądarce.',
+      docs: 'Instrukcja instalacji z docker-compose',
+      source: 'Kod źródłowy na GitHubie (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Kopiuj',
       copied: 'Skopiowano!',
       copyAria: 'Kopiuj komendę',
-    },
-    shots: {
-      items: [
-        { label: 'Biblioteka przynęt', alt: 'Siatka kart ze zdjęciami przynęt z tagami, gatunkami i liczbą połowów' },
-        { label: 'Szczegóły połowu', alt: 'Pojedynczy połów z lokalizacją na mapie i wynikiem Indeksu brań' },
-        { label: 'Mapa łowisk', alt: 'Interaktywna mapa z zapisanymi znacznikami łowisk' },
-        { label: 'Statystyki', alt: 'Panel statystyk z trendami połowów i sprzętu' },
-        { label: 'Asystent AI', alt: 'Opcjonalny chatbot AI odpowiadający na pytanie o dane' },
-      ],
-      viewAria: 'Zobacz zrzut ekranu {label}',
-      demoLabel: 'Wypróbuj demo na żywo',
-      demoSub: 'Bez rejestracji',
-      openDemoAria: 'Otwórz demo na żywo',
-      close: 'Zamknij',
-      dialogLabel: 'Zrzut ekranu',
+      copyFailed: 'Nie udało się skopiować. Polecenie jest zaznaczone, skopiuj je ręcznie.',
     },
     footer: {
-      blurb: 'Samodzielnie hostowany dziennik wędkarski dla wędkarzy. Organizuj przynęty, oznaczaj łowiska, zapisuj połowy, śledź sprzęt.',
+      blurb: 'Dziennik wędkarski, który działa na Twoim własnym serwerze. Darmowy i open source.',
       cols: [
         { title: 'Produkt', links: ['Funkcje', 'Demo na żywo', 'Dokumentacja'] },
-        { title: 'Dokumentacja', links: ['Szybki start', 'Instalacja', 'Zmienne środowiskowe', 'API REST'] },
+        { title: 'Dokumentacja', links: ['Instalacja', 'Zmienne środowiskowe', 'API REST', 'FAQ i rozwiązywanie problemów'] },
         { title: 'Projekt', links: ['GitHub', 'Zgłoszenia', 'Licencja (AGPL)'] },
       ],
       rights: 'Wydane na licencji AGPL-3.0.',
     },
+    github: 'Zobacz na GitHubie',
+    newTab: '(otwiera się w nowej karcie)',
+    themeToggle: 'Przełącz motyw jasny/ciemny',
+    skip: 'Przejdź do treści',
+    mapCredit: 'Mapa © współtwórcy OpenStreetMap',
     lang: { switch: 'Zmień język' },
   },
 
@@ -590,68 +660,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'A tua caixa de pesca,',
       titleAccent: 'organizada.',
-      sub: 'Um diário de pesca auto-hospedado para as tuas iscas, pontos, capturas e equipamento',
+      sub: 'Um diário de pesca para as tuas iscas, pontos, capturas e equipamento que corre no teu próprio servidor. Os teus pontos continuam teus.',
       ctaDemo: 'Experimentar a demo ao vivo',
-      ctaStart: 'Começar',
-      ctaGithub: 'Ver no GitHub',
-      openDemo: 'Abrir a demo ao vivo',
-      slideAlts: [
-        'Biblioteca de iscas do OpenFishing com uma grelha de cartões com fotos, etiquetas e contagem de capturas',
-        'Uma captura individual com a sua localização no mapa e pontuação do Índice de fisgada',
-        'Mapa interativo com marcadores de pontos de pesca guardados',
-        'Painel de estatísticas com tendências de capturas e equipamento',
+      ctaInstall: 'Como instalar',
+      demoNote: 'Sem registo · dados de exemplo só de leitura',
+      facts: [
+        'Gratuito e open source',
+        'Corre no teu NAS ou servidor doméstico',
+        'Sem nuvem, sem conta, sem telemetria',
       ],
+      shotAlt: 'Uma captura no OpenFishing: uma perca no tapete de medição com o comprimento, a isca que a apanhou, o Índice de mordida e o local no mapa',
     },
     features: {
-      heading: 'Tudo o que um pescador precisa...',
-      items: [
-        { title: 'Biblioteca de iscas', desc: 'Cartões com fotos, etiquetas, favoritos, registo de iscas perdidas, etiquetas QR imprimíveis e filtragem e pesquisa rápidas do lado do cliente.' },
-        { title: 'Pontos de pesca', desc: 'Marca os teus pontos num mapa interativo com coordenadas GPS e fotos.' },
-        { title: 'Registo de capturas', desc: 'Espécie, peso e comprimento, localização GPS, notas da captura.' },
-        { title: 'Equipamento', desc: 'Canas, carretos, linhas e conjuntos — com histórico completo de bobinas.' },
-        { title: 'Estatísticas e análises', desc: 'Identifica tendências nas tuas capturas e equipamento ao longo do tempo.' },
-        { title: 'Assistente de IA', badge: 'opcional', desc: 'Um chatbot auto-hospedado que responde a perguntas sobre os teus dados e identifica peixes e iscas a partir de uma imagem — através de um sidecar LiteLLM. As tuas chaves, a tua infraestrutura.' },
-        { title: 'Modo multiutilizador', badge: 'opcional', desc: 'Ativa o início de sessão para alojar amigos e família: isolamento de dados por utilizador, quotas de armazenamento e painel de administração.' },
-        { title: 'Ligações de partilha', desc: 'Publica uma página só de leitura para qualquer isca, ponto ou captura.' },
-        { title: 'API REST', desc: 'Uma API JSON só de leitura com tokens Bearer e uma interface Swagger integrada.' },
-        { title: 'Backup e restauro', desc: 'Exportação/importação ZIP com um clique — por utilizador ou de toda a instância.' },
-        { title: '9 idiomas', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Temas', desc: 'Oferece vários temas, incluindo um modo claro/escuro.' },
+      heading: 'O que há na caixa',
+      core: [
+        { title: 'Biblioteca de iscas', desc: 'Cada isca recebe um número, uma foto e uma etiqueta QR imprimível. Marca favoritas, regista as perdidas e vê o que cada uma apanhou.' },
+        { title: 'Pontos de pesca', desc: 'Marca os teus pontos num mapa com GPS e fotos. Ficam no teu servidor.' },
+        { title: 'Registo de capturas', desc: 'Espécie, comprimento, peso, local e isca usada. Cada captura recebe um Índice de mordida: uma nota de 0 a 10 sobre quão favorável estava o tempo para pescar.' },
+        { title: 'Equipamento', desc: 'Canas, carretos, linhas e conjuntos, com o histórico completo de cada bobina.' },
       ],
+      fishingHeading: 'Para a tua pesca',
+      fishing: [
+        { title: 'Estatísticas e análises', desc: 'Recordes pessoais, melhores iscas e tendências ao longo do tempo.' },
+        { title: 'Assistente de IA', badge: 'opcional', desc: 'Faz perguntas sobre o teu diário ou identifica um peixe numa foto. Usa o teu próprio fornecedor de IA; as chaves ficam no teu servidor.' },
+        { title: 'Ligações de partilha', desc: 'Uma página só de leitura para qualquer isca, ponto ou captura.' },
+      ],
+      serverHeading: 'Para o teu servidor',
+      server: [
+        { title: 'Modo multiutilizador', badge: 'opcional', desc: 'Aloja amigos e família, cada um com o seu diário privado.' },
+        { title: 'Backup e restauro', desc: 'Exportação e importação ZIP com um clique.' },
+        { title: 'API REST', desc: 'API JSON só de leitura para os teus próprios scripts.' },
+      ],
+      extras: 'Disponível em: {languages}. Escuro, claro ou conforme o sistema.',
     },
-    demo: { heading: 'Lança a tua linha.', text: 'Explora uma instância do OpenFishing totalmente preenchida', cta: 'Abrir a demo ao vivo' },
+    demo: { heading: 'Lança a tua linha.', text: 'Abre uma isca, segue-a até ao peixe que apanhou e ao ponto onde picou. São dados de exemplo, por isso clica à vontade.' },
     qs: {
       heading: 'A funcionar com um único comando.',
-      text: 'O OpenFishing é distribuído como um único contentor. Aponta dois volumes para armazenamento persistente da base de dados SQLite e dos teus ficheiros, e já podes pescar.',
-      docs: 'Documentação completa',
+      kicker: 'Pronto para o alojar?',
+      needs: 'Precisas de:',
+      reqs: [
+        'Um computador sempre ligado, como um NAS, um mini PC ou um servidor doméstico',
+        'O Docker instalado nele',
+        'Um processador de 64 bits Intel ou AMD (amd64)',
+      ],
+      stays: 'Tudo o que registares fica nesse computador: uma base de dados SQLite e as tuas fotos, nos dois volumes que o comando cria. Faz cópia deles e tens tudo.',
+      newToDocker: 'Novo no Docker? O guia de instalação acompanha-te passo a passo.',
+      afterRun: 'Depois abre {url} no navegador.',
+      docs: 'Guia de instalação com docker-compose',
+      source: 'Código-fonte no GitHub (AGPL-3.0)',
+      terminal: 'Terminal',
       copy: 'Copiar',
       copied: 'Copiado!',
       copyAria: 'Copiar comando',
-    },
-    shots: {
-      items: [
-        { label: 'Biblioteca de iscas', alt: 'Grelha de cartões com fotos de iscas com etiquetas, espécies e contagem de capturas' },
-        { label: 'Detalhe da captura', alt: 'Uma captura individual com a sua localização no mapa e pontuação do Índice de fisgada' },
-        { label: 'Mapa de pontos', alt: 'Mapa interativo com marcadores de pontos de pesca guardados' },
-        { label: 'Estatísticas', alt: 'Painel de estatísticas com tendências de capturas e equipamento' },
-        { label: 'Assistente de IA', alt: 'O chatbot de IA opcional a responder a uma pergunta sobre os dados' },
-      ],
-      viewAria: 'Ver a captura de ecrã {label}',
-      demoLabel: 'Experimentar a demo ao vivo',
-      demoSub: 'Sem registo',
-      openDemoAria: 'Abrir a demo ao vivo',
-      close: 'Fechar',
-      dialogLabel: 'Captura de ecrã',
+      copyFailed: 'Não foi possível copiar. O comando está selecionado; copia-o à mão.',
     },
     footer: {
-      blurb: 'Um diário de pesca auto-hospedado para pescadores. Organiza iscas, marca pontos, regista capturas, acompanha o equipamento.',
+      blurb: 'Um diário de pesca que vive no teu próprio servidor. Gratuito e open source.',
       cols: [
         { title: 'Produto', links: ['Funcionalidades', 'Demo ao vivo', 'Documentação'] },
-        { title: 'Documentação', links: ['Início rápido', 'Instalação', 'Variáveis de ambiente', 'API REST'] },
+        { title: 'Documentação', links: ['Instalação', 'Variáveis de ambiente', 'API REST', 'FAQ e resolução de problemas'] },
         { title: 'Projeto', links: ['GitHub', 'Problemas', 'Licença (AGPL)'] },
       ],
       rights: 'Distribuído sob a licença AGPL-3.0.',
     },
+    github: 'Ver no GitHub',
+    newTab: '(abre num novo separador)',
+    themeToggle: 'Alternar tema claro/escuro',
+    skip: 'Saltar para o conteúdo',
+    mapCredit: 'Mapa © contribuidores do OpenStreetMap',
     lang: { switch: 'Mudar idioma' },
   },
 
@@ -664,68 +740,74 @@ export const ui: Record<Lang, Dict> = {
     hero: {
       titleLine1: 'Ваша скринька для снастей,',
       titleAccent: 'впорядкована.',
-      sub: 'Самостійно розміщуваний журнал рибалки для ваших приманок, місць, уловів і спорядження',
+      sub: 'Журнал рибалки для ваших приманок, місць, уловів і спорядження, що працює на вашому власному сервері. Ваші місця залишаються вашими.',
       ctaDemo: 'Спробувати демо наживо',
-      ctaStart: 'Почати',
-      ctaGithub: 'Переглянути на GitHub',
-      openDemo: 'Відкрити демо наживо',
-      slideAlts: [
-        'Бібліотека приманок OpenFishing із сіткою фотокарток з тегами та кількістю уловів',
-        'Окремий улов із розташуванням на карті та оцінкою Індексу клювання',
-        'Інтерактивна карта зі збереженими позначками рибних місць',
-        'Панель статистики з тенденціями уловів і спорядження',
+      ctaInstall: 'Як встановити',
+      demoNote: 'Без реєстрації · демодані лише для читання',
+      facts: [
+        'Безкоштовно й з відкритим кодом',
+        'Працює на вашому NAS чи домашньому сервері',
+        'Без хмари, без облікового запису, без телеметрії',
       ],
+      shotAlt: 'Улов в OpenFishing: окунь на мірному килимку з довжиною, приманкою, на яку його спіймано, Індексом клювання та місцем на карті',
     },
     features: {
-      heading: 'Усе, що потрібно рибалці...',
-      items: [
-        { title: 'Бібліотека приманок', desc: 'Фотокартки з тегами, обраним, відстеженням загублених приманок, друкованими QR-мітками та швидкою фільтрацією й пошуком на боці клієнта.' },
-        { title: 'Рибні місця', desc: 'Позначайте свої місця на інтерактивній карті з GPS-координатами та фотографіями.' },
-        { title: 'Журнал уловів', desc: 'Вид, вага та довжина, GPS-розташування, нотатки до улову.' },
-        { title: 'Спорядження', desc: 'Вудлища, котушки, волосіні та комплекти — з повною історією шпуль.' },
-        { title: 'Статистика й аналітика', desc: 'Помічайте тенденції своїх уловів і спорядження з часом.' },
-        { title: 'ШІ-помічник', badge: 'опційно', desc: 'Самостійно розміщуваний чат-бот, який відповідає на запитання про ваші дані та розпізнає рибу й приманки за зображенням — через сайдкар LiteLLM. Ваші ключі, ваша інфраструктура.' },
-        { title: 'Багатокористувацький режим', badge: 'опційно', desc: 'Увімкніть вхід, щоб розмістити друзів і родину: ізоляція даних для кожного користувача, квоти сховища та панель адміністратора.' },
-        { title: 'Посилання для поширення', desc: 'Опублікуйте сторінку лише для читання для будь-якої приманки, місця чи улову.' },
-        { title: 'REST API', desc: 'JSON API лише для читання з токенами Bearer і вбудованим інтерфейсом Swagger.' },
-        { title: 'Резервне копіювання та відновлення', desc: 'Експорт/імпорт ZIP одним кліком — для окремого користувача або всієї інстанції.' },
-        { title: '9 мов', desc: 'EN, DE, FR, ES, IT, NL, PL, PT, UK.' },
-        { title: 'Теми', desc: 'Пропонує кілька тем, зокрема світлий/темний режим.' },
+      heading: 'Що в скриньці',
+      core: [
+        { title: 'Бібліотека приманок', desc: 'Кожна приманка отримує номер, фото й QR-етикетку для друку. Позначайте улюблені, записуйте загублені й дивіться, що впіймала кожна.' },
+        { title: 'Рибні місця', desc: 'Позначайте місця на карті з GPS і фото. Вони залишаються на вашому сервері.' },
+        { title: 'Журнал уловів', desc: 'Вид, довжина, вага, місце й приманка. Кожен улов отримує Індекс клювання: оцінку від 0 до 10, наскільки погода сприяла риболовлі.' },
+        { title: 'Спорядження', desc: 'Вудлища, котушки, волосіні й комплекти з повною історією кожної шпулі.' },
       ],
+      fishingHeading: 'Для рибалки',
+      fishing: [
+        { title: 'Статистика й аналітика', desc: 'Особисті рекорди, найкращі приманки й тенденції з часом.' },
+        { title: 'ШІ-помічник', badge: 'опційно', desc: 'Запитуйте про свій журнал або визначайте рибу за фото. Використовує вашого власного ШІ-провайдера; ключі залишаються на вашому сервері.' },
+        { title: 'Посилання для поширення', desc: 'Сторінка лише для читання для будь-якої приманки, місця чи улову.' },
+      ],
+      serverHeading: 'Для вашого сервера',
+      server: [
+        { title: 'Багатокористувацький режим', badge: 'опційно', desc: 'Приймайте друзів і родину, кожен зі своїм приватним журналом.' },
+        { title: 'Резервне копіювання та відновлення', desc: 'Експорт та імпорт ZIP одним кліком.' },
+        { title: 'REST API', desc: 'JSON API лише для читання для ваших власних скриптів.' },
+      ],
+      extras: 'Доступно мовами: {languages}. Темна, світла або як у системі.',
     },
-    demo: { heading: 'Закиньте вудку.', text: 'Дослідіть повністю заповнену інстанцію OpenFishing', cta: 'Відкрити демо наживо' },
+    demo: { heading: 'Закиньте вудку.', text: 'Відкрийте приманку, перейдіть до риби, яку вона впіймала, і до місця, де клюнуло. Це демодані, тож клацайте сміливо.' },
     qs: {
       heading: 'Готово до роботи однією командою.',
-      text: 'OpenFishing постачається як один контейнер. Вкажіть два томи на постійне сховище для бази даних SQLite і ваших завантажень — і можна рибалити.',
-      docs: 'Повна документація',
+      kicker: 'Готові розмістити у себе?',
+      needs: 'Вам потрібні:',
+      reqs: [
+        "Комп'ютер, що працює постійно, як-от NAS, міні-ПК чи домашній сервер",
+        'Встановлений на ньому Docker',
+        '64-бітний процесор Intel або AMD (amd64)',
+      ],
+      stays: "Усе, що ви записуєте, залишається на цьому комп'ютері: одна база даних SQLite і ваші фото, у двох томах, які створює команда. Зробіть їх резервну копію, і у вас буде все.",
+      newToDocker: 'Вперше з Docker? Посібник зі встановлення проведе вас крок за кроком.',
+      afterRun: 'Потім відкрийте {url} у браузері.',
+      docs: 'Посібник зі встановлення з docker-compose',
+      source: 'Вихідний код на GitHub (AGPL-3.0)',
+      terminal: 'Термінал',
       copy: 'Копіювати',
       copied: 'Скопійовано!',
       copyAria: 'Копіювати команду',
-    },
-    shots: {
-      items: [
-        { label: 'Бібліотека приманок', alt: 'Сітка фотокарток приманок з тегами, видами та кількістю уловів' },
-        { label: 'Деталі улову', alt: 'Окремий улов із розташуванням на карті та оцінкою Індексу клювання' },
-        { label: 'Карта місць', alt: 'Інтерактивна карта зі збереженими позначками рибних місць' },
-        { label: 'Статистика', alt: 'Панель статистики з тенденціями уловів і спорядження' },
-        { label: 'ШІ-помічник', alt: 'Опційний ШІ-чат-бот відповідає на запитання про дані' },
-      ],
-      viewAria: 'Переглянути знімок екрана {label}',
-      demoLabel: 'Спробувати демо наживо',
-      demoSub: 'Реєстрація не потрібна',
-      openDemoAria: 'Відкрити демо наживо',
-      close: 'Закрити',
-      dialogLabel: 'Знімок екрана',
+      copyFailed: 'Не вдалося скопіювати. Команду виділено, скопіюйте її вручну.',
     },
     footer: {
-      blurb: 'Самостійно розміщуваний журнал рибалки для рибалок. Упорядковуйте приманки, позначайте місця, записуйте улови, відстежуйте спорядження.',
+      blurb: 'Журнал рибалки, що живе на вашому власному сервері. Безкоштовний і з відкритим кодом.',
       cols: [
         { title: 'Продукт', links: ['Функції', 'Демо наживо', 'Документація'] },
-        { title: 'Документація', links: ['Швидкий старт', 'Встановлення', 'Змінні середовища', 'REST API'] },
+        { title: 'Документація', links: ['Встановлення', 'Змінні середовища', 'REST API', 'FAQ і усунення несправностей'] },
         { title: 'Проєкт', links: ['GitHub', 'Питання', 'Ліцензія (AGPL)'] },
       ],
       rights: 'Випущено за ліцензією AGPL-3.0.',
     },
+    github: 'Переглянути на GitHub',
+    newTab: '(відкривається в новій вкладці)',
+    themeToggle: 'Перемкнути світлу/темну тему',
+    skip: 'Перейти до вмісту',
+    mapCredit: 'Карта © учасники OpenStreetMap',
     lang: { switch: 'Змінити мову' },
   },
 };

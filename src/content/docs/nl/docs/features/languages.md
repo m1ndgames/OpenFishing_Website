@@ -1,23 +1,20 @@
 ---
-title: Talen (i18n)
-description: OpenFishing is beschikbaar in 9 talen met een vlaggenwisselaar.
+title: "Talen"
+description: "OpenFishing is beschikbaar in 9 talen; kies de jouwe in Instellingen."
+next: false
 ---
 
-OpenFishing is volledig geïnternationaliseerd en wordt geleverd in **9 talen**, met een **vlaggenwisselaar** in
-de interface om op elk moment van taal te wisselen.
+OpenFishing is beschikbaar in **9 talen**. Kies de jouwe onder **Instellingen → Uiterlijk**, op dezelfde pagina als het
+[thema](/nl/docs/features/themes).
 
-## Ondersteunde talen
+- English
+- Deutsch
+- Français
+- Español
+- Italiano
+- Nederlands
+- Polski
+- Português
+- Українська
 
-| Code | Taal |
-|---|---|
-| `EN` | Engels |
-| `DE` | Duits |
-| `FR` | Frans |
-| `ES` | Spaans |
-| `IT` | Italiaans |
-| `NL` | Nederlands |
-| `PL` | Pools |
-| `PT` | Portugees |
-| `UK` | Oekraïens |
-
-Taalwisseling werkt zelfs in [demomodus](/nl/docs/demo/demo-mode), waar andere schrijfacties zijn geblokkeerd.
+Van taal wisselen werkt ook in [demomodus](/nl/docs/demo/demo-mode).

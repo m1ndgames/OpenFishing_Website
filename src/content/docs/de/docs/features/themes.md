@@ -1,16 +1,27 @@
 ---
-title: Themes & Darstellung
-description: Das Ocean-Theme mit dunkler, heller und systembasierter Darstellung, konfigurierbar pro Benutzer oder global.
+title: "Themes & Darstellung"
+description: "Vier Farbthemes, jedes dunkel und hell, pro Person in den Einstellungen gewählt."
 ---
 
-OpenFishing wird mit dem **Ocean**-Theme ausgeliefert — ein tiefes Marineblau als Hintergrund mit einem hellen
-Cyan-Akzent (derselbe Look, den diese Dokumentation verwendet).
+OpenFishing bringt vier Farbthemes mit, jedes in einer dunklen und einer hellen Variante. Du
+wählst beides unter **Einstellungen → Erscheinungsbild**, wo du auch die [Sprache](/de/docs/features/languages) der
+App einstellst.
 
-## Darstellung
+## Themes
 
-- **Dunkel, hell oder System** — wähle eine feste Darstellung oder folge der Einstellung deines Betriebssystems.
-- **Pro Benutzer vs. global** — im [Mehrbenutzer](/de/docs/multi-user/authentication)-Modus kann jeder Benutzer
-  seine eigene Darstellung einstellen; im Single-Tenant-Modus ist die Wahl global.
+- **Ocean**: tiefes Marineblau mit cyanfarbenem Akzent. Der Standard und der Look dieser Website.
+- **Forest**: grüner Akzent.
+- **Sunset**: orangefarbener Akzent.
+- **Dusk**: violetter Akzent.
 
-Die Website, die du gerade liest, spiegelt die App wider: Der Dunkelmodus ist die Standardeinstellung, mit
-einem Umschalter oben rechts, der deine Wahl speichert.
+## Dunkel, hell oder System
+
+Wähle **Dunkel**, **Hell** oder **System**, um der Einstellung deines Handys oder Computers zu folgen.
+
+## Für wen es gilt
+
+Mit eingeschaltetem [Login](/de/docs/multi-user/authentication) wählt jede Person ihr eigenes Theme und Erscheinungsbild.
+Ohne Login gilt die Wahl für alle, die die Instanz nutzen.
+
+Der Admin legt in **Einstellungen → Admin** das **Standard-Erscheinungsbild** fest: Farbmodus und Theme für den Anmeldebildschirm
+und für alle, die noch nichts gewählt haben.

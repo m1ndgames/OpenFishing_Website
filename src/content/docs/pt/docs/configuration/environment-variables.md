@@ -1,57 +1,97 @@
 ---
 title: Variáveis de ambiente
-description: Referência completa de todas as variáveis de ambiente do OpenFishing, com valores predefinidos e descrições.
+description: Todas as definições do OpenFishing, com os valores predefinidos da imagem Docker, agrupadas por função.
+prev: false
 ---
 
-O OpenFishing é configurado inteiramente através de variáveis de ambiente. Cada variável é opcional exceto onde
-indicado; as variáveis não definidas recorrem às predefinições abaixo.
+O OpenFishing configura-se inteiramente com variáveis de ambiente, na secção `environment:` do
+teu ficheiro compose (ou com `-e` no `docker run`). Os valores predefinidos abaixo são os da
+imagem Docker. Quase todas as instalações definem `BASE_URL` e `TZ`; o resto é opcional.
 
-## Tabela de referência
+## Endereço e hora
 
-| Variável | Predefinição | Descrição |
-|---|---|---|
-| `DATABASE_URL` | `local.db` | Caminho para o ficheiro da base de dados SQLite. No Docker, aponta-o para o teu volume de dados, p. ex. `/app/data/openfishing.db`. |
-| `UPLOAD_PATH` | `./uploads` | Diretório para fotos de iscas/pontos/capturas. **Monta um volume** aqui (p. ex. `/app/uploads`). |
-| `BASE_URL` | `http://localhost:5173` | URL base pública, usada para construir os links de código QR e de reposição de palavra-passe. Define-a com o teu URL HTTPS real atrás de um proxy reverso. |
-| `ADMIN_PASSWORD` | _(não definido)_ | Define para **ativar o início de sessão multiutilizador**. É a palavra-passe da conta `admin` (o nome de utilizador é sempre `admin`, ressincronizado em cada arranque). Não definido = instância de inquilino único totalmente aberta. |
-| `AUTH_PASSWORD` | _(não definido)_ | Nome alternativo **descontinuado** para `ADMIN_PASSWORD`. Prefere `ADMIN_PASSWORD`. |
-| `SMTP_HOST` | _(não definido)_ | Nome de host do servidor SMTP para os e-mails de "palavra-passe esquecida". |
-| `SMTP_PORT` | _(não definido)_ | Porta do servidor SMTP. |
-| `SMTP_SECURE` | _(não definido)_ | Usar TLS para a ligação SMTP. |
-| `SMTP_USER` | _(não definido)_ | Nome de utilizador SMTP. |
-| `SMTP_PASS` | _(não definido)_ | Palavra-passe SMTP. |
-| `SMTP_FROM` | _(não definido)_ | O endereço `From:` do correio de saída. |
-| `DEMO_MODE` | _(não definido)_ | Qualquer valor = **modo demo só de leitura** (todas as escritas bloqueadas). |
-| `CHATBOT` | _(não definido)_ | Qualquer valor verdadeiro ativa o **chatbot de IA** (requer as variáveis LiteLLM). |
-| `LITELLM_URL` | _(não definido)_ | URL base do teu proxy LiteLLM, p. ex. `http://litellm:4000`. |
-| `LITELLM_MODEL` | _(não definido)_ | Nome de modelo correspondente a uma entrada de `litellm.config.yaml`. |
-| `LITELLM_VISION_MODEL` | _(não definido)_ | Modelo com capacidade de visão opcional para identificação de peixe/isca. Recorre a `LITELLM_MODEL`. |
-| `BODY_SIZE_LIMIT` | `104857600` | Tamanho máximo de upload em bytes (predefinição ≈ 100 MB). |
+- **`BASE_URL`** · predefinição: não definida\
+  O endereço com que se abre o OpenFishing, com `http://` ou `https://`, por exemplo
+  `http://192.168.1.50:3000` ou `https://fishing.example.com`. O servidor tira daí o esquema:
+  **sem ela assume HTTPS e, numa instalação só com HTTP, cada gravação é rejeitada**
+  («Cross-site POST form submissions are forbidden»). Também constrói as ligações dos códigos QR e de partilha, que sem ela apontam para `http://localhost:5173`.
+- **`PROTOCOL_HEADER`** · predefinição: não definida\
+  Só para um reverse proxy que indica ele próprio o esquema, por exemplo
+  `PROTOCOL_HEADER=x-forwarded-proto`. Se definida, tem prioridade sobre o esquema de `BASE_URL`.
+- **`TZ`** · predefinição: UTC\
+  O teu fuso horário, por exemplo `Europe/Lisbon` ou `America/Sao_Paulo`. Sem ele, as horas das
+  capturas ficam desviadas.
 
-:::note
-A funcionalidade SMTP de "palavra-passe esquecida" só aparece quando pelo menos `SMTP_HOST` **e** `SMTP_FROM`
-estão definidos. Sem eles, a opção de reposição fica oculta.
-:::
+## Armazenamento
 
-## Notas sobre as predefinições
+- **`DATABASE_URL`** · predefinição: `/app/data/openfishing.db`\
+  O ficheiro da base de dados SQLite, no volume `/app/data`. Não alterar.
+- **`UPLOAD_PATH`** · predefinição: `/app/uploads`\
+  Onde ficam as fotos, no volume `/app/uploads`. Não alterar.
+- **`BODY_SIZE_LIMIT`** · predefinição: `104857600` (≈ 100 MB)\
+  O maior envio em bytes. Um reverse proxy à frente precisa de um limite equivalente.
 
-As predefinições acima são as predefinições integradas no código da aplicação. Num contentor, normalmente vais
-substituir os caminhos para apontar para volumes montados:
+## Início de sessão
 
-```bash
-DATABASE_URL=/app/data/openfishing.db
-UPLOAD_PATH=/app/uploads
+- **`ADMIN_PASSWORD`** · predefinição: não definida\
+  Ativa o início de sessão. É a palavra-passe da conta `admin` (o nome de utilizador é sempre
+  `admin`), lida de novo em cada arranque. Não definida: a instância está aberta, sem início de sessão.
+- **`AUTH_PASSWORD`** · obsoleta\
+  O nome antigo de `ADMIN_PASSWORD`. Ainda funciona; usa `ADMIN_PASSWORD`.
+
+Ver [Multiusuário e autenticação](/pt/docs/multi-user/authentication).
+
+## Email para repor a palavra-passe
+
+A opção «esqueci-me da palavra-passe» só aparece se estiverem definidas pelo menos `SMTP_HOST` e `SMTP_FROM`.
+
+- **`SMTP_HOST`** · predefinição: não definida\
+  O teu servidor de email.
+- **`SMTP_PORT`** · predefinição: `587`\
+  A porta `465` implica TLS; as outras usam STARTTLS.
+- **`SMTP_SECURE`** · predefinição: não definida\
+  Define como `true` para TLS implícito (normalmente com a porta 465).
+- **`SMTP_USER`** / **`SMTP_PASS`** · predefinição: não definidas\
+  Credenciais do servidor de email. Omite-as em relays que não as pedem.
+- **`SMTP_FROM`** · predefinição: não definida\
+  O remetente, por exemplo `OpenFishing <noreply@example.com>`.
+
+Por exemplo, com uma conta de email na porta 587:
+
+```yaml title="docker-compose.yml"
+    environment:
+      - SMTP_HOST=smtp.example.com
+      - SMTP_PORT=587
+      - SMTP_USER=you@example.com
+      # Palavra-passe da conta de email
+      - SMTP_PASS=
+      - SMTP_FROM=you@example.com
 ```
 
-## Agrupadas por finalidade
+## Mapa
 
-- **Armazenamento:** `DATABASE_URL`, `UPLOAD_PATH`, `BODY_SIZE_LIMIT`
-- **Rede / links:** `BASE_URL`
-- **Autenticação:** `ADMIN_PASSWORD` (`AUTH_PASSWORD` descontinuado)
-- **E-mail / reposição de palavra-passe:** `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM`
-- **Funcionalidades de IA:** `CHATBOT`, `LITELLM_URL`, `LITELLM_MODEL`, `LITELLM_VISION_MODEL`
-- **Demo:** `DEMO_MODE`
+- **`MAP_TILE_URL`** · predefinição: OpenStreetMap\
+  Um modelo de URL de mosaicos para
+  usar o teu próprio servidor de mosaicos ou outro em vez do OpenStreetMap.\
+  Por exemplo: `https://tiles.example.com/{z}/{x}/{y}.png`
+- **`MAP_TILE_ATTRIBUTION`** · predefinição: não definida\
+  A atribuição mostrada no mapa para `MAP_TILE_URL`. A maioria dos fornecedores exige-a.
 
-Consulta [Multiutilizador e autenticação](/pt/docs/multi-user/authentication),
-[Funcionalidades de IA](/pt/docs/ai/ai-features) e [Modo demo](/pt/docs/demo/demo-mode) para veres como estes
-grupos se encaixam.
+## Funcionalidades de IA
+
+- **`CHATBOT`** · predefinição: não definida\
+  Define como `true` para ativar o chatbot de IA. Precisa das definições LiteLLM abaixo. Vê [Funcionalidades de IA](/pt/docs/ai/ai-features).
+- **`LITELLM_URL`** · predefinição: não definida\
+  O teu proxy LiteLLM, por exemplo `http://litellm:4000`.
+- **`LITELLM_MODEL`** · predefinição: não definida\
+  O modelo do chatbot, igual a um `model_name` do teu `litellm.config.yaml`.
+- **`LITELLM_VISION_MODEL`** · predefinição: não definida\
+  Modelo opcional para identificar peixes e iscas em fotos. Se faltar, usa `LITELLM_MODEL`.
+
+Ver [Funcionalidades de IA](/pt/docs/ai/ai-features).
+
+## Demo
+
+- **`DEMO_MODE`** · predefinição: não definida\
+  **Qualquer** valor ativa o modo demo só de leitura, mesmo `false` ou `0`. Para o desligar,
+  remove a linha. Ver [Modo demo](/pt/docs/demo/demo-mode).

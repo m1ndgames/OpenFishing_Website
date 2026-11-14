@@ -1,16 +1,22 @@
 ---
-title: Statystyki
-description: Zagregowane trendy i analizy dotyczące Twoich połowów i sprzętu.
+title: "Statystyki"
+description: "Co pokazują statystyki: sumy, rekordy, najlepsze przynęty, łowiska i style prowadzenia oraz kiedy łowisz."
 ---
 
-Widok **statystyk** agreguje Twoje dane w trendy i analizy, dzięki czemu Twój dziennik staje się czymś, z
-czego możesz się uczyć.
+**Statystyki** zamieniają dziennik połowów w liczby, z których można się uczyć. Otworzysz je z pozycji
+**Statystyki** w menu.
 
-## Co jest agregowane
+## Co pokazują
 
-- Trendy w Twoich **[połowach](/pl/docs/features/catches)** w czasie.
-- Analizy Twojego **sprzętu** — jaki [sprzęt](/pl/docs/features/tackle) i jakie
-  [przynęty](/pl/docs/features/lures) biorą udział w Twoich połowach.
+- **Łączne połowy**, **Gatunki**, **Łowiska**, **Wskaźnik Z&W** (odsetek wypuszczonych ryb).
+- **Rekordy osobiste**: Twoje największe ryby.
+- **Najlepsze przynęty**, **Najlepsze łowiska**, **Najlepsze style prowadzenia**: co łączy Twoje połowy.
+- **Aktywność miesięczna**, **Dzień tygodnia**, **Pora dnia**. Pojawiają się, gdy zapiszesz 5 połowów.
 
-Ponieważ wszystko jest obliczane z Twojej własnej bazy danych, liczby są zawsze aktualne i całkowicie prywatne
-dla Twojej instancji.
+Wszystko jest liczone z Twojej własnej bazy danych na Twoim serwerze. Z logowaniem każdy widzi tylko
+swoje połowy.
+
+## Powiązane
+
+- Liczby pochodzą z zapisanych [połowów](/pl/docs/features/catches), z ich przynętą i stylem prowadzenia.
+- Ocenę pogody każdego połowu wyjaśnia [Indeks brania](/pl/docs/features/bite-index).

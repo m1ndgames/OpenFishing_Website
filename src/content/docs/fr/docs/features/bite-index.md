@@ -1,36 +1,38 @@
 ---
-title: Indice de touche
-description: Comment le score météo automatique de 0 à 10 de l'indice de touche d'OpenFishing est calculé et évalué.
+title: "Indice de morsure"
+description: "Comment OpenFishing calcule l'indice de morsure de 0 à 10 à partir de la météo, et ce que signifient ses niveaux."
 ---
 
-L'**indice de touche** est un score automatique de **0 à 10** qui évalue à quel point les conditions de pêche
-étaient favorables pour une prise donnée, à partir des données météo.
+L'**indice de morsure** est une note de **0 à 10** qui indique si la météo est bonne pour la pêche.
+OpenFishing la calcule à partir de la météo au lieu de la prise **au moment où vous l'enregistrez**,
+puis la garde avec la prise.
+
+:::note
+La note utilise la météo au moment de l'enregistrement, pas l'heure que vous saisissez pour la
+prise. Enregistrez vos prises au bord de l'eau pour une note juste ; une prise ajoutée des heures plus
+tard reçoit la météo de ce moment-là.
+:::
 
 ## Comment il est calculé
 
-L'indice est un mélange pondéré de trois facteurs dérivés de la météo :
+Trois composantes, notées chacune de 0 à 10, sont pondérées puis additionnées :
 
-| Facteur | Poids | Idée |
-|---|---|---|
-| **Tendance de pression** | ×0.5 | La variation de la pression barométrique influence fortement l'activité alimentaire. |
-| **Lumière** | ×0.3 | Les niveaux de lumière influencent le moment où les poissons sont actifs. |
-| **Stabilité de la température** | ×0.2 | Des températures stables tendent à signifier un comportement plus prévisible. |
+- **Tendance de pression** (50 %): 10 si la pression a baissé de plus de 1,5 hPa en 3 heures, comme avant un front ; 7 si elle est stable ; 2 si elle monte.
+- **Conditions lumineuses** (30 %): 10 à l'aube (l'heure avant le lever du soleil) et au crépuscule (l'heure après le coucher) ; 8 dans l'heure avant le coucher ; 6 la nuit et pendant les deux heures après le lever ; 2 en journée.
+- **Stabilité de la température** (20 %): 10 si la température a varié de moins de 3 °C en 3 heures ; 2 pour un écart plus grand.
 
-Les données météo proviennent de l'[API Open-Meteo](https://open-meteo.com/) gratuite. Le score obtenu est
-stocké comme un **instantané sur chaque prise**, il reflète donc les conditions de ce moment et ne change
-jamais rétroactivement.
+Votre serveur obtient la météo auprès du service gratuit [Open-Meteo](https://open-meteo.com/).
 
-## Étiquettes d'évaluation
+## Niveaux
 
-Le score numérique correspond à une étiquette conviviale :
-
-| Score | Évaluation |
+| Note | Niveau |
 |---|---|
-| Faible | **Mauvais** |
-| … | **Moyen** |
-| … | **Bon** |
-| Élevé | **Excellent** |
+| 8,5 et plus | **Excellent** |
+| 6,5 à 8,4 | **Bon** |
+| 4 à 6,4 | **Passable** |
+| Moins de 4 | **Mauvais** |
 
-## Associé
+## Où le voir
 
-- L'indice de touche est capturé automatiquement sur chaque [prise](/fr/docs/features/catches).
+- Sur chaque [prise](/fr/docs/features/catches), enregistré au moment de la saisie.
+- Sur chaque [spot](/fr/docs/features/spots), comme note actuelle de ce lieu, obtenue à l'ouverture.

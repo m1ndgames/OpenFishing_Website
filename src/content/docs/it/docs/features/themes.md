@@ -1,16 +1,26 @@
 ---
-title: Temi e aspetto
-description: Il tema ocean con aspetto scuro, chiaro e di sistema, configurabile per utente o globalmente.
+title: "Temi e aspetto"
+description: "Quattro temi di colore, ognuno scuro e chiaro, scelti da ciascuno nelle impostazioni."
 ---
 
-OpenFishing viene fornito con il tema **Ocean** — uno sfondo blu navy profondo con un accento ciano brillante
-(lo stesso aspetto usato da questa documentazione).
+OpenFishing ha quattro temi di colore, ognuno in versione scura e chiara. Scegli entrambi in
+**Impostazioni → Aspetto**, dove imposti anche la [lingua](/it/docs/features/languages) dell'app.
 
-## Aspetto
+## Temi
 
-- **Scuro, chiaro o di sistema** — scegli un aspetto fisso o segui la preferenza del tuo sistema operativo.
-- **Per utente vs globale** — in modalità [multiutente](/it/docs/multi-user/authentication) ogni utente può
-  impostare il proprio aspetto; in modalità single-tenant la scelta è globale.
+- **Ocean**: blu notte con accento ciano. Il predefinito, e lo stile di questo sito.
+- **Forest**: accento verde.
+- **Sunset**: accento arancione.
+- **Dusk**: accento viola.
 
-Il sito che stai leggendo rispecchia l'app: la modalità scura è quella predefinita, con un interruttore in alto
-a destra che conserva la tua scelta.
+## Scuro, chiaro o sistema
+
+Scegli **Scuro**, **Chiaro** o **Sistema** per seguire l'impostazione del telefono o del computer.
+
+## A chi si applica
+
+Con l'[accesso](/it/docs/multi-user/authentication) attivo, ognuno sceglie il proprio tema e aspetto. Senza accesso, la
+scelta vale per tutti quelli che usano l'istanza.
+
+L'admin imposta l'**Aspetto predefinito** in **Impostazioni → Admin**: modalità colore e tema della schermata di accesso e di
+chi non ha ancora scelto.

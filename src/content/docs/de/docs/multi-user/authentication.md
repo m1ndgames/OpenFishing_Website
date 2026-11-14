@@ -1,54 +1,59 @@
 ---
 title: Mehrbenutzer & Authentifizierung
-description: Aktiviere den Login, um Freunde und Familie zu hosten, mit benutzerbezogener Trennung, Kontingenten, einem Admin-Panel und SMTP-Passwort-Reset.
+description: Schalte den Login ein, um Freunde und Familie zu hosten, lege Konten an, setze Speicherkontingente und hilf bei vergessenen Passwörtern.
 ---
 
-Standardmäßig läuft OpenFishing **single-tenant und vollständig offen** — ohne Login. Setze die
-Umgebungsvariable **`ADMIN_PASSWORD`**, um den **Mehrbenutzer-Modus** zu aktivieren.
+Ab Werk hat OpenFishing **eine gemeinsame Sammlung und keinen Login**: Wer die Adresse öffnen
+kann, kann es nutzen. Im eigenen, vertrauenswürdigen Heimnetz ist das in Ordnung. Willst du
+Freunde und Familie hosten oder OpenFishing aus dem Internet erreichen, schalte den Login ein.
 
-## Login aktivieren
+## Login einschalten
 
-Setze `ADMIN_PASSWORD` (siehe [Umgebungsvariablen](/de/docs/configuration/environment-variables)):
+Die Compose-Datei aus [OpenFishing installieren](/de/docs/getting-started/installation) enthält
+die Zeile schon, mit einem `#` abgeschaltet:
 
-```yaml
-environment:
-  - ADMIN_PASSWORD=change_me
+```yaml title="docker-compose.yml"
+    environment:
+      # Login: # weg, Passwort eintragen
+      # - ADMIN_PASSWORD=
 ```
 
-Sobald gesetzt, erscheint ein Login-Bildschirm. Benutzer melden sich mit ihrer **E-Mail/ihrem Benutzernamen +
-Passwort** an.
-
-:::note
-`AUTH_PASSWORD` ist ein **veralteter** Ausweichname für `ADMIN_PASSWORD`. Verwende `ADMIN_PASSWORD`.
-:::
+Entferne das `# ` vor `- ADMIN_PASSWORD=`, schreib dein eigenes Passwort direkt hinter das `=`
+und führe `docker compose up -d` aus. Ein Anmeldebildschirm erscheint: Melde dich mit dem
+Benutzernamen **admin** und diesem Passwort an.
 
 ## Das Admin-Konto
 
-- Das **`admin`**-Konto existiert immer, wenn die Authentifizierung aktiviert ist.
-- Sein Benutzername ist immer `admin`; sein Passwort ist das, worauf `ADMIN_PASSWORD` gesetzt ist.
-- Es wird **bei jedem Start aus der Umgebungsvariable neu synchronisiert**, sodass das Ändern der Variable und
-  ein Neustart das Passwort aktualisiert.
+- Der Benutzername ist immer `admin`.
+- Das Passwort ist, was in `ADMIN_PASSWORD` steht. OpenFishing liest es bei jedem Start. Zum
+  Ändern bearbeitest du die Zeile und führst `docker compose up -d` erneut aus.
 
-## Das Admin-Panel
+## Ein Familienmitglied hinzufügen
 
-Admins erhalten ein Panel unter **`/settings/admin`**, um die Instanz zu verwalten:
+1. Melde dich als `admin` an und öffne **Einstellungen → Admin**.
+2. Fülle unter **Benutzer anlegen** die Felder **E-Mail**, **Benutzername** und **Passwort** aus.
+3. Lass **Kontingent (MB)** leer für unbegrenzte Uploads, oder gib eine Zahl ein.
+4. Wähle **Anlegen**.
 
-- **Benutzer** — Konten erstellen, aktivieren/deaktivieren und verwalten.
-- **Speicherkontingente** — begrenze, wie viel jeder Benutzer hochladen kann.
-- **Chatbot-Schalter** — [KI-Funktionen](/de/docs/ai/ai-features) pro Benutzer aktivieren/deaktivieren.
-- **API-Tokens** — [REST-API](/de/docs/api/rest-api)-Bearer-Tokens verwalten.
+Schick der Person die Adresse, ihren Benutzernamen und das Passwort. Sie meldet sich mit E-Mail
+oder Benutzername an und kann unter **Einstellungen → Mein Konto → Passwort ändern** ein neues
+Passwort wählen.
 
-## Benutzerbezogene Datentrennung
+## Wer was sieht
 
-Die Köder, Stellen, Fänge und Ausrüstung jedes Benutzers sind **isoliert** — Benutzer sehen nur ihre eigenen Daten.
+Jedes Konto hat eigene Köder, Angelstellen, Fänge und Ausrüstung. Niemand sieht die Daten anderer.
 
-## Passwort-Reset (SMTP)
+## Konten verwalten
 
-Wenn du SMTP konfigurierst (mindestens `SMTP_HOST` und `SMTP_FROM`), können Benutzer vergessene Passwörter per
-E-Mail zurücksetzen. Ohne konfiguriertes SMTP ist die Reset-Option ausgeblendet. Siehe die
-[SMTP-Variablen](/de/docs/configuration/environment-variables).
+**Einstellungen → Admin** listet alle Konten. Bei jedem kannst du Benutzername und E-Mail ändern, das
+Speicherkontingent anpassen und im Feld **Passwort zurücksetzen** ein neues Passwort eintragen, dann wählst du
+**Speichern**. Außerdem kannst du den [KI-Chatbot](/de/docs/ai/ai-features) ein- oder ausschalten, für die
+[REST-API](/de/docs/api/rest-api) **Token neu erzeugen**, das Konto **Deaktivieren** oder **Löschen**. Löschen
+entfernt das Konto und alle seine Daten endgültig.
 
-## Benutzerbezogene Speicherkontingente
+## Vergessene Passwörter
 
-Admins können **Speicherkontingente** pro Benutzer im Admin-Panel festlegen, sodass kein einzelner Benutzer die
-Festplatte mit Uploads füllen kann.
+- **Ein Familienmitglied:** Der Admin trägt im Feld **Passwort zurücksetzen** des Kontos unter **Einstellungen → Admin** ein neues Passwort ein und wählt **Speichern**. Ist E-Mail eingerichtet (mindestens `SMTP_HOST` und `SMTP_FROM`, siehe
+  [Umgebungsvariablen](/de/docs/configuration/environment-variables)), bietet der
+  Anmeldebildschirm zusätzlich einen Link per E-Mail an.
+- **Der Admin:** Ändere `ADMIN_PASSWORD` und führe `docker compose up -d` aus.

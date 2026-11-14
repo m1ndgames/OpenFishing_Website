@@ -1,47 +1,61 @@
 ---
 title: REST-API
-description: Die schreibgeschützte JSON-API von OpenFishing mit benutzerbezogener Bearer-Token-Authentifizierung und integrierter Swagger-UI.
+description: "Die schreibgeschützte JSON-API von OpenFishing: ein Token pro Konto, die Endpunkte und die eingebaute Swagger-Oberfläche."
 ---
 
-OpenFishing stellt eine **schreibgeschützte JSON-API** unter **`/api/v1/*`** bereit, sodass du deine Daten in
-andere Tools ziehen kannst.
+OpenFishing hat eine **schreibgeschützte JSON-API**, mit der du Köder, Angelstellen, Fänge und
+Ausrüstung in andere Werkzeuge holst: eine Tabelle, ein Heim-Dashboard, ein Skript. Ändern lässt
+sich darüber nichts.
 
-## Authentifizierung
+## Dein Token
 
-- Die Authentifizierung erfolgt **pro Benutzer** über ein Bearer-Token:
+- **Login eingeschaltet:** Jedes Konto hat ein eigenes Token. Kopiere es unter **Einstellungen →
+  Mein Konto → API-Token**. **Token neu erzeugen** stellt ein neues aus; das alte funktioniert
+  dann nicht mehr.
+- **Kein Login** (eine gemeinsame Sammlung, siehe [Mehrbenutzer & Authentifizierung](/de/docs/multi-user/authentication)):
+  Die API ist ebenfalls offen und braucht kein Token.
 
-  ```http
-  Authorization: Bearer <apiToken>
-  ```
+Schick das Token im Header `Authorization` mit:
 
-- Wenn die [Authentifizierung](/de/docs/multi-user/authentication) **deaktiviert** ist (offener
-  Single-Tenant-Modus), ist auch die API offen — kein Token erforderlich.
-- Im Mehrbenutzer-Modus erstellst und verwaltest du API-Tokens über das Admin-Panel.
+```http
+Authorization: Bearer <dein Token>
+```
 
-## Ressourcen-Endpunkte
+## Endpunkte
 
-Jede Ressource unterstützt einen **Listen**- und einen **Nach-ID**-Endpunkt:
+Jede Ressource hat eine Liste und einen Einzeleintrag:
 
-| Ressource | Liste | Nach ID |
-|---|---|---|
-| Köder | `GET /api/v1/lures` | `GET /api/v1/lures/{id}` |
-| Stellen | `GET /api/v1/spots` | `GET /api/v1/spots/{id}` |
-| Fänge | `GET /api/v1/catches` | `GET /api/v1/catches/{id}` |
-| Ruten | `GET /api/v1/rods` | `GET /api/v1/rods/{id}` |
-| Rollen | `GET /api/v1/reels` | `GET /api/v1/reels/{id}` |
-| Schnüre | `GET /api/v1/lines` | `GET /api/v1/lines/{id}` |
-| Combos | `GET /api/v1/combos` | `GET /api/v1/combos/{id}` |
+- `GET /api/v1/<resource>` listet sie auf.
+- `GET /api/v1/<resource>/{id}` liefert einen.
 
-Die API ist **schreibgeschützt** — es gibt keine Schreib-Endpunkte.
+Die Ressourcen sind `lures`, `spots`, `catches`, `rods`, `reels`, `lines` und `combos`. Mit
+Login bekommst du nur die Daten deines eigenen Kontos.
 
-## Swagger-UI & OpenAPI-Spezifikation
+## Im Browser ausprobieren
 
-- Erkunde und teste die API interaktiv mit der integrierten **Swagger-UI unter `/api-docs`**.
-- Die rohe **OpenAPI-Spezifikation** wird unter **`/api/openapi`** bereitgestellt.
+- **`/api-docs`** auf deiner Instanz öffnet eine Swagger-Oberfläche, in der du jeden Endpunkt testen kannst.
+- **`/api/openapi`** liefert die OpenAPI-Spezifikation für Werkzeuge, die Clients erzeugen.
 
 ## Beispiel
 
 ```bash
 curl -H "Authorization: Bearer $OPENFISHING_TOKEN" \
-  https://fishing.yourdomain.com/api/v1/lures
+  http://192.168.1.50:3000/api/v1/lures
+```
+
+Die Antwort ist JSON. Jeder Köder enthält alle seine Felder; hier gekürzt:
+
+```json
+[
+  {
+    "id": "6f1c2b7e-3d4a-4b8e-9f21-0a5c7d9e1b34",
+    "lureNumber": 1,
+    "name": "Perch shad",
+    "brand": "Example",
+    "color": "Perch",
+    "favourite": true,
+    "lost": false,
+    "tags": ["perch", "river"]
+  }
+]
 ```

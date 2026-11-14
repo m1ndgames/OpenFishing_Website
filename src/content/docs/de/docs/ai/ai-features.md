@@ -1,74 +1,90 @@
 ---
 title: KI-Funktionen
-description: Aktiviere den optionalen selbst gehosteten Chatbot und die fotobasierte Fisch- und Ködererkennung über einen LiteLLM-Sidecar.
+description: "Schalte den optionalen Chatbot Angelkumpel und die Fotoerkennung mit einem LiteLLM-Proxy neben OpenFishing ein."
 ---
 
-OpenFishing hat **optionale** KI-Funktionen, die von einem **[LiteLLM](https://litellm.ai/)**-Proxy angetrieben
-werden, den du selbst betreibst. Deine API-Schlüssel bleiben serverseitig — sie werden niemals dem Browser
-offengelegt.
+OpenFishing hat zwei **optionale** KI-Funktionen: den Chatbot **Angelkumpel** und **Aus Foto erkennen**. Beide laufen
+über [LiteLLM](https://litellm.ai/), einen kleinen Proxy neben OpenFishing, der Anfragen an den
+KI-Anbieter deiner Wahl weiterleitet. Dein API-Schlüssel bleibt auf deinem Server.
 
-## Den Chatbot aktivieren
+## Einrichten
 
-Setze diese Umgebungsvariablen (siehe [Umgebungsvariablen](/de/docs/configuration/environment-variables)):
+1. Lege im Ordner mit deiner `docker-compose.yml` die Datei `litellm.config.yaml` an:
 
-```yaml
-environment:
-  - CHATBOT=true
-  - LITELLM_URL=http://litellm:4000
-  - LITELLM_MODEL=your-model-name
-```
+   ```yaml title="litellm.config.yaml"
+   model_list:
+     - model_name: claude-sonnet
+       litellm_params:
+         model: anthropic/claude-sonnet-4-6
+         api_key: os.environ/ANTHROPIC_API_KEY
+   ```
 
-- **`CHATBOT`** — jeder truthy-Wert aktiviert das schwebende Chat-Widget.
-- **`LITELLM_URL`** — die Basis-URL deines LiteLLM-Proxys.
-- **`LITELLM_MODEL`** — ein Modellname, der einem Eintrag in deiner `litellm.config.yaml` entspricht.
+2. Trag den API-Schlüssel deines Anbieters in eine Datei namens `.env` im selben Ordner ein:
 
-Der Chatbot kann Fragen zu **deinen eigenen Daten** beantworten (deine Köder, Stellen, Fänge und Ausrüstung).
+   ```bash title=".env"
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
 
-## LiteLLM als Sidecar betreiben
+3. Ersetze deine `docker-compose.yml` durch diese Fassung. Sie ist die Installationsdatei plus die
+   KI-Zeilen und der Dienst `litellm`; behalte deine eigenen Zeilen für Adresse, Zeitzone und Passwort.
 
-Betreibe LiteLLM neben OpenFishing im selben Compose-Projekt:
+   ```yaml title="docker-compose.yml" wrap=false
+   services:
+     openfishing:
+       image: ghcr.io/m1ndgames/openfishing
+       container_name: openfishing
+       restart: unless-stopped
+       ports:
+         - "3000:3000"
+       volumes:
+         - openfishing-db:/app/data
+         - openfishing-uploads:/app/uploads
+       environment:
+         # Adresse, unter der du es öffnest
+         - BASE_URL=http://192.168.1.50:3000
+         # Deine Zeitzone
+         - TZ=Europe/Berlin
+         # Login: # weg, Passwort eintragen
+         # - ADMIN_PASSWORD=
+         - CHATBOT=true
+         - LITELLM_URL=http://litellm:4000
+         - LITELLM_MODEL=claude-sonnet
+       depends_on:
+         - litellm
 
-```yaml
-services:
-  openfishing:
-    image: ghcr.io/m1ndgames/openfishing:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - CHATBOT=true
-      - LITELLM_URL=http://litellm:4000
-      - LITELLM_MODEL=your-model-name
-      - LITELLM_VISION_MODEL=your-vision-model   # optional
-    volumes:
-      - openfishing-db:/app/data
-      - openfishing-uploads:/app/uploads
+     litellm:
+       image: ghcr.io/berriai/litellm:main-latest
+       command: ["--config", "/config.yaml"]
+       volumes:
+         - ./litellm.config.yaml:/config.yaml
+       env_file:
+         - .env
 
-  litellm:
-    image: ghcr.io/berriai/litellm:main-latest
-    command: ["--config", "/app/config.yaml"]
-    volumes:
-      - ./litellm.config.yaml:/app/config.yaml
-    # Gib hier deine Provider-API-Schlüssel an, z. B. über eine env_file
+   volumes:
+     openfishing-db:
+     openfishing-uploads:
+   ```
 
-volumes:
-  openfishing-db:
-  openfishing-uploads:
-```
+4. Führe `docker compose up -d` erneut aus oder stelle den Stack in deiner NAS-App neu bereit.
 
-Deine `litellm.config.yaml` definiert die Modelle (`LITELLM_MODEL` / `LITELLM_VISION_MODEL` müssen mit den dort
-deklarierten Namen übereinstimmen). Provider-API-Schlüssel werden auf der **LiteLLM**-Seite konfiguriert und
-erreichen niemals das Frontend von OpenFishing.
+Lieber OpenAI? Nutze in `litellm.config.yaml` `model: openai/gpt-4o` mit
+`api_key: os.environ/OPENAI_API_KEY` und trag stattdessen `OPENAI_API_KEY` in `.env` ein. `LITELLM_MODEL`
+muss zu einem `model_name` in der Datei passen.
 
-## Fotoerkennung
+## Angelkumpel
 
-Wenn du **`LITELLM_VISION_MODEL`** setzt (ein bilderkennungsfähiges Modell), fügt OpenFishing Folgendes hinzu:
+Mit `CHATBOT=true` öffnet ein Chat-Button den **Angelkumpel**. Er beantwortet Fragen zu deinen eigenen
+Ködern, Angelstellen, Fängen und deiner Ausrüstung und kennt das aktuelle Wetter, wenn du nach einem
+Ort fragst. Mit Login kann der Admin ihn pro Person in **Einstellungen → Admin** abschalten (**Chatbot: an**).
 
-- **Fischerkennung** — schlage eine Art aus einem Foto im **Fang-Formular** vor.
-- **Ködererkennung** — erkenne einen Köder aus einem Foto im **Köder-hinzufügen-Formular**.
+## Aus Foto erkennen
 
-Wenn `LITELLM_VISION_MODEL` nicht gesetzt ist, greift die Erkennung auf `LITELLM_MODEL` zurück.
+Wenn du einen neuen Fang oder Köder anlegst, erscheint **Aus Foto erkennen**, sobald ein Foto da ist. Es schlägt
+die Art oder die Angaben zum Köder vor. Es braucht `LITELLM_URL` und nutzt `LITELLM_VISION_MODEL`,
+falls gesetzt (ein Modell, das Bilder lesen kann), sonst `LITELLM_MODEL`. `CHATBOT` braucht es nicht.
+Ohne KI-Einrichtung erscheint die Schaltfläche trotzdem, antwortet aber „Etwas ist schiefgelaufen. Bitte versuche es erneut.“
 
 :::note
-KI-Funktionen sind vollständig optional. Ohne eine dieser Variablen läuft OpenFishing genau wie zuvor — kein
-Chatbot, keine Erkennung.
+Ohne diese Einstellungen gibt es keinen Chatbot, und **Aus Foto erkennen** kann nicht antworten; alles andere
+funktioniert gleich. Alle Einstellungen stehen unter [Umgebungsvariablen](/de/docs/configuration/environment-variables).
 :::

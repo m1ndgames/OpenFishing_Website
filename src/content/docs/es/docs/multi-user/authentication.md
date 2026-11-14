@@ -1,54 +1,60 @@
 ---
 title: Multiusuario y autenticación
-description: Activa el inicio de sesión para alojar a amigos y familia, con aislamiento por usuario, cuotas, un panel de administración y restablecimiento de contraseña por SMTP.
+description: Activa el inicio de sesión para alojar a amigos y familia, crea cuentas, fija cuotas de almacenamiento y gestiona contraseñas olvidadas.
 ---
 
-Por defecto, OpenFishing funciona en modo **de un solo inquilino y totalmente abierto** — sin inicio de sesión.
-Define la variable de entorno **`ADMIN_PASSWORD`** para activar el **modo multiusuario**.
+De serie, OpenFishing tiene **una sola colección compartida y ningún inicio de sesión**:
+cualquiera que pueda abrir su dirección puede usarlo. En una red doméstica de confianza está
+bien. Para alojar a amigos y familia, o para llegar a OpenFishing desde internet, activa el
+inicio de sesión.
 
 ## Activar el inicio de sesión
 
-Define `ADMIN_PASSWORD` (consulta [Variables de entorno](/es/docs/configuration/environment-variables)):
+El archivo compose de [Instalar OpenFishing](/es/docs/getting-started/installation) ya tiene la
+línea, desactivada con un `#`:
 
-```yaml
-environment:
-  - ADMIN_PASSWORD=change_me
+```yaml title="docker-compose.yml"
+    environment:
+      # Login: quita # y pon contraseña
+      # - ADMIN_PASSWORD=
 ```
 
-Una vez definido, aparece una pantalla de inicio de sesión. Los usuarios inician sesión con su **correo/nombre
-de usuario + contraseña**.
-
-:::note
-`AUTH_PASSWORD` es un nombre alternativo **obsoleto** para `ADMIN_PASSWORD`. Usa `ADMIN_PASSWORD`.
-:::
+Quita el `# ` delante de `- ADMIN_PASSWORD=`, escribe tu propia contraseña justo después del `=`
+y ejecuta `docker compose up -d`. Aparece una pantalla de inicio de sesión: entra con el usuario
+**admin** y esa contraseña.
 
 ## La cuenta admin
 
-- La cuenta **`admin`** siempre existe cuando la autenticación está habilitada.
-- Su nombre de usuario es siempre `admin`; su contraseña es la que se defina en `ADMIN_PASSWORD`.
-- Se **vuelve a sincronizar desde la variable de entorno en cada arranque**, por lo que cambiar la variable y
-  reiniciar actualiza la contraseña.
+- El nombre de usuario es siempre `admin`.
+- La contraseña es la que diga `ADMIN_PASSWORD`. OpenFishing la lee en cada arranque: para
+  cambiarla, edita la línea y vuelve a ejecutar `docker compose up -d`.
 
-## El panel de administración
+## Añadir a un familiar
 
-Los administradores tienen un panel en **`/settings/admin`** para gestionar la instancia:
+1. Entra como `admin` y abre **Ajustes → Admin**.
+2. En **Crear usuario**, rellena **Correo**, **Nombre de usuario** y **Contraseña**.
+3. Deja **Cuota (MB)** vacía para no limitar las subidas, o escribe un número.
+4. Elige **Crear**.
 
-- **Usuarios** — crear, habilitar/deshabilitar y gestionar cuentas.
-- **Cuotas de almacenamiento** — limitar cuánto puede subir cada usuario.
-- **Interruptor del chatbot** — habilitar/deshabilitar las [funciones de IA](/es/docs/ai/ai-features) por usuario.
-- **Tokens de API** — gestionar los tokens Bearer de la [API REST](/es/docs/api/rest-api).
+Envíale la dirección, su nombre de usuario y la contraseña. Entra con su correo o su nombre de
+usuario y puede elegir una contraseña nueva en **Ajustes → Mi cuenta → Cambiar contraseña**.
 
-## Aislamiento de datos por usuario
+## Quién ve qué
 
-Los señuelos, puntos, capturas y aparejos de cada usuario están **aislados** — los usuarios solo ven sus propios datos.
+Cada cuenta tiene sus propios señuelos, puntos, capturas y aparejos. Nadie ve los de los demás.
 
-## Restablecimiento de contraseña (SMTP)
+## Gestionar cuentas
 
-Si configuras SMTP (al menos `SMTP_HOST` y `SMTP_FROM`), los usuarios pueden restablecer contraseñas olvidadas
-por correo. Sin SMTP configurado, la opción de restablecimiento está oculta. Consulta las
-[variables SMTP](/es/docs/configuration/environment-variables).
+**Ajustes → Admin** muestra todas las cuentas. En cada una puedes editar el usuario y el email, cambiar
+la cuota de almacenamiento y escribir una contraseña nueva en el campo **Restablecer contraseña**, y luego seleccionar
+**Guardar**. También puedes activar o desactivar el [chatbot de IA](/es/docs/ai/ai-features), **Regenerar token** para la
+[API REST](/es/docs/api/rest-api), **Desactivar** la cuenta o **Eliminarla**. Eliminar borra la cuenta y todos sus
+datos para siempre.
 
-## Cuotas de almacenamiento por usuario
+## Contraseñas olvidadas
 
-Los administradores pueden establecer **cuotas de almacenamiento** por usuario desde el panel de administración,
-para que ningún usuario pueda llenar el disco con subidas.
+- **Un familiar:** el admin escribe una contraseña nueva en el campo **Restablecer contraseña** de esa cuenta, en **Ajustes → Admin**, y selecciona **Guardar**. Con el correo
+  configurado (al menos `SMTP_HOST` y `SMTP_FROM`, ver
+  [Variables de entorno](/es/docs/configuration/environment-variables)), la pantalla de inicio
+  de sesión también ofrece un enlace por correo.
+- **El admin:** cambia `ADMIN_PASSWORD` y ejecuta `docker compose up -d`.

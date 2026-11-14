@@ -3,6 +3,7 @@
  * Tailwind's preflight/utilities never leak into Starlight's /docs pages.
  */
 @import 'tailwindcss';
+@import './fonts.css';
 @import './theme.css';
 
 /* Expose the ocean tokens to Tailwind. `inline` makes utilities resolve to the
@@ -34,7 +35,6 @@
   --color-success: var(--of-success);
   --color-warning: var(--of-warning);
 
-  --font-heading: var(--font-heading);
   --font-sans: var(--font-sans);
   --font-mono: var(--font-mono);
 
@@ -78,10 +78,48 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-heading);
+    font-family: var(--font-sans);
     color: var(--of-text-bright);
-    font-weight: 400;
-    line-height: 1.1;
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  :where(code, kbd, pre, samp) {
+    font-family: var(--font-mono);
+  }
+
+  /* Avoid one-word last lines ("infra.", "license.") in body copy. */
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Content sits above the decorative fish layer (fixed, z-index 0). */
+  main {
+    position: relative;
+    z-index: 1;
+  }
+  main:focus {
+    outline: none;
+  }
+
+  /* Keyboard skip link: off-screen until focused, then a pill top-left. */
+  .skip-link {
+    position: fixed;
+    top: -5rem;
+    left: 0.75rem;
+    z-index: 100;
+    padding: 0.6rem 1rem;
+    font-weight: 600;
+    color: var(--of-text-bright);
+    background: var(--of-bg-surface);
+    border: 1px solid var(--of-accent-border);
+    border-radius: var(--radius-control);
+    text-decoration: none;
+  }
+  .skip-link:focus {
+    top: 0.75rem;
   }
 
   ::selection {
@@ -91,7 +129,7 @@
 }
 
 @layer components {
-  /* Primary button — §3.5 */
+  /* Primary button: one per view, the demo */
   .btn-primary {
     display: inline-flex;
     align-items: center;
@@ -99,19 +137,21 @@
     gap: 0.5rem;
     background: var(--of-accent-solid);
     color: var(--of-ink);
-    font-weight: 700;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.4;
     border-radius: var(--radius-control);
-    padding: 0.7rem 1.25rem;
+    padding: 10px 24px;
     border: none;
     cursor: pointer;
-    transition: background 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    text-decoration: none;
+    transition: background-color var(--of-dur-fast) var(--of-ease);
   }
   .btn-primary:hover {
-    background: var(--of-accent-hover);
-    box-shadow: 0 8px 28px var(--of-accent-glow);
+    background: var(--of-accent);
   }
 
-  /* Ghost / secondary button — §3.5 */
+  /* Secondary button */
   .btn-ghost {
     display: inline-flex;
     align-items: center;
@@ -119,20 +159,23 @@
     gap: 0.5rem;
     background: var(--of-bg-elevated);
     color: var(--of-text-2);
-    font-weight: 600;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.4;
     border-radius: var(--radius-control);
-    padding: 0.7rem 1.25rem;
+    padding: 10px 20px;
     border: 1px solid var(--of-border);
     cursor: pointer;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+    text-decoration: none;
+    transition: border-color var(--of-dur-fast) var(--of-ease), color var(--of-dur-fast) var(--of-ease), background-color var(--of-dur-fast) var(--of-ease);
   }
   .btn-ghost:hover {
     border-color: var(--of-border-strong);
-    color: var(--of-text-bright);
+    color: var(--of-text);
     background: var(--of-bg-hover);
   }
 
-  /* Text / link button — §3.5 */
+  /* Text / link button */
   .btn-text {
     display: inline-flex;
     align-items: center;
@@ -142,34 +185,38 @@
     background: transparent;
     border: none;
     cursor: pointer;
+    text-decoration: none;
+    transition: color var(--of-dur-fast) var(--of-ease);
   }
   .btn-text:hover {
     color: var(--of-accent-hover);
   }
 
-  /* Card — §3.5 */
+  /* Card: flat at rest, glow only on hover */
   .card {
     background: var(--of-bg-surface);
     border: 1px solid var(--of-border-subtle);
     border-radius: var(--radius-card);
     overflow: hidden;
-    transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+    transition: border-color var(--of-dur-fast) var(--of-ease), box-shadow var(--of-dur-fast) var(--of-ease);
   }
   .card-hover:hover {
     border-color: var(--of-accent-border);
     box-shadow: 0 8px 32px var(--of-accent-glow);
   }
 
-  /* Chip / pill — §3.5 */
+  /* Chip / pill */
   .chip {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     border-radius: var(--radius-pill);
-    font-size: 0.72rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    line-height: 1.5;
     padding: 3px 10px;
-    border: 1px solid var(--of-border);
-    color: var(--of-text-2);
+    border: 1px solid var(--of-border-subtle);
+    color: var(--of-text-4);
     background: transparent;
   }
   .chip-active {
@@ -178,13 +225,15 @@
     color: var(--of-accent);
   }
 
-  /* Badge (count) — §3.5 */
+  /* Badge (catalogued count, mono) */
   .badge {
     display: inline-flex;
     align-items: center;
     border-radius: var(--radius-pill);
-    font-size: 0.68rem;
-    font-weight: 700;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     padding: 2px 8px;
     background: var(--of-accent-bg-hover);
     border: 1px solid var(--of-accent-border);
@@ -192,9 +241,12 @@
   }
 }
 
-/* Focus ring — §3.5 (kept outside @layer so it always wins) */
-:where(a, button, input, select, textarea, [tabindex]):focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--of-accent-bg-hover);
-  border-radius: var(--radius-control);
+/* Keyboard focus ring, as in the app (kept outside @layer so it always wins) */
+:where(a, button, summary, [role='button'], [tabindex]:not([tabindex='-1'])):focus-visible {
+  outline: 2px solid var(--of-accent-solid);
+  outline-offset: 2px;
+}
+:where(input, textarea):focus-visible {
+  outline: 2px solid var(--of-accent-border);
+  outline-offset: 0;
 }

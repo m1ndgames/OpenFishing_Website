@@ -1,16 +1,22 @@
 ---
-title: Statistiken
-description: Aggregierte Trends und Einblicke über deine Fänge und Ausrüstung.
+title: "Statistik"
+description: "Was die Statistik zeigt: Summen, Bestleistungen, deine besten Köder, Stellen und Köderführungen und wann du Fische fängst."
 ---
 
-Die **Statistik**-Ansicht aggregiert deine Daten zu Trends und Einblicken, sodass dein Logbuch zu etwas wird,
-aus dem du lernen kannst.
+Die **Statistik** macht aus deinem Fangbuch Zahlen, aus denen du lernen kannst. Du öffnest sie über
+**Statistik** im Menü.
 
-## Was aggregiert wird
+## Was sie zeigt
 
-- Trends über deine **[Fänge](/de/docs/features/catches)** im Zeitverlauf.
-- Einblicke in deine **Ausrüstung** — welche [Ausrüstung](/de/docs/features/tackle) und
-  [Köder](/de/docs/features/lures) an deinen Fängen beteiligt sind.
+- **Fänge gesamt**, **Fischarten**, **Angelstellen**, **C&R Rate** (der Anteil der zurückgesetzten Fische).
+- **Persönliche Bestleistungen**: deine größten Fische.
+- **Top Köder**, **Top Stellen**, **Top Köderführungen**: was deine Fänge gemeinsam haben.
+- **Monatliche Aktivität**, **Wochentag**, **Tageszeit**. Sie erscheinen, sobald du 5 Fänge eingetragen hast.
 
-Da alles aus deiner eigenen Datenbank berechnet wird, sind die Zahlen immer aktuell und vollständig privat
-für deine Instanz.
+Alles wird aus deiner eigenen Datenbank auf deinem Server berechnet. Mit Login sieht jede Person nur
+ihre eigenen Fänge.
+
+## Verwandt
+
+- Die Zahlen stammen aus deinen [Fängen](/de/docs/features/catches) mit ihrem Köder und ihrer Köderführung.
+- Die Wetterwertung jedes Fangs erklärt der [Beissindex](/de/docs/features/bite-index).

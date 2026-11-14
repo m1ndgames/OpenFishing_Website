@@ -1,15 +1,21 @@
 ---
-title: Statistieken
-description: Geaggregeerde trends en inzichten over je vangsten en uitrusting.
+title: "Statistieken"
+description: "Wat de statistieken laten zien: totalen, records, je beste aas, spots en technieken, en wanneer je vis vangt."
 ---
 
-De **statistieken**-weergave aggregeert je gegevens tot trends en inzichten, zodat je logboek iets wordt
-waarvan je kunt leren.
+**Statistieken** maken van je vangstlogboek cijfers waar je van leert. Open ze via **Statistieken** in het menu.
 
-## Wat wordt geaggregeerd
+## Wat ze laten zien
 
-- Trends in je **[vangsten](/nl/docs/features/catches)** in de loop van de tijd.
-- Inzichten over je **uitrusting** — welke [uitrusting](/nl/docs/features/tackle) en
-  [kunstaas](/nl/docs/features/lures) betrokken zijn bij je vangsten.
+- **Totale vangsten**, **Soorten**, **Spots**, **C&R ratio** (het aandeel teruggezette vissen).
+- **Persoonlijke records**: je grootste vissen.
+- **Top aas**, **Top spots**, **Top technieken**: wat je vangsten gemeen hebben.
+- **Maandelijkse activiteit**, **Dag van de week**, **Tijdstip van de dag**. Ze verschijnen zodra je 5 vangsten hebt vastgelegd.
 
-Omdat alles wordt berekend uit je eigen database, zijn de cijfers altijd actueel en volledig privé voor je instantie.
+Alles wordt berekend uit je eigen database op je eigen server. Met inloggen aan ziet iedereen alleen
+de eigen vangsten.
+
+## Gerelateerd
+
+- De cijfers komen uit de [vangsten](/nl/docs/features/catches) die je vastlegt, met hun aas en techniek.
+- De weerscore van elke vangst wordt uitgelegd in [Bijt-index](/nl/docs/features/bite-index).

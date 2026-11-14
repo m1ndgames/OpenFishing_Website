@@ -6,14 +6,15 @@ description: Imprimez de petites étiquettes QR-code pour vos leurres afin de re
 OpenFishing peut générer des **étiquettes QR-code** pour qu'un leurre physique renvoie directement à son entrée
 dans votre bibliothèque.
 
-## Imprimer des étiquettes
+## Imprimer les étiquettes
 
-- Les étiquettes sont dimensionnées pour un support d'étiquettes de **12,5 mm** — assez petites pour tenir sur
-  un leurre ou sa boîte.
-- Vous pouvez imprimer des étiquettes pour les **leurres non étiquetés** par lot.
-- Chaque étiquette encode un lien construit à partir de votre **`BASE_URL`**, pour que le scan ouvre le bon
-  leurre. Assurez-vous que `BASE_URL` est défini sur votre véritable URL publique — voir
-  [Variables d'environnement](/fr/docs/configuration/environment-variables).
+1. Ouvrez **Paramètres → Codes QR**. La page **Étiquettes QR manquantes** liste les leurres qui n'ont pas encore d'étiquette.
+2. Sélectionnez **Imprimer les codes QR** et imprimez sur des étiquettes de **12,5 mm**, assez petites pour un leurre ou sa boîte. Chaque étiquette mesure environ 41 mm de long.
+3. Collez chaque étiquette, puis sélectionnez **Apposer l'étiquette** pour ce leurre afin qu'il quitte la liste.
+
+Chaque étiquette contient un lien construit à partir de votre **`BASE_URL`** : la scanner ouvre ce
+leurre. Réglez `BASE_URL` sur l'adresse où vous ouvrez OpenFishing ; voir
+[Variables d'environnement](/fr/docs/configuration/environment-variables). Avec la connexion activée, le leurre ne s'ouvre que sur un téléphone connecté.
 
 ## Associé
 

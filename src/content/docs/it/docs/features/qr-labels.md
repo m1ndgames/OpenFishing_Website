@@ -8,12 +8,13 @@ libreria.
 
 ## Stampare le etichette
 
-- Le etichette sono dimensionate per supporti da **12,5 mm** — abbastanza piccole da stare su un'esca o sulla
-  sua scatola.
-- Puoi stampare etichette per le **esche non etichettate** in blocco.
-- Ogni etichetta codifica un link costruito dalla tua **`BASE_URL`**, così la scansione apre l'esca giusta.
-  Assicurati che `BASE_URL` sia impostata sul tuo vero URL pubblico — vedi
-  [Variabili d'ambiente](/it/docs/configuration/environment-variables).
+1. Apri **Impostazioni → Codici QR**. La pagina **Etichette QR mancanti** elenca le esche che non hanno ancora un'etichetta.
+2. Seleziona **Stampa codici QR** e stampa su etichette da **12,5 mm**, abbastanza piccole per un'esca o la sua scatola. Ogni etichetta è lunga circa 41 mm.
+3. Attacca ogni etichetta, poi seleziona **Applica etichetta** su quell'esca così esce dalla lista.
+
+Ogni etichetta contiene un link costruito dal tuo **`BASE_URL`**, quindi scansionandola si apre
+quell'esca. Imposta `BASE_URL` sull'indirizzo con cui apri OpenFishing; vedi
+[Variabili d'ambiente](/it/docs/configuration/environment-variables). Con il login attivo, l'esca si apre solo su un telefono con accesso effettuato.
 
 ## Correlati
 
