@@ -1,36 +1,38 @@
 ---
-title: Beetindex
-description: Hoe de automatische weerscore van 0–10 van de Beetindex in OpenFishing wordt berekend en beoordeeld.
+title: "Bijt-index"
+description: "Hoe OpenFishing de bijt-index van 0 tot 10 uit het weer berekent en wat de beoordelingen betekenen."
 ---
 
-De **Beetindex** is een automatische score van **0 tot 10** die beoordeelt hoe gunstig de visomstandigheden
-waren voor een bepaalde vangst, op basis van weergegevens.
+De **bijt-index** is een score van **0 tot 10** voor hoe goed het visweer is. OpenFishing berekent
+hem uit het weer op de plek van de vangst **op het moment dat je hem vastlegt** en slaat hem op bij
+de vangst.
 
-## Hoe hij wordt berekend
+:::note
+De score gebruikt het weer bij het opslaan, niet de tijd die je voor de vangst invult. Leg vangsten
+aan het water vast voor een kloppende score; een vangst die je uren later toevoegt, krijgt het weer
+van dat latere moment.
+:::
 
-De index is een gewogen mix van drie uit het weer afgeleide factoren:
+## Zo wordt hij berekend
 
-| Factor | Weging | Idee |
-|---|---|---|
-| **Druktrend** | ×0.5 | Een veranderende luchtdruk beïnvloedt de voedingsactiviteit sterk. |
-| **Licht** | ×0.3 | Lichtniveaus bepalen wanneer vissen actief zijn. |
-| **Temperatuurstabiliteit** | ×0.2 | Stabiele temperaturen betekenen doorgaans voorspelbaarder gedrag. |
+Drie onderdelen, elk met een score van 0 tot 10, worden gewogen en opgeteld:
 
-De weergegevens komen van de gratis [Open-Meteo-API](https://open-meteo.com/). De resulterende score wordt
-opgeslagen als een **momentopname op elke vangst**, zodat hij de omstandigheden van dat moment weergeeft en
-nooit met terugwerkende kracht verandert.
+- **Druktendentie** (50 %): 10 als de luchtdruk in de laatste 3 uur meer dan 1,5 hPa daalde, zoals voor een front; 7 bij gelijke druk; 2 bij stijgende druk.
+- **Lichtomstandigheden** (30 %): 10 bij dageraad (het uur voor zonsopkomst) en schemering (het uur na zonsondergang); 8 in het uur voor zonsondergang; 6 's nachts en in de eerste twee uur na zonsopkomst; 2 overdag.
+- **Temperatuurstabiliteit** (20 %): 10 als de temperatuur in de laatste 3 uur minder dan 3 °C veranderde; 2 bij een grotere sprong.
 
-## Beoordelingslabels
+Je server haalt het weer op bij de gratis dienst [Open-Meteo](https://open-meteo.com/).
 
-De numerieke score komt overeen met een begrijpelijk label:
+## Beoordelingen
 
 | Score | Beoordeling |
 |---|---|
-| Laag | **Slecht** |
-| … | **Matig** |
-| … | **Goed** |
-| Hoog | **Uitstekend** |
+| 8,5 en hoger | **Uitstekend** |
+| 6,5 tot 8,4 | **Goed** |
+| 4 tot 6,4 | **Matig** |
+| Onder 4 | **Slecht** |
 
-## Gerelateerd
+## Waar je hem ziet
 
-- De Beetindex wordt automatisch vastgelegd bij elke [vangst](/nl/docs/features/catches).
+- Bij elke [vangst](/nl/docs/features/catches), opgeslagen bij het vastleggen.
+- Bij elke [spot](/nl/docs/features/spots), als actuele score voor die plek, opgehaald bij het openen.

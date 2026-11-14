@@ -1,73 +1,90 @@
 ---
 title: Функції ШІ
-description: Увімкніть опційний самостійно розміщуваний чат-бот і розпізнавання риби та приманок за фото через сайдкар LiteLLM.
+description: "Увімкніть опційний чат-бот Рибальський Помічник і розпізнавання за фото через проксі LiteLLM поруч з OpenFishing."
 ---
 
-OpenFishing має **опційні** функції ШІ на базі проксі **[LiteLLM](https://litellm.ai/)**, який ви запускаєте
-самостійно. Ваші ключі API залишаються на боці сервера — вони ніколи не розкриваються браузеру.
+OpenFishing має дві **опційні** функції ШІ: чат-бот **Рибальський Помічник** і **Визначити за фото**. Обидві працюють через
+[LiteLLM](https://litellm.ai/), невеликий проксі поруч з OpenFishing, що пересилає запити вибраному
+постачальнику ШІ. Ваш API-ключ залишається на вашому сервері.
 
-## Увімкнення чат-бота
+## Налаштування
 
-Установіть ці змінні середовища (див. [Змінні середовища](/uk/docs/configuration/environment-variables)):
+1. У теці з вашим `docker-compose.yml` створіть `litellm.config.yaml`:
 
-```yaml
-environment:
-  - CHATBOT=true
-  - LITELLM_URL=http://litellm:4000
-  - LITELLM_MODEL=your-model-name
-```
+   ```yaml title="litellm.config.yaml"
+   model_list:
+     - model_name: claude-sonnet
+       litellm_params:
+         model: anthropic/claude-sonnet-4-6
+         api_key: os.environ/ANTHROPIC_API_KEY
+   ```
 
-- **`CHATBOT`** — будь-яке істинне значення вмикає плаваючий віджет чату.
-- **`LITELLM_URL`** — базова URL-адреса вашого проксі LiteLLM.
-- **`LITELLM_MODEL`** — назва моделі, що відповідає запису у вашому `litellm.config.yaml`.
+2. Запишіть API-ключ свого постачальника у файл `.env` у тій самій теці:
 
-Чат-бот може відповідати на запитання про **ваші власні дані** (ваші приманки, місця, улови та спорядження).
+   ```bash title=".env"
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
 
-## Запуск LiteLLM як сайдкара
+3. Замініть ваш `docker-compose.yml` цією версією. Це файл встановлення плюс рядки ШІ та сервіс
+   `litellm`; залиште власні рядки з адресою, часовим поясом і паролем.
 
-Запустіть LiteLLM поруч з OpenFishing у тому самому проєкті compose:
+   ```yaml title="docker-compose.yml" wrap=false
+   services:
+     openfishing:
+       image: ghcr.io/m1ndgames/openfishing
+       container_name: openfishing
+       restart: unless-stopped
+       ports:
+         - "3000:3000"
+       volumes:
+         - openfishing-db:/app/data
+         - openfishing-uploads:/app/uploads
+       environment:
+         # Адреса, за якою його відкривають
+         - BASE_URL=http://192.168.1.50:3000
+         # Ваш часовий пояс
+         - TZ=Europe/Berlin
+         # Вхід: приберіть #, додайте пароль
+         # - ADMIN_PASSWORD=
+         - CHATBOT=true
+         - LITELLM_URL=http://litellm:4000
+         - LITELLM_MODEL=claude-sonnet
+       depends_on:
+         - litellm
 
-```yaml
-services:
-  openfishing:
-    image: ghcr.io/m1ndgames/openfishing:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - CHATBOT=true
-      - LITELLM_URL=http://litellm:4000
-      - LITELLM_MODEL=your-model-name
-      - LITELLM_VISION_MODEL=your-vision-model   # опційно
-    volumes:
-      - openfishing-db:/app/data
-      - openfishing-uploads:/app/uploads
+     litellm:
+       image: ghcr.io/berriai/litellm:main-latest
+       command: ["--config", "/config.yaml"]
+       volumes:
+         - ./litellm.config.yaml:/config.yaml
+       env_file:
+         - .env
 
-  litellm:
-    image: ghcr.io/berriai/litellm:main-latest
-    command: ["--config", "/app/config.yaml"]
-    volumes:
-      - ./litellm.config.yaml:/app/config.yaml
-    # Укажіть тут ключі API вашого провайдера, напр. через env_file
+   volumes:
+     openfishing-db:
+     openfishing-uploads:
+   ```
 
-volumes:
-  openfishing-db:
-  openfishing-uploads:
-```
+4. Знову виконайте `docker compose up -d` або повторно розгорніть стек у застосунку NAS.
 
-Ваш `litellm.config.yaml` визначає моделі (`LITELLM_MODEL` / `LITELLM_VISION_MODEL` мають відповідати назвам,
-які він оголошує). Ключі API провайдера налаштовуються на боці **LiteLLM** і ніколи не досягають фронтенду
-OpenFishing.
+Хочете OpenAI? У `litellm.config.yaml` вкажіть `model: openai/gpt-4o` з
+`api_key: os.environ/OPENAI_API_KEY` і запишіть `OPENAI_API_KEY` у `.env`. `LITELLM_MODEL` має збігатися з
+`model_name` у файлі.
 
-## Розпізнавання за фото
+## Рибальський Помічник
 
-Якщо ви встановите **`LITELLM_VISION_MODEL`** (модель із підтримкою зору), OpenFishing додає:
+З `CHATBOT=true` кнопка чату відкриває **Рибальський Помічник**. Він відповідає на запитання про ваші приманки,
+місця, улови й спорядження та знає поточну погоду, коли ви питаєте про місце. Із входом адмін може
+вимкнути його для кожної людини в **Налаштування → Адмін** (**Чат-бот: увімк.**).
 
-- **Розпізнавання риби** — запропонувати вид за фотографією у **формі улову**.
-- **Розпізнавання приманок** — розпізнати приманку за фотографією у **формі додавання приманки**.
+## Визначити за фото
 
-Якщо `LITELLM_VISION_MODEL` не встановлено, розпізнавання повертається до `LITELLM_MODEL`.
+Коли ви додаєте новий улов чи приманку, кнопка **Визначити за фото** з'являється, щойно є фото. Вона підказує
+вид або дані приманки. Потрібен `LITELLM_URL`; використовується `LITELLM_VISION_MODEL`, якщо задано
+(модель, що читає зображення), інакше `LITELLM_MODEL`. `CHATBOT` не потрібен. Без налаштованого ШІ
+кнопка все одно з'являється, але відповідає «Щось пішло не так. Спробуйте ще раз.»
 
 :::note
-Функції ШІ повністю опційні. Якщо жодну з цих змінних не встановлено, OpenFishing працює точно як раніше — без
-чат-бота, без розпізнавання.
+Без цих налаштувань немає чат-бота, а **Визначити за фото** не може відповісти; решта працює так само. Усі
+налаштування є в [Змінних середовища](/uk/docs/configuration/environment-variables).
 :::

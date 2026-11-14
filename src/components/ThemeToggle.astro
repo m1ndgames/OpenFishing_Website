@@ -1,14 +1,19 @@
 ---
 // The single interactive island: toggles data-theme + persists to localStorage.
 // First-paint theme is set by the inline script in Landing.astro (no flash).
+interface Props {
+  /** Translated accessible name. */
+  label?: string;
+}
+const { label = 'Switch light/dark theme' } = Astro.props;
 ---
 
 <button
   id="theme-toggle"
   type="button"
   class="theme-toggle"
-  aria-label="Toggle color theme"
-  title="Toggle light/dark theme"
+  aria-label={label}
+  title={label}
 >
   <!-- moon (shown in dark mode) -->
   <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -42,7 +47,7 @@
     background: var(--of-bg-elevated);
     color: var(--of-text-2);
     cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    transition: color var(--of-dur-fast) var(--of-ease), border-color var(--of-dur-fast) var(--of-ease), background var(--of-dur-fast) var(--of-ease);
   }
   .theme-toggle:hover {
     color: var(--of-accent);

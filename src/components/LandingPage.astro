@@ -9,7 +9,6 @@ import Hero from './Hero.astro';
 import Features from './Features.astro';
 import DemoCallout from './DemoCallout.astro';
 import Quickstart from './Quickstart.astro';
-import Screenshots from './Screenshots.astro';
 import Footer from './Footer.astro';
 import { defaultLang, type Lang } from '../i18n/ui';
 
@@ -20,14 +19,16 @@ const { lang = defaultLang } = Astro.props;
 ---
 
 <Landing lang={lang}>
-  <main id="main">
+  <!-- Story: promise (hero) → what's inside → try it → host it yourself. -->
+  <!-- Site controls come first in the DOM (they are fixed/absolute, so their
+       position does not change) so keyboard users reach language and theme early. -->
+  <FloatingActions lang={lang} />
+  <main id="main" tabindex="-1">
     <Hero lang={lang} />
     <Features lang={lang} />
     <DemoCallout lang={lang} />
     <Quickstart lang={lang} />
-    <Screenshots lang={lang} />
   </main>
   <Footer lang={lang} />
-  <FloatingActions lang={lang} />
   <FishBackground />
 </Landing>

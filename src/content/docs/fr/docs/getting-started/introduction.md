@@ -1,48 +1,67 @@
 ---
 title: Introduction
-description: Ce qu'est OpenFishing, sa philosophie auto-hébergée et respectueuse de la vie privée, et un aperçu de ses fonctionnalités.
+description: Ce qu'est OpenFishing, comment il garde vos données sur votre propre serveur, ce qui communique avec Internet, et un aperçu des fonctionnalités.
 ---
 
-**OpenFishing** est une application web auto-hébergée permettant aux pêcheurs d'organiser leur **collection de leurres**,
-de marquer leurs **spots de pêche** sur une carte, d'enregistrer leurs **prises** et de suivre leur **matériel** — le tout depuis
-une seule application respectueuse de la vie privée qui s'exécute sur votre propre serveur.
+**OpenFishing** est une application web auto-hébergée qui permet aux pêcheurs d'organiser leur
+**collection de leurres**, de marquer leurs **spots de pêche** sur une carte, d'enregistrer leurs
+**prises** et de suivre leur **matériel**, le tout dans une seule application respectueuse de la
+vie privée, qui tourne sur votre propre serveur.
 
-C'est une application [SvelteKit](https://kit.svelte.dev/) reposant sur une unique base de données **SQLite**,
-livrée sous forme d'une seule image **Docker**. Il n'y a aucun service cloud, aucun compte auprès d'un tiers et
-aucune télémétrie : vos photos et vos données résident sur votre infrastructure et nulle part ailleurs.
+Elle est livrée sous forme d'une seule image **Docker** avec une seule base de données **SQLite**.
+Pas de service cloud, pas de compte chez un tiers, pas de télémétrie : vos photos et vos données
+vivent sur votre serveur et nulle part ailleurs. Envie de la voir avant d'installer ? Ouvrez la
+[démo en ligne](https://demo.openfishing.org) : sans inscription, en lecture seule.
 
-## Philosophie
-
-- **Auto-hébergé & respectueux de la vie privée** — vous l'exécutez, vous possédez les données. Rien ne quitte votre serveur.
-- **Sans cloud** — aucune dépendance externe requise pour le fonctionnement du cœur de l'application.
-- **Open source** — publié sous licence AGPL-3.0 sur
-  [GitHub](https://github.com/m1ndgames/OpenFishing).
-- **Simple à exécuter** — un conteneur, un fichier SQLite, deux volumes pour la base de données et les fichiers.
+<figure class="doc-shot">
+<div class="doc-shot-frame"><img class="shot-dark" src="/screenshots/hero.jpg" alt="Une prise dans OpenFishing : une perche sur le tapis de mesure avec sa taille, le leurre qui l'a prise, l'indice de morsure et le coin sur la carte" width="1400" height="847" loading="lazy" decoding="async"><img class="shot-light" src="/screenshots/hero-light.jpg" alt="Une prise dans OpenFishing : une perche sur le tapis de mesure avec sa taille, le leurre qui l'a prise, l'indice de morsure et le coin sur la carte" width="1400" height="847" loading="lazy" decoding="async"></div>
+<figcaption><a href="https://demo.openfishing.org/" target="_blank" rel="noopener">Voir dans la démo <svg class="doc-shot-cue" width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg><span class="sr-only"> (s'ouvre dans un nouvel onglet)</span></a></figcaption>
+</figure>
 
 ## Aperçu des fonctionnalités
 
-| Domaine | Ce que ça fait |
+| Domaine | Ce qu'il fait |
 |---|---|
-| [Leurres](/fr/docs/features/lures) | Bibliothèque photo avec tags, espèces, favoris, suivi des leurres perdus, étiquettes QR et recherche rapide. |
-| [Spots](/fr/docs/features/spots) | Carte Leaflet interactive de vos spots de pêche avec GPS et photos. |
-| [Prises](/fr/docs/features/catches) | Enregistrez l'espèce, le poids, la longueur, le GPS, le no-kill et la présentation, avec un indice de touche basé sur la météo. |
-| [Indice de touche](/fr/docs/features/bite-index) | Un score automatique de 0 à 10 évaluant les conditions de pêche à partir des données météo. |
-| [Matériel](/fr/docs/features/tackle) | Cannes, moulinets, lignes et ensembles, avec l'historique des bobines. |
-| [Statistiques](/fr/docs/features/stats) | Tendances de vos prises et de votre matériel. |
-| [Fonctions d'IA](/fr/docs/ai/ai-features) | Chatbot optionnel plus identification des poissons et leurres à partir de photos. |
-| [Multi-utilisateur](/fr/docs/multi-user/authentication) | Connexion optionnelle pour héberger amis et famille, avec quotas et panneau d'administration. |
-| [Liens de partage](/fr/docs/features/share-links) | Pages publiques en lecture seule pour un leurre, un spot ou une prise. |
-| [API REST](/fr/docs/api/rest-api) | API JSON en lecture seule avec jetons Bearer et interface Swagger. |
-| [Sauvegarde & restauration](/fr/docs/backup/backup-restore) | Export/import ZIP en un clic. |
-| [Langues](/fr/docs/features/languages) | 9 langues avec un sélecteur à drapeaux. |
+| [Leurres](/fr/docs/features/lures) | Photothèque avec tags, espèces, favoris, suivi des leurres perdus, étiquettes QR et recherche rapide. |
+| [Spots](/fr/docs/features/spots) | Carte interactive de vos spots de pêche avec GPS et photos. |
+| [Prises](/fr/docs/features/catches) | Enregistrez espèce, poids, taille, GPS, Attraper & Relâcher et style de récupération, avec un indice de morsure basé sur la météo. |
+| [Matériel](/fr/docs/features/tackle) | Cannes, moulinets, fils et combos, avec l'historique des bobines. |
 
-## Prochaines étapes
+Également inclus :
 
-- Suivez le [Démarrage rapide](/fr/docs/getting-started/quick-start) pour être opérationnel en une seule commande.
-- Déployez correctement avec [Installation (docker-compose)](/fr/docs/getting-started/installation).
-- Ajustez le comportement avec les [Variables d'environnement](/fr/docs/configuration/environment-variables).
+- **Analyses** : [Indice de morsure](/fr/docs/features/bite-index), [Statistiques](/fr/docs/features/stats)
+- **Partage** : [Liens de partage](/fr/docs/features/share-links)
+- **Options** : [Thèmes & apparence](/fr/docs/features/themes), [Langues](/fr/docs/features/languages)
+- **Gérer votre serveur** : [Multi-utilisateur](/fr/docs/multi-user/authentication), [Fonctions d'IA](/fr/docs/ai/ai-features), [Sauvegarde & restauration](/fr/docs/backup/backup-restore), [API REST](/fr/docs/api/rest-api)
+
+## Philosophie
+
+- **Auto-hébergé & respectueux de la vie privée** : vous l'hébergez, les données sont à vous. Vos
+  données et vos photos restent sur votre serveur.
+- **Sans cloud** : aucun compte ni service cloud n'est nécessaire au fonctionnement de l'application.
+- **Open source** : publié sous licence AGPL-3.0 sur
+  [GitHub](https://github.com/m1ndgames/OpenFishing).
+- **Simple à faire tourner** : un conteneur, un fichier SQLite, deux volumes pour la base et les envois.
+
+## Ce qui communique avec Internet
+
+Vos données et vos photos ne quittent jamais votre serveur. Ces fonctionnalités vont chercher des
+données à l'extérieur, et aucune autre :
+
+- **[Météo](/fr/docs/features/bite-index)** : quand vous enregistrez une prise, ouvrez un spot ou interrogez le chatbot sur un lieu, le serveur
+  demande à [Open-Meteo](https://open-meteo.com/) la météo actuelle à cet endroit. Seules les coordonnées sont envoyées.
+- **Carte des [spots](/fr/docs/features/spots)** : dès qu'une carte s'affiche, votre navigateur charge des tuiles depuis OpenStreetMap, qui voit la zone
+  consultée. `MAP_TILE_URL` permet d'utiliser votre propre serveur de tuiles.
+- **[Fonctions d'IA](/fr/docs/ai/ai-features)** : seulement si vous les configurez ; le fournisseur d'IA choisi reçoit votre question ou votre photo.
+- **[Réinitialisation du mot de passe](/fr/docs/multi-user/authentication)** : seulement si SMTP est configuré ; votre propre serveur de messagerie envoie l'e-mail.
+
+## Étapes suivantes
+
+- [Installez OpenFishing](/fr/docs/getting-started/installation) sur votre NAS ou serveur domestique.
+- Faites d'abord un tour dans la [démo en ligne](https://demo.openfishing.org).
+- Ajustez le comportement avec les [variables d'environnement](/fr/docs/configuration/environment-variables).
 
 :::note
-Cette documentation est une référence concise. Pour un niveau de détail au niveau du code source, consultez le
-[dépôt OpenFishing](https://github.com/m1ndgames/OpenFishing) sur GitHub.
+Quelque chose manque ou n'est pas clair ? [Ouvrez une issue sur GitHub](https://github.com/m1ndgames/OpenFishing/issues)
+et nous l'ajouterons.
 :::

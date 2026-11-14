@@ -126,15 +126,12 @@ const structuredData = {
       })();
     </script>
 
-    <!-- Fonts (Carter One explicitly included) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Carter+One&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Fonts are self-hosted (src/styles/fonts.css), as in the app: no third-party
+         request. Preload the Latin DM Sans file so headings don't swap late. -->
+    <link rel="preload" href="/fonts/dm-sans-latin-opsz-normal.woff2" as="font" type="font/woff2" crossorigin />
   </head>
   <body>
+    <a class="skip-link" href="#main">{t.skip}</a>
     <slot />
   </body>
 </html>

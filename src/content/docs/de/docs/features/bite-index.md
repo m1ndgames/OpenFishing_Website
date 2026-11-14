@@ -1,36 +1,38 @@
 ---
-title: Bissindex
-description: Wie der automatische Bissindex-Wetterwert von 0–10 in OpenFishing berechnet und bewertet wird.
+title: "Beissindex"
+description: "Wie OpenFishing den Beissindex von 0 bis 10 aus dem Wetter berechnet und was die Bewertungen bedeuten."
 ---
 
-Der **Bissindex** ist ein automatischer Wert von **0 bis 10**, der bewertet, wie günstig die Angelbedingungen
-für einen bestimmten Fang waren, basierend auf Wetterdaten.
+Der **Beissindex** ist eine Wertung von **0 bis 10** dafür, wie gut das Angelwetter ist. OpenFishing
+berechnet ihn aus dem Wetter am Ort des Fangs **in dem Moment, in dem du ihn einträgst**, und
+speichert ihn mit dem Fang.
 
-## Wie er berechnet wird
+:::note
+Die Wertung nutzt das Wetter beim Speichern, nicht die Uhrzeit, die du für den Fang angibst. Trag
+Fänge am Wasser ein, dann stimmt die Wertung; ein Fang, den du Stunden später einträgst, bekommt das
+Wetter dieses späteren Moments.
+:::
 
-Der Index ist eine gewichtete Mischung aus drei aus dem Wetter abgeleiteten Faktoren:
+## So wird er berechnet
 
-| Faktor | Gewichtung | Idee |
-|---|---|---|
-| **Luftdrucktrend** | ×0.5 | Ein sich ändernder Luftdruck beeinflusst die Fressaktivität stark. |
-| **Licht** | ×0.3 | Lichtverhältnisse beeinflussen, wann Fische aktiv sind. |
-| **Temperaturstabilität** | ×0.2 | Stabile Temperaturen bedeuten tendenziell vorhersehbareres Verhalten. |
+Drei Teile, jeder mit 0 bis 10 bewertet, werden gewichtet und addiert:
 
-Die Wetterdaten stammen von der kostenlosen [Open-Meteo-API](https://open-meteo.com/). Der resultierende
-Wert wird als **Momentaufnahme an jedem Fang** gespeichert, sodass er die Bedingungen in diesem Moment
-widerspiegelt und sich niemals rückwirkend ändert.
+- **Drucktendenz** (50 %): 10, wenn der Luftdruck in den letzten 3 Stunden um mehr als 1,5 hPa gefallen ist, wie vor einer Front; 7 bei gleichbleibendem Druck; 2 bei steigendem.
+- **Lichtverhältnisse** (30 %): 10 in der Morgendämmerung (die Stunde vor Sonnenaufgang) und Abenddämmerung (die Stunde nach Sonnenuntergang); 8 in der Stunde vor Sonnenuntergang; 6 nachts und in den ersten zwei Stunden nach Sonnenaufgang; 2 tagsüber.
+- **Temperaturstabilität** (20 %): 10, wenn sich die Temperatur in den letzten 3 Stunden um weniger als 3 °C geändert hat; 2 bei einem größeren Sprung.
 
-## Bewertungslabels
+Dein Server holt das Wetter vom kostenlosen Dienst [Open-Meteo](https://open-meteo.com/).
 
-Der numerische Wert wird einem verständlichen Label zugeordnet:
+## Bewertungen
 
-| Wert | Bewertung |
+| Wertung | Bewertung |
 |---|---|
-| Niedrig | **Schlecht** |
-| … | **Mäßig** |
-| … | **Gut** |
-| Hoch | **Ausgezeichnet** |
+| 8,5 und mehr | **Sehr gut** |
+| 6,5 bis 8,4 | **Gut** |
+| 4 bis 6,4 | **Mäßig** |
+| Unter 4 | **Schlecht** |
 
-## Verwandt
+## Wo du ihn siehst
 
-- Der Bissindex wird bei jedem [Fang](/de/docs/features/catches) automatisch erfasst.
+- Bei jedem [Fang](/de/docs/features/catches), gespeichert beim Eintragen.
+- Bei jeder [Angelstelle](/de/docs/features/spots) als aktuelle Wertung für diesen Ort, abgerufen beim Öffnen.

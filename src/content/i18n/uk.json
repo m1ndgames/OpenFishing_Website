@@ -1,0 +1,6 @@
+{
+  "heading.anchorLabel": "Розділ «{{title}}»",
+  "expressiveCode.copyButtonTooltip": "Копіювати в буфер обміну",
+  "expressiveCode.copyButtonCopied": "Скопійовано!",
+  "expressiveCode.terminalWindowFallbackTitle": "Вікно терміналу"
+}

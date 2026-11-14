@@ -1,16 +1,21 @@
 ---
-title: Stats
-description: Aggregated trends and insights across your catches and gear.
+title: "Stats"
+description: "What the Stats page shows: totals, personal bests, your best lures, spots and retrieve styles, and when you catch fish."
 ---
 
-The **stats** view aggregates your data into trends and insights, so your logbook becomes
-something you can learn from.
+**Stats** turns your catch log into numbers you can learn from. Open it from **Stats** in the menu.
 
-## What's aggregated
+## What it shows
 
-- Trends across your **[catches](/docs/features/catches)** over time.
-- Insights about your **gear** — which [tackle](/docs/features/tackle) and
-  [lures](/docs/features/lures) are involved in your catches.
+- **Total Catches**, **Species**, **Spots**, **C&R Rate** (the share of fish you released).
+- **Personal Bests**: your biggest fish.
+- **Top Lures**, **Top Spots**, **Top Retrieve Styles**: what your catches have in common.
+- **Monthly Activity**, **Day of Week**, **Time of Day**. They appear once you have logged 5 catches.
 
-Because everything is computed from your own database, the numbers are always current and
-entirely private to your instance.
+Everything is worked out from your own database on your server. With login turned on, everyone sees
+only their own catches.
+
+## Related
+
+- The numbers come from the [catches](/docs/features/catches) you log, with their lure and retrieve style.
+- Each catch's weather score is explained in [Bite Index](/docs/features/bite-index).

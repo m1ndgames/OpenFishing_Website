@@ -145,6 +145,15 @@
     50%        { transform: rotate(7deg)  translateY(3px);  }
   }
 
+  /* Dimmed while content scrolls over the scene (see setDim). */
+  .fish-lure, .fish-line-svg, .fish-inner {
+    transition: opacity 0.5s ease;
+  }
+  :global(html.fish-dim) .fish-inner,
+  :global(html.fish-dim) .fish-lure,
+  :global(html.fish-dim) .fish-line-svg {
+    opacity: 0.3;
+  }
   @media (max-width: 1200px) {
     .fish-outer, .fish-lure, .fish-line-svg { display: none; }
   }
@@ -157,12 +166,49 @@
   const fishEl       = document.getElementById('fish-outer')    as HTMLElement    | null;
   const fishAngleEl  = document.getElementById('fish-angle')    as HTMLElement    | null;
 
-  const MIN_X     = 8;
+  // On wide screens the lure starts far enough right that the fish trailing
+  // it (FISH_DIST behind) clears the hero copy (`data-fish-clear`), so neither
+  // the line nor the fish cuts through the headline or subline. Never left of
+  // 60vw; never so far right it has no room to travel.
+  const minX = () => {
+    const w = window.innerWidth;
+    if (w <= 900) return 8;
+    const clear = document.querySelector('[data-fish-clear]');
+    const right = clear ? clear.getBoundingClientRect().right : 0;
+    const need = ((right + 24) / w) * 100 + FISH_DIST;
+    return Math.min(Math.max(60, need), 76);
+  };
+  // The line hangs from a clear gap left of the floating control stack (top
+  // right), measured from the real element, so it never touches those buttons.
+  const anchorX   = () => {
+    const stack = document.querySelector('.floating-actions');
+    const left = stack ? stack.getBoundingClientRect().left : window.innerWidth - 68;
+    return Math.round(left - 48);
+  };
+  function setLineAnchor() {
+    lineEl?.setAttribute('x1', String(anchorX()));
+  }
   const MAX_X     = 87;
-  const LURE_Y    = 38;   // vh
+  // Resting height of lure and fish: the open space under the hero screenshot
+  // (`data-fish-below`), so the scene is visible at load instead of hiding
+  // behind it. Falls back to 38vh; recomputed on resize.
+  let lureY = 0;   // px
+  function computeLureY() {
+    const h = window.innerHeight;
+    const shot = document.querySelector('[data-fish-below]');
+    const section = shot?.closest('section');
+    let y = 0.38 * h;
+    if (shot && section) {
+      const top = window.scrollY;
+      const below = shot.getBoundingClientRect().bottom + top;
+      const end = section.getBoundingClientRect().bottom + top;
+      y = below + (end - below) / 2;
+    }
+    lureY = Math.min(Math.max(y, 0.3 * h), 0.85 * h);
+  }
   const FISH_DIST = 12;   // vw — trailing distance before swallow
 
-  let lureX       = MIN_X;
+  let lureX       = minX();
   let lureDir     = 1;
   let lastScrollY = window.scrollY;
   let swallowed   = false;
@@ -175,14 +221,14 @@
   /* angle (from vertical) of line from hookX to top-right corner */
   function angleDeg(xVw: number): number {
     const px = xVw / 100 * window.innerWidth;
-    const py = LURE_Y / 100 * window.innerHeight;
-    return Math.atan2(window.innerWidth - px, py) * 180 / Math.PI;
+    const py = lureY;
+    return Math.atan2(anchorX() - px, py) * 180 / Math.PI;
   }
 
   function setLineEnd(xVw: number) {
     if (!lineEl) return;
     const px = xVw / 100 * window.innerWidth;
-    const py = LURE_Y / 100 * window.innerHeight;
+    const py = lureY;
     lineEl.setAttribute('x2', String(Math.round(px)));
     lineEl.setAttribute('y2', String(Math.round(py)));
   }
@@ -195,7 +241,7 @@
       ? Math.max(1,  Math.min(91, lureX - FISH_DIST))   // behind lure
       : Math.max(1,  Math.min(91, lureX + FISH_DIST));   // right of retreating lure
     fishEl.style.left           = `${fishX}vw`;
-    fishEl.style.top            = `${LURE_Y}vh`;
+    fishEl.style.top            = `${lureY}px`;
     fishEl.style.transform      = lureDir >= 0 ? 'scaleX(1)' : 'scaleX(-1)';
     fishAngleEl.style.transform = '';
     fishEl.classList.toggle('resisting', lureDir < 0);
@@ -209,7 +255,7 @@
     const fw = fishWidth();
 
     fishEl.style.left      = `calc(${lureX}vw - ${fw}px)`;
-    fishEl.style.top       = `${LURE_Y}vh`;
+    fishEl.style.top       = `${lureY}px`;
     fishEl.style.transform = 'none';
 
     if (lureDir >= 0) {
@@ -228,7 +274,7 @@
     if (!swallowed) {
       if (lureEl) {
         lureEl.style.left = `${lureX}vw`;
-        lureEl.style.top  = `${LURE_Y}vh`;
+        lureEl.style.top  = `${lureY}px`;
       }
       if (lureRotateEl) {
         lureRotateEl.style.transform = `rotate(${angleDeg(lureX)}deg)`;
@@ -250,7 +296,7 @@
     fishEl.classList.add('biting');
     fishEl.style.transition     = 'left 0.08s cubic-bezier(0.2, 0, 0.2, 1), top 0.08s ease';
     fishEl.style.left           = `calc(${lureX}vw - ${fw}px)`;
-    fishEl.style.top            = `${LURE_Y}vh`;
+    fishEl.style.top            = `${lureY}px`;
     fishEl.style.transform      = 'none';
     fishAngleEl.style.transform = '';
 
@@ -319,14 +365,24 @@
   }
 
   /* ── Scroll ──────────────────────────────────────────── */
+  function scrollProgress() {
+    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    return window.scrollY / maxScroll;
+  }
+  // While page content scrolls over the scene it fades back, so the fish
+  // never competes with text; full strength at rest (top) and for the catch.
+  function setDim(progress: number) {
+    document.documentElement.classList.toggle('fish-dim', progress > 0.03 && progress < 0.95);
+  }
+
   function onScroll() {
     if (pulledOut) return;
 
     const scrollY   = window.scrollY;
-    const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-    const progress  = scrollY / maxScroll;
+    const progress  = scrollProgress();
+    setDim(progress);
 
-    const newLureX = MIN_X + progress * (MAX_X - MIN_X);
+    const newLureX = minX() + progress * (MAX_X - minX());
     lureDir = newLureX > lureX ? 1 : newLureX < lureX ? -1 : lureDir;
     lureX   = newLureX;
     lastScrollY = scrollY;
@@ -344,6 +400,22 @@
     applyPositions();
   }
 
+  computeLureY();
+  setLineAnchor();
   applyPositions();
-  window.addEventListener('scroll', onScroll, { passive: true });
+  // On resize (or rotation) recompute everything derived from the viewport:
+  // the resting height, the lure's start (minX) and its place along the scroll.
+  window.addEventListener('resize', () => {
+    computeLureY();
+    setLineAnchor();
+    if (!swallowed) lureX = minX() + scrollProgress() * (MAX_X - minX());
+    applyPositions();
+  }, { passive: true });
+
+  // Reduced motion: keep the scene as a still picture (lure and fish at rest),
+  // never drive it from scroll. The global CSS rule already stops the bob/swim loops.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (!reduceMotion.matches) {
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
 </script>

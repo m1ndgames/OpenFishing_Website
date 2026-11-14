@@ -1,36 +1,62 @@
 ---
-title: Backup e restauro
-description: Backup e restauro ZIP com um clique, por utilizador ou de toda a instância, e o que o arquivo contém.
+title: "Backup e restauro"
+description: "Guarda a tua coleção num único ZIP e restaura-a, na mesma máquina ou numa nova."
 ---
 
-O OpenFishing tem **backup e restauro** integrados como arquivos ZIP transferíveis/carregáveis.
+O OpenFishing guarda tudo o que registaste, fotos incluídas, num **único ficheiro ZIP** que
+descarregas. Mantém uma cópia num sítio que não seja a máquina onde o OpenFishing corre.
 
-## Backup e restauro por utilizador
+## Fazer um backup
 
-A partir de **`/settings`**, qualquer utilizador pode fazer backup e restaurar **os seus próprios dados** — as
-suas iscas, pontos, capturas e equipamento, além dos uploads associados.
+1. Abre **Definições → Backup e restauração**.
+2. Em **Exportar cópia de segurança**, escolhe **Exportar**.
 
-## Backup e restauro de toda a instância (admin)
-
-A partir do painel de administração em **`/settings/admin`**, um administrador pode fazer backup e restaurar a
-**instância inteira** — incluindo todos os utilizadores e contas.
+O ZIP contém as tuas iscas, locais, capturas e equipamento com as fotos. Com início de sessão,
+cada pessoa guarda assim só a sua própria conta.
 
 :::caution
-Um **restauro completo** executa uma **limpeza e reconstrução** completas da instância: os dados existentes são
-substituídos pelo conteúdo do arquivo. Faz primeiro um backup novo.
+Um restauro não pode ser desfeito. Exporta antes um backup recente.
 :::
 
-## Formato do arquivo
+## Restaurar um backup
 
-Um backup é um ZIP que contém:
+1. Abre **Definições → Backup e restauração**.
+2. Em **Importar cópia de segurança**, escolhe **Escolher ficheiro** e seleciona o ZIP.
+3. Marca a caixa que confirma que os teus dados atuais vão ser substituídos.
+4. Escolhe **Importar e substituir**.
 
-- **`backup.json`** — os dados estruturados (registos).
-- **`uploads/`** — os ficheiros de fotos associados.
+Tudo na tua conta é substituído pelo conteúdo do backup. O OpenFishing verifica primeiro o
+formato do backup e não muda nada se não corresponder.
 
-Como é um ZIP simples, podes armazená-lo em qualquer lugar e inspecioná-lo se necessário.
+Se funcionar, vês **Importação bem-sucedida** com o número de iscas, locais e capturas restaurados.
 
-## Relacionado
+## Backup de toda a instância (admin)
 
-- Lembra-te de que a base de dados ativa e os uploads têm de estar em
-  [volumes persistentes](/pt/docs/getting-started/installation) — os backups complementam, mas não substituem,
-  volumes adequados.
+Com início de sessão, o admin guarda e restaura todas as contas de uma vez em **Definições → Admin**:
+
+- **Exportar tudo** descarrega todas as contas e os seus dados num único ZIP.
+- **Restaurar cópia completa** substitui todos os dados e contas por um backup completo. Todos
+  terminam a sessão, e a palavra-passe do admin volta a vir de `ADMIN_PASSWORD`.
+
+Para restaurar, marca a confirmação e seleciona **Restaurar tudo e substituir**.
+
+## Mudar para uma máquina nova
+
+1. Na máquina antiga, [atualiza o OpenFishing](/pt/docs/getting-started/installation#atualizar) para a versão mais recente e exporta uma cópia
+   nova. Aponta o **Formato da cópia** mostrado em **Definições**.
+2. [Instala o OpenFishing](/pt/docs/getting-started/installation) na máquina nova. O seu **Formato da cópia** em **Definições** tem de ser igual ao da máquina antiga.
+3. Abre-o e restaura: em **Definições → Backup e restauração** se não tens início de sessão, ou com
+   um backup completo em **Definições → Admin → Restaurar cópia completa** se várias pessoas o usam.
+4. Verifica as iscas e as fotos antes de desligar a máquina antiga.
+
+## O que está no ZIP
+
+- `backup.json`: os teus registos.
+- `uploads/`: as fotos.
+
+É um ZIP normal, por isso podes abri-lo para o verificar.
+
+## Backups e volumes
+
+Os backups não substituem os [volumes](/pt/docs/getting-started/installation) que guardam a base de dados ativa e as fotos.
+Mantém ambos e exporta um backup antes de grandes mudanças, como uma atualização.

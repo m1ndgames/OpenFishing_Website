@@ -1,75 +1,90 @@
 ---
 title: AI features
-description: Enable the optional self-hosted chatbot and photo-based fish and lure identification via a LiteLLM sidecar.
+description: "Turn on the optional Fishing Buddy chatbot and photo identification with a LiteLLM proxy you run next to OpenFishing."
 ---
 
-OpenFishing has **optional** AI features powered by a **[LiteLLM](https://litellm.ai/)** proxy
-that you run yourself. Your API keys stay server-side — they're never exposed to the browser.
+OpenFishing has two **optional** AI features: the **Fishing Buddy** chatbot and **Identify from photo**. Both go through
+[LiteLLM](https://litellm.ai/), a small proxy you run next to OpenFishing that forwards requests to
+the AI provider you choose. Your API key stays on your server.
 
-## Enabling the chatbot
+## Set it up
 
-Set these environment variables (see
-[Environment variables](/docs/configuration/environment-variables)):
+1. In the folder with your `docker-compose.yml`, create `litellm.config.yaml`:
 
-```yaml
-environment:
-  - CHATBOT=true
-  - LITELLM_URL=http://litellm:4000
-  - LITELLM_MODEL=your-model-name
-```
+   ```yaml title="litellm.config.yaml"
+   model_list:
+     - model_name: claude-sonnet
+       litellm_params:
+         model: anthropic/claude-sonnet-4-6
+         api_key: os.environ/ANTHROPIC_API_KEY
+   ```
 
-- **`CHATBOT`** — any truthy value turns on the floating chat widget.
-- **`LITELLM_URL`** — the base URL of your LiteLLM proxy.
-- **`LITELLM_MODEL`** — a model name matching an entry in your `litellm.config.yaml`.
+2. Put your provider's API key in a file named `.env` in the same folder:
 
-The chatbot can answer questions about **your own data** (your lures, spots, catches and
-tackle).
+   ```bash title=".env"
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
 
-## Running LiteLLM as a sidecar
+3. Replace your `docker-compose.yml` with this version. It is the install file plus the AI lines
+   and the `litellm` service; keep your own address, time zone and password lines.
 
-Run LiteLLM alongside OpenFishing in the same compose project:
+   ```yaml title="docker-compose.yml" wrap=false
+   services:
+     openfishing:
+       image: ghcr.io/m1ndgames/openfishing
+       container_name: openfishing
+       restart: unless-stopped
+       ports:
+         - "3000:3000"
+       volumes:
+         - openfishing-db:/app/data
+         - openfishing-uploads:/app/uploads
+       environment:
+         # Address you open it at
+         - BASE_URL=http://192.168.1.50:3000
+         # Your time zone
+         - TZ=Europe/Berlin
+         # Login: remove #, add a password
+         # - ADMIN_PASSWORD=
+         - CHATBOT=true
+         - LITELLM_URL=http://litellm:4000
+         - LITELLM_MODEL=claude-sonnet
+       depends_on:
+         - litellm
 
-```yaml
-services:
-  openfishing:
-    image: ghcr.io/m1ndgames/openfishing:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - CHATBOT=true
-      - LITELLM_URL=http://litellm:4000
-      - LITELLM_MODEL=your-model-name
-      - LITELLM_VISION_MODEL=your-vision-model   # optional
-    volumes:
-      - openfishing-db:/app/data
-      - openfishing-uploads:/app/uploads
+     litellm:
+       image: ghcr.io/berriai/litellm:main-latest
+       command: ["--config", "/config.yaml"]
+       volumes:
+         - ./litellm.config.yaml:/config.yaml
+       env_file:
+         - .env
 
-  litellm:
-    image: ghcr.io/berriai/litellm:main-latest
-    command: ["--config", "/app/config.yaml"]
-    volumes:
-      - ./litellm.config.yaml:/app/config.yaml
-    # Provide your provider API keys here, e.g. via an env_file
+   volumes:
+     openfishing-db:
+     openfishing-uploads:
+   ```
 
-volumes:
-  openfishing-db:
-  openfishing-uploads:
-```
+4. Run `docker compose up -d` again, or redeploy the stack in your NAS app.
 
-Your `litellm.config.yaml` defines the models (`LITELLM_MODEL` /
-`LITELLM_VISION_MODEL` must match names it declares). Provider API keys are configured on the
-**LiteLLM** side and never reach OpenFishing's frontend.
+Using OpenAI instead? In `litellm.config.yaml`, use `model: openai/gpt-4o` with
+`api_key: os.environ/OPENAI_API_KEY`, and put `OPENAI_API_KEY` in `.env` instead. `LITELLM_MODEL` must match a
+`model_name` in the file.
 
-## Photo identification
+## Fishing Buddy
 
-If you set **`LITELLM_VISION_MODEL`** (a vision-capable model), OpenFishing adds:
+With `CHATBOT=true`, a chat button opens **Fishing Buddy**. It answers questions about your own lures,
+spots, catches and tackle, and knows the current weather when you ask about a place. With login
+turned on, the admin can switch it off per person in **Settings → Admin** (**Chatbot: on**).
 
-- **Fish identification** — suggest a species from a photo on the **catch form**.
-- **Lure identification** — recognise a lure from a photo on the **add-lure form**.
+## Identify from photo
 
-If `LITELLM_VISION_MODEL` is unset, identification falls back to `LITELLM_MODEL`.
+When you add a new catch or lure, an **Identify from photo** button appears once there is a photo. It suggests
+the species, or the lure's details. It needs `LITELLM_URL` and uses `LITELLM_VISION_MODEL` if you set
+one (a model that can read images), otherwise `LITELLM_MODEL`. It doesn't need `CHATBOT`. Without
+AI set up the button still shows, but answers "Something went wrong. Please try again."
 
 :::note
-AI features are entirely optional. With none of these variables set, OpenFishing runs exactly
-as before — no chatbot, no identification.
+Without these settings there is no chatbot and **Identify from photo** can't answer; everything else works the
+same. All settings are listed under [Environment variables](/docs/configuration/environment-variables).
 :::

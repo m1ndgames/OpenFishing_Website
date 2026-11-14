@@ -8,13 +8,13 @@ deiner Bibliothek verknüpft ist.
 
 ## Etiketten drucken
 
-- Etiketten sind für **12,5 mm**-Etikettenmaterial dimensioniert — klein genug, um auf einen Köder oder seine
-  Box zu passen.
-- Du kannst Etiketten für **unbeschriftete Köder** in einem Stapel drucken.
-- Jedes Etikett kodiert einen Link, der aus deiner **`BASE_URL`** aufgebaut ist, sodass das Scannen den
-  richtigen Köder öffnet. Stelle sicher, dass `BASE_URL` auf deine echte öffentliche URL gesetzt ist — siehe
-  [Umgebungsvariablen](/de/docs/configuration/environment-variables).
+1. Öffne **Einstellungen → QR-Codes**. Die Seite **Fehlende QR-Label** listet die Köder, die noch kein Etikett haben.
+2. Tippe auf **QR-Codes drucken** und drucke auf **12,5-mm**-Etiketten, klein genug für einen Köder oder seine Box. Jedes Etikett ist etwa 41 mm lang.
+3. Klebe jedes Etikett auf und tippe dann beim Köder auf **Etikett angebracht**, damit er von der Liste verschwindet.
+
+Jedes Etikett enthält einen Link aus deiner **`BASE_URL`**, Scannen öffnet also genau diesen Köder.
+Setze `BASE_URL` auf die Adresse, unter der du OpenFishing öffnest; siehe [Umgebungsvariablen](/de/docs/configuration/environment-variables). Mit Login öffnet sich der Köder nur auf einem Handy, das angemeldet ist.
 
 ## Verwandt
 
-- Etiketten verweisen auf die fortlaufenden `#0001`-Nummern, die in [Köder](/de/docs/features/lures) beschrieben sind.
+- Etiketten verweisen auf die fortlaufenden `#0001`-Nummern, die in [Köderbox](/de/docs/features/lures) beschrieben sind.

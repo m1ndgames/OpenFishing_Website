@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-14T00:00:00Z",
+  "title": "Design System: OpenFishing Website",
+  "extensions": {
+    "colorMeta": {
+      "wake-cyan": {
+        "role": "primary",
+        "displayName": "Wake Cyan",
+        "tonalRamp": [
+          "#083344",
+          "#164e63",
+          "#155e75",
+          "#0e7490",
+          "#0891b2",
+          "#06b6d4",
+          "#22d3ee",
+          "#a5f3fc"
+        ]
+      },
+      "wake-cyan-solid": {
+        "role": "primary",
+        "displayName": "Wake Cyan (solid)",
+        "tonalRamp": [
+          "#083344",
+          "#164e63",
+          "#155e75",
+          "#0e7490",
+          "#0891b2",
+          "#06b6d4",
+          "#22d3ee",
+          "#a5f3fc"
+        ]
+      },
+      "wake-cyan-glint": {
+        "role": "primary",
+        "displayName": "Wake Glint"
+      },
+      "harbor-teal": {
+        "role": "primary",
+        "displayName": "Harbor Teal",
+        "tonalRamp": [
+          "#063a49",
+          "#094e61",
+          "#0c627a",
+          "#11788f",
+          "#3c99ad",
+          "#7cc0cf",
+          "#bfe1e9",
+          "#e6f4f7"
+        ]
+      },
+      "abyss": {
+        "role": "neutral",
+        "displayName": "Abyss",
+        "tonalRamp": [
+          "#030a12",
+          "#060d17",
+          "#0b1a2c",
+          "#0f2238",
+          "#172f4a",
+          "#2d5270",
+          "#6b9ebb",
+          "#c2dce8"
+        ]
+      },
+      "night-water": {
+        "role": "neutral",
+        "displayName": "Night Water",
+        "tonalRamp": [
+          "#030a12",
+          "#060d17",
+          "#0b1a2c",
+          "#0f2238",
+          "#172f4a",
+          "#2d5270",
+          "#6b9ebb",
+          "#c2dce8"
+        ]
+      },
+      "foam-bright": {
+        "role": "neutral",
+        "displayName": "Foam Bright",
+        "tonalRamp": [
+          "#0a1e2e",
+          "#1a3448",
+          "#325061",
+          "#6b9ebb",
+          "#84aabd",
+          "#98c0d2",
+          "#c2dce8",
+          "#e0eaf8"
+        ]
+      },
+      "mist": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "tonalRamp": [
+          "#0a1e2e",
+          "#1a3448",
+          "#325061",
+          "#6b9ebb",
+          "#84aabd",
+          "#98c0d2",
+          "#c2dce8",
+          "#e0eaf8"
+        ]
+      },
+      "fog": {
+        "role": "neutral",
+        "displayName": "Fog"
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Website only: hero headline, one per page."
+      },
+      "section-headline": {
+        "displayName": "Section Headline",
+        "purpose": "Website only: landing-page section titles."
+      },
+      "invitation-headline": {
+        "displayName": "Invitation Headline",
+        "purpose": "Website only: the demo band's headline, one per page."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Website only: hero and section intro copy."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "One catalogued number shown large."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Docs page titles."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Panel headings, feature-card titles."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Tile and card names."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions, buttons, menu items."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Nav and footer links."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Chips, captions, column heads; the size floor."
+      },
+      "numeral": {
+        "displayName": "Numeral",
+        "purpose": "Lure plates, counts (tabular)."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "docker run command, inline code."
+      }
+    },
+    "shadows": [
+      {
+        "name": "floating-menu",
+        "value": "0 8px 24px rgba(0,0,0,0.4)",
+        "purpose": "Language popover."
+      },
+      {
+        "name": "modal",
+        "value": "0 20px 60px rgba(0,0,0,0.5)",
+        "purpose": "Modals and dialogs (app token; no modal on the landing page at present)."
+      },
+      {
+        "name": "product-window",
+        "value": "0 24px 60px rgba(0,0,0,0.35)",
+        "purpose": "Website only: hero screenshot frame."
+      },
+      {
+        "name": "accent-glow",
+        "value": "0 8px 32px var(--of-accent-glow)",
+        "purpose": "Card hover only."
+      }
+    ],
+    "motion": [
+      {
+        "name": "of-ease",
+        "value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "purpose": "All state transitions (150ms), from the app."
+      },
+      {
+        "name": "lure-bob",
+        "value": "2.4s ease-in-out infinite",
+        "purpose": "Website only: background lure idle bob; off under reduced motion."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "xs",
+        "value": "480px"
+      },
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "hero-stack",
+        "value": "900px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "xl",
+        "value": "1400px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one solid action per view: Try the live demo.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Try the live demo</a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--of-accent-solid, #06b6d4); color: var(--of-ink, #030a12); font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 600; border-radius: 9px; padding: 10px 24px; text-decoration: none; transition: background 150ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary:hover { background: var(--of-accent, #22d3ee); } .ds-btn-primary:focus-visible { outline: 2px solid var(--of-accent-solid, #06b6d4); outline-offset: 2px; }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Get started / docs.",
+      "html": "<a class=\"ds-btn-secondary\" href=\"#\">Get started</a>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--of-bg-elevated, #0f2238); color: var(--of-text-2, #98c0d2); font-family: 'DM Sans', sans-serif; font-size: 0.875rem; font-weight: 500; border: 1px solid var(--of-border, #243f5e); border-radius: 9px; padding: 10px 20px; text-decoration: none; transition: background 150ms cubic-bezier(0.22, 1, 0.36, 1), color 150ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-secondary:hover { background: var(--of-bg-hover, #132841); color: var(--of-text, #c2dce8); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--of-accent-solid, #06b6d4); outline-offset: 2px; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "feature-card",
+      "description": "Linked feature compartment with accent icon tile.",
+      "html": "<a class=\"ds-feature\" href=\"#\"><div class=\"ds-feature-head\"><span class=\"ds-feature-icon\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 21s-7-6.3-7-11a7 7 0 0 1 14 0c0 4.7-7 11-7 11Z\"/><circle cx=\"12\" cy=\"10\" r=\"2.5\"/></svg></span><h3 class=\"ds-feature-title\">Spots</h3></div><p class=\"ds-feature-desc\">Mark your fishing spots on an interactive map with GPS and photos.</p></a>",
+      "css": ".ds-feature { display: flex; flex-direction: column; gap: 12px; padding: 20px; max-width: 320px; background: var(--of-bg-surface, #0b1a2c); border: 1px solid var(--of-border-subtle, #172f4a); border-radius: 14px; text-decoration: none; color: inherit; transition: border-color 150ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 150ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-feature:hover { border-color: var(--of-accent-border, rgba(6,182,212,0.25)); box-shadow: 0 8px 32px var(--of-accent-glow, rgba(6,182,212,0.1)); } .ds-feature:focus-visible { outline: 2px solid var(--of-accent-solid, #06b6d4); outline-offset: 2px; } .ds-feature-head { display: flex; align-items: center; gap: 12px; } .ds-feature-icon { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; border-radius: 10px; background: var(--of-accent-bg-hover, rgba(6,182,212,0.14)); border: 1px solid var(--of-accent-border, rgba(6,182,212,0.25)); color: var(--of-accent, #22d3ee); } .ds-feature-icon svg { width: 22px; height: 22px; } .ds-feature-title { margin: 0; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600; line-height: 1.35; color: var(--of-text-bright, #e0eaf8); } .ds-feature-desc { margin: 0; font-family: 'DM Sans', sans-serif; font-size: 0.875rem; line-height: 1.5; color: var(--of-text-2, #98c0d2); }"
+    },
+    {
+      "name": "Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Neutral pill and its active variant.",
+      "html": "<span class=\"ds-chip\">Self-hosted</span> <span class=\"ds-chip ds-chip-active\">Open source</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; border-radius: 20px; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; line-height: 1.5; padding: 3px 10px; border: 1px solid var(--of-border-subtle, #172f4a); color: var(--of-text-4, #6b9ebb); background: transparent; } .ds-chip-active { background: var(--of-accent-bg, rgba(6,182,212,0.08)); border-color: var(--of-accent-border, rgba(6,182,212,0.25)); color: var(--of-accent, #22d3ee); }"
+    },
+    {
+      "name": "Lure Number Plate",
+      "kind": "custom",
+      "refersTo": "lure-number-plate",
+      "description": "The app's signature #0042 stencil, on a photo or screenshot.",
+      "html": "<div class=\"ds-plate-demo\"><span class=\"ds-plate\">#0042</span></div>",
+      "css": ".ds-plate-demo { position: relative; width: 200px; height: 150px; border-radius: 9px; background: linear-gradient(135deg, #d9dde0, #b9c1c6); } .ds-plate { position: absolute; top: 8px; left: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--of-accent-hover, #67e8f9); background: rgba(0,0,0,0.7); border-radius: 4px; padding: 2px 6px; }"
+    },
+    {
+      "name": "Floating Action Button",
+      "kind": "nav",
+      "refersTo": "floating-action",
+      "description": "44px control in the fixed top-right stack.",
+      "html": "<button class=\"ds-fab\" type=\"button\" aria-label=\"Change language\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M3 12h18M12 3c2.5 2.5 3.8 5.7 3.8 9s-1.3 6.5-3.8 9c-2.5-2.5-3.8-5.7-3.8-9S9.5 5.5 12 3Z\"/></svg></button>",
+      "css": ".ds-fab { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 9px; border: 1px solid var(--of-border, #243f5e); background: color-mix(in srgb, var(--of-bg-elevated, #0f2238) 85%, transparent); color: var(--of-text-2, #98c0d2); cursor: pointer; backdrop-filter: blur(10px); transition: color 150ms cubic-bezier(0.22, 1, 0.36, 1), border-color 150ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-fab:hover { color: var(--of-accent, #22d3ee); border-color: var(--of-accent-border, rgba(6,182,212,0.25)); } .ds-fab:focus-visible { outline: 2px solid var(--of-accent-solid, #06b6d4); outline-offset: 2px; }"
+    },
+    {
+      "name": "Product Window (Code)",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "Website frame for the product: chrome bar, three dots; Quickstart variant.",
+      "html": "<div class=\"ds-window\"><div class=\"ds-window-bar\"><span></span><span></span><span></span><button type=\"button\">Copy</button></div><pre><code>docker run -d -p 3000:3000 \\\n  ghcr.io/m1ndgames/openfishing:latest</code></pre></div>",
+      "css": ".ds-window { max-width: 460px; background: var(--of-bg-surface, #0b1a2c); border: 1px solid var(--of-border-subtle, #172f4a); border-radius: 14px; overflow: hidden; } .ds-window-bar { display: flex; align-items: center; gap: 6px; padding: 10px 12px; background: var(--of-bg-elevated, #0f2238); border-bottom: 1px solid var(--of-border-subtle, #172f4a); } .ds-window-bar span { width: 10px; height: 10px; border-radius: 50%; background: var(--of-border-strong, #2d5270); } .ds-window-bar button { margin-left: auto; font-family: 'DM Sans', sans-serif; font-size: 0.75rem; font-weight: 500; color: var(--of-text-2, #98c0d2); background: var(--of-bg-surface, #0b1a2c); border: 1px solid var(--of-border, #243f5e); border-radius: 6px; padding: 2px 8px; cursor: pointer; } .ds-window-bar button:hover { color: var(--of-accent, #22d3ee); border-color: var(--of-accent-border, rgba(6,182,212,0.25)); } .ds-window pre { margin: 0; padding: 16px 18px; overflow-x: auto; } .ds-window code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: var(--of-text, #c2dce8); white-space: pre; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tackle Box at Dusk",
+    "overview": "The website uses the app's design system rather than a brand of its own. OpenFishing is a tackle box: dark, ordered compartments where every lure has its numbered slot and its record. The world is the water at dusk. Deep, cool surfaces step up in small tonal increments, and a single cyan accent glints against them like a lure catching the last light. Real photos of lures and catches (here, real demo screenshots) carry the color, and the interface around them stays quiet and in order.\n\nThe app's direction is catalogued, built for outdoors: precise, inventory-like detail (numbered plates, mono spec values) plus legibility that survives glare. The website carries that over to a Persuade surface. Its job is to get an angler into the live demo, so it is allowed things the app is not: larger marketing type, one hero, generous section spacing. Every token, font, radius and rule below otherwise comes from the app. The app's DESIGN.md (github.com/m1ndgames/OpenFishing/blob/main/DESIGN.md) is the upstream authority. When the two disagree, the app wins and this file is updated.\n\nThe site's one addition with no counterpart in the app is the lure-and-fish background animation on the landing page, kept as the website's single moment of play.",
+    "keyCharacteristics": [
+      "Dark-first, tonal layering; light mode is a fully designed counterpart, not an inversion.",
+      "One accent (Ocean cyan), used for actions, active state and the lure number, never as decoration.",
+      "DM Sans for everything readable; JetBrains Mono only for catalogued numbers and shell commands.",
+      "Flat surfaces with 1px borders; shadows only on floating layers and as a hover response.",
+      "Gently curved, consistent corners (9px controls, 14px cards).",
+      "Real product imagery (demo screenshots) does the persuading; the chrome stays quiet."
+    ],
+    "rules": [
+      {
+        "name": "The Single Glint Rule",
+        "body": "There is exactly one accent hue. It marks what you can act on and what is selected, and nothing else. Semantic colors are not accents and are never decorative.",
+        "section": "colors"
+      },
+      {
+        "name": "The Token-Only Rule",
+        "body": "Components take every color from `--of-*` tokens, never literals. The one exception is the fixed photo scrim behind badges that sit on screenshots.",
+        "section": "colors"
+      },
+      {
+        "name": "The Upstream Rule",
+        "body": "Token values are changed in the app first. The website mirrors them; it never forks them.",
+        "section": "colors"
+      },
+      {
+        "name": "The Glare Rule",
+        "body": "Anything a visitor needs to read uses `--of-text-2` (`mist`) or brighter. `fog` is for hints and inactive states only.",
+        "section": "colors"
+      },
+      {
+        "name": "The Stencil Rule",
+        "body": "Mono is reserved for catalogued numbers and literal commands. Never use it for prose, labels, headings or tech-stack chips.",
+        "section": "typography"
+      },
+      {
+        "name": "The Long-Word Rule",
+        "body": "Every label must survive German and Polish string lengths. Allow wrapping in buttons and chips, and never put a fixed width on text-bearing controls.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Family Rule",
+        "body": "DM Sans carries every heading, from the hero down. There is no second display face.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Cards and panels never carry a shadow at rest.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do take every color from an `--of-*` token, mirrored from the app.",
+      "Do check every change in dark and light mode at WCAG AA (`scripts/a11y.mjs`).",
+      "Do keep one solid-accent primary action per view, and make it the demo.",
+      "Do use JetBrains Mono with tabular numerals for lure numbers and counts, and for literal commands; nowhere else.",
+      "Do keep cards flat at rest (14px radius, 1px faint border).",
+      "Do show the real product (demo screenshots) rather than illustrations.",
+      "Do keep the wordmark and mark SVGs as they are, colored by `currentColor` from the accent."
+    ],
+    "donts": [
+      "Don't reintroduce Carter One or any second display face.",
+      "Don't use `fog` (`--of-text-4`) for anything a visitor needs to read.",
+      "Don't introduce a second accent hue, or use semantic red/green/amber decoratively.",
+      "Don't drift toward generic SaaS: no gradient blobs, purple or multi-hue gradients, or stock startup illustrations.",
+      "Don't tip into cartoonish: the fish animation is the whole play allowance; no clip-art, mascots or bouncy decoration.",
+      "Don't crowd the page like a bait-shop flyer: no stacked banners, loud badges or competing CTAs.",
+      "Don't set text below 0.75rem, or give text-bearing controls fixed widths.",
+      "Don't fork token values from the app."
+    ]
+  }
+}

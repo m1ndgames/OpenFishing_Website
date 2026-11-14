@@ -19,49 +19,76 @@ const t = useTranslations(lang);
           {t.demo.text}
         </p>
       </div>
-      <a class="btn-primary demo-btn" href={SITE.demo} target="_blank" rel="noopener">
-        {t.demo.cta}
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
-        </svg>
-      </a>
+      <div class="demo-action">
+        <a class="btn-primary demo-btn" href={SITE.demo} target="_blank" rel="noopener">
+          {t.hero.ctaDemo}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 17 17 7M9 7h8v8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span class="sr-only">{` ${t.newTab}`}</span>
+        </a>
+        <span class="demo-note">{t.hero.demoNote}</span>
+      </div>
     </div>
   </div>
 </section>
 
 <style>
   .demo {
-    background: linear-gradient(135deg, var(--of-accent-bg), var(--of-accent-bg-hover));
-    border-top: 1px solid var(--of-accent-border);
+    background: var(--of-accent-bg);
     border-bottom: 1px solid var(--of-accent-border);
-    box-shadow: 0 8px 40px var(--of-accent-glow);
   }
   .demo-inner {
     max-width: 72rem;
     margin: 0 auto;
-    padding: clamp(2.5rem, 5vw, 4rem) 1.25rem;
+    padding: clamp(3rem, 7vw, 5rem) 1.25rem;
   }
+  /* The button sits beside the copy at a fixed gap (not pushed to the far
+     edge), so invitation and action read as one unit. */
   .demo-card {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1.5rem clamp(2rem, 5vw, 4rem);
   }
   .demo-copy {
     max-width: 40rem;
   }
+  /* Bigger than the other section titles: the invitation is the turn
+     between "what's inside" and "host it yourself". */
   .demo-copy h2 {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-    margin: 0 0 0.5rem;
+    font-size: clamp(1.875rem, 4.5vw, 2.75rem);
+    letter-spacing: -0.01em;
+    margin: 0 0 0.75rem;
   }
   .demo-copy p {
     color: var(--of-text-2);
+    font-size: 1.0625rem;
     margin: 0;
     line-height: 1.6;
   }
+  .demo-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
   .demo-btn {
     white-space: nowrap;
-    flex-shrink: 0;
+  }
+  .demo-note {
+    color: var(--of-text-2);
+    font-size: 0.8125rem;
+  }
+  /* Same as the hero on phones: a full-width, centred demo button. */
+  @media (max-width: 480px) {
+    .demo-action {
+      width: 100%;
+      align-items: stretch;
+    }
+    .demo-note {
+      text-align: center;
+    }
   }
 </style>

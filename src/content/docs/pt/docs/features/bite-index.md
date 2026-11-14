@@ -1,36 +1,38 @@
 ---
-title: Índice de fisgada
-description: Como é calculada e avaliada a pontuação meteorológica automática de 0 a 10 do Índice de fisgada do OpenFishing.
+title: "Índice de mordida"
+description: "Como o OpenFishing calcula o índice de mordida de 0 a 10 a partir do tempo e o que significam as classificações."
 ---
 
-O **Índice de fisgada** é uma pontuação automática de **0 a 10** que avalia quão favoráveis eram as condições
-de pesca para uma dada captura, com base em dados meteorológicos.
+O **índice de mordida** é uma nota de **0 a 10** sobre quão bom está o tempo para pescar. O
+OpenFishing calcula-a com o tempo no local da captura **no momento em que a registas** e guarda-a com
+a captura.
+
+:::note
+A nota usa o tempo no momento em que gravas, não a hora que indicas para a captura. Regista as
+capturas junto à água para uma nota certa; uma captura adicionada horas depois recebe o tempo desse
+momento posterior.
+:::
 
 ## Como é calculado
 
-O índice é uma mistura ponderada de três fatores derivados do clima:
+Três componentes, cada uma pontuada de 0 a 10, são ponderadas e somadas:
 
-| Fator | Peso | Ideia |
-|---|---|---|
-| **Tendência de pressão** | ×0.5 | A variação da pressão barométrica influencia fortemente a atividade alimentar. |
-| **Luz** | ×0.3 | Os níveis de luz afetam quando os peixes estão ativos. |
-| **Estabilidade da temperatura** | ×0.2 | Temperaturas estáveis tendem a significar um comportamento mais previsível. |
+- **Tendência de pressão** (50 %): 10 se a pressão desceu mais de 1,5 hPa nas últimas 3 horas, como antes de uma frente; 7 se estável; 2 se a subir.
+- **Condições de luz** (30 %): 10 ao amanhecer (a hora antes do nascer do sol) e ao anoitecer (a hora depois do pôr do sol); 8 na hora antes do pôr do sol; 6 de noite e nas duas horas após o nascer do sol; 2 durante o dia.
+- **Estabilidade de temperatura** (20 %): 10 se a temperatura variou menos de 3 °C nas últimas 3 horas; 2 para uma variação maior.
 
-Os dados meteorológicos provêm da [API gratuita Open-Meteo](https://open-meteo.com/). A pontuação resultante é
-armazenada como um **instantâneo em cada captura**, por isso reflete as condições daquele momento e nunca muda
-retroativamente.
+O teu servidor obtém o tempo do serviço gratuito [Open-Meteo](https://open-meteo.com/).
 
-## Etiquetas de avaliação
+## Classificações
 
-A pontuação numérica corresponde a uma etiqueta amigável:
-
-| Pontuação | Avaliação |
+| Pontuação | Classificação |
 |---|---|
-| Baixa | **Fraca** |
-| … | **Razoável** |
-| … | **Boa** |
-| Alta | **Excelente** |
+| 8,5 ou mais | **Excelente** |
+| 6,5 a 8,4 | **Bom** |
+| 4 a 6,4 | **Razoável** |
+| Abaixo de 4 | **Mau** |
 
-## Relacionado
+## Onde o vês
 
-- O Índice de fisgada é capturado automaticamente em cada [captura](/pt/docs/features/catches).
+- Em cada [captura](/pt/docs/features/catches), guardado quando a registas.
+- Em cada [local](/pt/docs/features/spots), como nota atual, obtida quando o abres.

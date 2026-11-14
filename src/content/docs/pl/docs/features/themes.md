@@ -1,16 +1,26 @@
 ---
-title: Motywy i wygląd
-description: Motyw ocean z ciemnym, jasnym i systemowym wyglądem, konfigurowalny na użytkownika lub globalnie.
+title: "Motywy i wygląd"
+description: "Cztery motywy kolorystyczne, każdy w wersji ciemnej i jasnej, wybierane osobno w Ustawieniach."
 ---
 
-OpenFishing jest dostarczany z motywem **Ocean** — głębokie granatowe tło z jasnym cyjanowym akcentem (ten sam
-wygląd, którego używa ta dokumentacja).
+OpenFishing ma cztery motywy kolorystyczne, każdy w wersji ciemnej i jasnej. Wybierzesz je w
+**Ustawienia → Wygląd**, gdzie ustawiasz też [język](/pl/docs/features/languages) aplikacji.
 
-## Wygląd
+## Motywy
 
-- **Ciemny, jasny lub systemowy** — wybierz stały wygląd lub podążaj za preferencją systemu operacyjnego.
-- **Na użytkownika vs globalnie** — w trybie [wielu użytkowników](/pl/docs/multi-user/authentication) każdy
-  użytkownik może ustawić własny wygląd; w trybie jednodostępowym wybór jest globalny.
+- **Ocean**: głęboki granat z cyjanowym akcentem. Domyślny i taki jak na tej stronie.
+- **Forest**: zielony akcent.
+- **Sunset**: pomarańczowy akcent.
+- **Dusk**: fioletowy akcent.
 
-Strona, którą czytasz, odzwierciedla aplikację: tryb ciemny jest domyślny, z przełącznikiem w prawym górnym
-rogu, który zapamiętuje Twój wybór.
+## Ciemny, jasny lub systemowy
+
+Wybierz **Ciemny**, **Jasny** albo **System**, by podążać za ustawieniem telefonu lub komputera.
+
+## Kogo to dotyczy
+
+Z włączonym [logowaniem](/pl/docs/multi-user/authentication) każdy wybiera własny motyw i wygląd. Bez logowania wybór
+dotyczy wszystkich korzystających z instancji.
+
+Admin ustawia **Domyślny wygląd** w **Ustawienia → Administracja**: tryb kolorów i motyw ekranu logowania oraz osób, które
+nie wybrały własnych.

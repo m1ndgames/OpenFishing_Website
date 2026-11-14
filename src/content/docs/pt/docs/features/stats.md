@@ -1,16 +1,22 @@
 ---
-title: Estatísticas
-description: Tendências e análises agregadas sobre as tuas capturas e equipamento.
+title: "Estatísticas"
+description: "O que mostram as estatísticas: totais, recordes, as tuas melhores iscas, locais e estilos de recuperação, e quando apanhas peixe."
 ---
 
-A vista de **estatísticas** agrega os teus dados em tendências e análises, para que o teu diário se torne algo
-com que podes aprender.
+As **estatísticas** transformam o teu registo de capturas em números com que aprender. Abre-as em
+**Estatísticas** no menu.
 
-## O que é agregado
+## O que mostram
 
-- Tendências nas tuas **[capturas](/pt/docs/features/catches)** ao longo do tempo.
-- Análises sobre o teu **equipamento** — que [equipamento](/pt/docs/features/tackle) e que
-  [iscas](/pt/docs/features/lures) estão envolvidos nas tuas capturas.
+- **Total de capturas**, **Espécies**, **Locais**, **Taxa C&D** (a parte dos peixes que soltaste).
+- **Recordes pessoais**: os teus maiores peixes.
+- **Melhores iscas**, **Melhores locais**, **Melhores estilos de recuperação**: o que as tuas capturas têm em comum.
+- **Atividade mensal**, **Dia da semana**, **Hora do dia**. Aparecem quando tiveres registado 5 capturas.
 
-Como tudo é calculado a partir da tua própria base de dados, os números estão sempre atualizados e são
-totalmente privados da tua instância.
+Tudo é calculado a partir da tua própria base de dados, no teu servidor. Com início de sessão, cada
+pessoa vê só as suas capturas.
+
+## Relacionado
+
+- Os números vêm das [capturas](/pt/docs/features/catches) que registas, com a sua isca e estilo de recuperação.
+- A pontuação do tempo de cada captura é explicada em [Índice de mordida](/pt/docs/features/bite-index).

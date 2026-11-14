@@ -1,47 +1,60 @@
 ---
 title: REST-API
-description: De alleen-lezen JSON-API van OpenFishing met Bearer-token-authenticatie per gebruiker en een ingebouwde Swagger-UI.
+description: "De alleen-lezen JSON-API van OpenFishing: één token per account, de endpoints en de ingebouwde Swagger-interface."
 ---
 
-OpenFishing biedt een **alleen-lezen JSON-API** onder **`/api/v1/*`**, zodat je je gegevens naar andere tools
-kunt halen.
+OpenFishing heeft een **alleen-lezen JSON-API**, zodat je je aas, spots, vangsten en
+uitrusting in andere tools haalt: een spreadsheet, een thuisdashboard, een script. Via de API
+kan niets worden gewijzigd.
 
-## Authenticatie
+## Je token
 
-- Authenticatie gebeurt **per gebruiker** via een Bearer-token:
+- **Inloggen aan:** elk account heeft een eigen token. Kopieer het via **Instellingen → Mijn account
+  → API-token**. **Token opnieuw genereren** maakt een nieuw token; het oude werkt dan niet meer.
+- **Geen inlogscherm** (één gedeelde verzameling, zie [Multi-user & authenticatie](/nl/docs/multi-user/authentication)): de
+  API is dan ook open en heeft geen token nodig.
 
-  ```http
-  Authorization: Bearer <apiToken>
-  ```
+Stuur het token mee in de header `Authorization`:
 
-- Wanneer [authenticatie](/nl/docs/multi-user/authentication) is **uitgeschakeld** (open single-tenant-modus),
-  is de API ook open — geen token vereist.
-- In multi-user-modus genereer en beheer je API-tokens vanuit het beheerpaneel.
+```http
+Authorization: Bearer <je token>
+```
 
-## Resource-eindpunten
+## Endpoints
 
-Elke resource ondersteunt een **lijst**- en een **op-id**-eindpunt:
+Elke resource heeft een lijst en een los item:
 
-| Resource | Lijst | Op ID |
-|---|---|---|
-| Kunstaas | `GET /api/v1/lures` | `GET /api/v1/lures/{id}` |
-| Stekken | `GET /api/v1/spots` | `GET /api/v1/spots/{id}` |
-| Vangsten | `GET /api/v1/catches` | `GET /api/v1/catches/{id}` |
-| Hengels | `GET /api/v1/rods` | `GET /api/v1/rods/{id}` |
-| Molens | `GET /api/v1/reels` | `GET /api/v1/reels/{id}` |
-| Lijnen | `GET /api/v1/lines` | `GET /api/v1/lines/{id}` |
-| Combo's | `GET /api/v1/combos` | `GET /api/v1/combos/{id}` |
+- `GET /api/v1/<resource>` geeft de lijst.
+- `GET /api/v1/<resource>/{id}` geeft er één.
 
-De API is **alleen-lezen** — er zijn geen schrijf-eindpunten.
+De resources zijn `lures`, `spots`, `catches`, `rods`, `reels`, `lines` en `combos`. Met inloggen
+aan krijg je alleen de gegevens van je eigen account.
 
-## Swagger-UI & OpenAPI-spec
+## Uitproberen in de browser
 
-- Verken en probeer de API interactief met de ingebouwde **Swagger-UI op `/api-docs`**.
-- De ruwe **OpenAPI-spec** wordt geserveerd op **`/api/openapi`**.
+- **`/api-docs`** op je installatie opent een Swagger-interface waarin je elk endpoint kunt proberen.
+- **`/api/openapi`** levert de OpenAPI-specificatie, voor tools die clients genereren.
 
 ## Voorbeeld
 
 ```bash
 curl -H "Authorization: Bearer $OPENFISHING_TOKEN" \
-  https://fishing.yourdomain.com/api/v1/lures
+  http://192.168.1.50:3000/api/v1/lures
+```
+
+Het antwoord is JSON. Elk aas bevat al zijn velden; hier ingekort:
+
+```json
+[
+  {
+    "id": "6f1c2b7e-3d4a-4b8e-9f21-0a5c7d9e1b34",
+    "lureNumber": 1,
+    "name": "Perch shad",
+    "brand": "Example",
+    "color": "Perch",
+    "favourite": true,
+    "lost": false,
+    "tags": ["perch", "river"]
+  }
+]
 ```

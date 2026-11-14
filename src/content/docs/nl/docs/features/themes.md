@@ -1,16 +1,26 @@
 ---
-title: Thema's & uiterlijk
-description: Het ocean-thema met donker, licht en systeem-uiterlijk, per gebruiker of globaal in te stellen.
+title: "Thema's & uiterlijk"
+description: "Vier kleurthema's, elk donker en licht, per persoon gekozen in Instellingen."
 ---
 
-OpenFishing wordt geleverd met het **Ocean**-thema — een diepe marineblauwe achtergrond met een helder cyaan
-accent (dezelfde look die deze documentatie gebruikt).
+OpenFishing heeft vier kleurthema's, elk in een donkere en een lichte versie. Kies beide onder
+**Instellingen → Uiterlijk**, waar je ook de [taal](/nl/docs/features/languages) van de app instelt.
 
-## Uiterlijk
+## Thema's
 
-- **Donker, licht of systeem** — kies een vast uiterlijk of volg de voorkeur van je besturingssysteem.
-- **Per gebruiker vs globaal** — in [multi-user](/nl/docs/multi-user/authentication)-modus kan elke gebruiker
-  zijn eigen uiterlijk instellen; in single-tenant-modus is de keuze globaal.
+- **Ocean**: diep marineblauw met een cyaan accent. De standaard, en de stijl van deze website.
+- **Forest**: groen accent.
+- **Sunset**: oranje accent.
+- **Dusk**: violet accent.
 
-De website die je leest weerspiegelt de app: donkere modus is de standaard, met een schakelaar rechtsboven die
-je keuze bewaart.
+## Donker, licht of systeem
+
+Kies **Donker**, **Licht** of **Systeem** om de instelling van je telefoon of computer te volgen.
+
+## Voor wie het geldt
+
+Met [inloggen](/nl/docs/multi-user/authentication) aan kiest iedereen een eigen thema en uiterlijk. Zonder inloggen geldt
+de keuze voor iedereen die de installatie gebruikt.
+
+De admin stelt de **Standaardweergave** in onder **Instellingen → Beheer**: kleurmodus en thema voor het inlogscherm en voor
+wie nog niets heeft gekozen.

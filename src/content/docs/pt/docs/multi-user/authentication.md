@@ -1,54 +1,60 @@
 ---
 title: Multiutilizador e autenticação
-description: Ativa o início de sessão para alojar amigos e família, com isolamento por utilizador, quotas, um painel de administração e reposição de palavra-passe por SMTP.
+description: Ativa o início de sessão para alojar amigos e família, cria contas, define quotas de armazenamento e trata de palavras-passe esquecidas.
 ---
 
-Por predefinição, o OpenFishing corre em modo **de inquilino único e totalmente aberto** — sem início de sessão.
-Define a variável de ambiente **`ADMIN_PASSWORD`** para ativar o **modo multiutilizador**.
+De origem, o OpenFishing tem **uma única coleção partilhada e nenhum início de sessão**: quem
+conseguir abrir o endereço pode usá-lo. Numa rede doméstica de confiança, isso chega. Para alojar
+amigos e família, ou para chegar ao OpenFishing a partir da internet, ativa o início de sessão.
 
 ## Ativar o início de sessão
 
-Define `ADMIN_PASSWORD` (consulta [Variáveis de ambiente](/pt/docs/configuration/environment-variables)):
+O ficheiro compose de [Instalar o OpenFishing](/pt/docs/getting-started/installation) já tem a
+linha, desligada com um `#`:
 
-```yaml
-environment:
-  - ADMIN_PASSWORD=change_me
+```yaml title="docker-compose.yml"
+    environment:
+      # Login: tira #, põe palavra-passe
+      # - ADMIN_PASSWORD=
 ```
 
-Uma vez definido, aparece um ecrã de início de sessão. Os utilizadores iniciam sessão com o seu **e-mail/nome de
-utilizador + palavra-passe**.
-
-:::note
-`AUTH_PASSWORD` é um nome alternativo **descontinuado** para `ADMIN_PASSWORD`. Usa `ADMIN_PASSWORD`.
-:::
+Tira o `# ` antes de `- ADMIN_PASSWORD=`, escreve a tua palavra-passe logo a seguir ao `=` e
+executa `docker compose up -d`. Aparece um ecrã de início de sessão: entra com o utilizador
+**admin** e essa palavra-passe.
 
 ## A conta admin
 
-- A conta **`admin`** existe sempre quando a autenticação está ativada.
-- O seu nome de utilizador é sempre `admin`; a sua palavra-passe é a definida em `ADMIN_PASSWORD`.
-- É **ressincronizada a partir da variável de ambiente em cada arranque**, por isso alterar a variável e
-  reiniciar atualiza a palavra-passe.
+- O nome de utilizador é sempre `admin`.
+- A palavra-passe é a que estiver em `ADMIN_PASSWORD`. O OpenFishing lê-a em cada arranque: para
+  a mudar, edita a linha e volta a executar `docker compose up -d`.
 
-## O painel de administração
+## Adicionar um familiar
 
-Os administradores têm um painel em **`/settings/admin`** para gerir a instância:
+1. Entra como `admin` e abre **Definições → Admin**.
+2. Em **Criar utilizador**, preenche **E-mail**, **Nome de utilizador** e **Palavra-passe**.
+3. Deixa **Quota (MB)** vazia para não limitar envios, ou escreve um número.
+4. Escolhe **Criar**.
 
-- **Utilizadores** — criar, ativar/desativar e gerir contas.
-- **Quotas de armazenamento** — limitar quanto cada utilizador pode carregar.
-- **Interruptor do chatbot** — ativar/desativar as [funcionalidades de IA](/pt/docs/ai/ai-features) por utilizador.
-- **Tokens de API** — gerir os tokens Bearer da [API REST](/pt/docs/api/rest-api).
+Envia-lhe o endereço, o nome de utilizador e a palavra-passe. Entra com o e-mail ou o nome de
+utilizador e pode escolher uma nova palavra-passe em **Definições → A minha conta → Alterar
+palavra-passe**.
 
-## Isolamento de dados por utilizador
+## Quem vê o quê
 
-As iscas, pontos, capturas e equipamento de cada utilizador estão **isolados** — os utilizadores só veem os seus próprios dados.
+Cada conta tem as suas próprias iscas, locais, capturas e equipamento. Ninguém vê os dos outros.
 
-## Reposição de palavra-passe (SMTP)
+## Gerir contas
 
-Se configurares o SMTP (pelo menos `SMTP_HOST` e `SMTP_FROM`), os utilizadores podem repor palavras-passe
-esquecidas por e-mail. Sem SMTP configurado, a opção de reposição fica oculta. Consulta as
-[variáveis SMTP](/pt/docs/configuration/environment-variables).
+**Definições → Admin** lista todas as contas. Em cada uma podes editar o nome de utilizador e o email,
+mudar a quota de armazenamento e escrever uma palavra-passe nova no campo **Repor palavra-passe**, e depois
+selecionar **Guardar**. Também podes ligar ou desligar o [chatbot de IA](/pt/docs/ai/ai-features), **Regenerar token** para
+a [API REST](/pt/docs/api/rest-api), **Desativar** a conta ou **Eliminá-la**. Eliminar apaga a conta e todos os
+seus dados para sempre.
 
-## Quotas de armazenamento por utilizador
+## Palavras-passe esquecidas
 
-Os administradores podem definir **quotas de armazenamento** por utilizador a partir do painel de administração,
-para que nenhum utilizador possa encher o disco com uploads.
+- **Um familiar:** o admin escreve uma palavra-passe nova no campo **Repor palavra-passe** dessa conta, em **Definições → Admin**, e seleciona **Guardar**. Com o e-mail
+  configurado (pelo menos `SMTP_HOST` e `SMTP_FROM`, ver
+  [Variáveis de ambiente](/pt/docs/configuration/environment-variables)), o ecrã de início de
+  sessão também oferece uma ligação por e-mail.
+- **O admin:** muda `ADMIN_PASSWORD` e executa `docker compose up -d`.

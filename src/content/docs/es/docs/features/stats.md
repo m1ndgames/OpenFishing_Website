@@ -1,16 +1,22 @@
 ---
-title: Estadísticas
-description: Tendencias e información agregadas sobre tus capturas y equipo.
+title: "Estadísticas"
+description: "Qué muestran las estadísticas: totales, récords, tus mejores señuelos, puntos y estilos de recuperación, y cuándo pescas."
 ---
 
-La vista de **estadísticas** agrega tus datos en tendencias e información, para que tu cuaderno de bitácora se
-convierta en algo de lo que puedas aprender.
+Las **estadísticas** convierten tu registro de capturas en números de los que aprender. Ábrelas desde
+**Estadísticas** en el menú.
 
-## Qué se agrega
+## Qué muestran
 
-- Tendencias en tus **[capturas](/es/docs/features/catches)** a lo largo del tiempo.
-- Información sobre tu **equipo** — qué [aparejos](/es/docs/features/tackle) y
-  [señuelos](/es/docs/features/lures) están involucrados en tus capturas.
+- **Capturas totales**, **Especies**, **Puntos**, **Tasa C&S** (la proporción de peces que soltaste).
+- **Récords personales**: tus peces más grandes.
+- **Mejores señuelos**, **Mejores puntos**, **Mejores estilos de recuperación**: lo que tienen en común tus capturas.
+- **Actividad mensual**, **Día de la semana**, **Hora del día**. Aparecen cuando has registrado 5 capturas.
 
-Como todo se calcula a partir de tu propia base de datos, los números siempre están actualizados y son
-totalmente privados para tu instancia.
+Todo se calcula con tu propia base de datos en tu servidor. Con inicio de sesión, cada persona ve
+solo sus capturas.
+
+## Relacionado
+
+- Las cifras salen de las [capturas](/es/docs/features/catches) que registras, con su señuelo y su estilo de recuperación.
+- La puntuación del tiempo de cada captura se explica en [Índice de picada](/es/docs/features/bite-index).

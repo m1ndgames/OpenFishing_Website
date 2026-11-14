@@ -1,74 +1,90 @@
 ---
 title: Funcionalidades de IA
-description: Ativa o chatbot auto-hospedado opcional e a identificação de peixes e iscas por foto através de um sidecar LiteLLM.
+description: "Ativa o chatbot opcional Amigo Pescador e a identificação por foto com um proxy LiteLLM ao lado do OpenFishing."
 ---
 
-O OpenFishing tem funcionalidades de IA **opcionais** alimentadas por um proxy **[LiteLLM](https://litellm.ai/)**
-que executas tu mesmo. As tuas chaves de API permanecem no servidor — nunca são expostas ao navegador.
+O OpenFishing tem duas funcionalidades de IA **opcionais**: o chatbot **Amigo Pescador** e **Identificar pela foto**. Ambas
+passam pelo [LiteLLM](https://litellm.ai/), um pequeno proxy que corres ao lado do OpenFishing e que
+reencaminha os pedidos para o fornecedor de IA que escolheres. A tua chave de API fica no servidor.
 
-## Ativar o chatbot
+## Configurar
 
-Define estas variáveis de ambiente (consulta
-[Variáveis de ambiente](/pt/docs/configuration/environment-variables)):
+1. Na pasta do teu `docker-compose.yml`, cria `litellm.config.yaml`:
 
-```yaml
-environment:
-  - CHATBOT=true
-  - LITELLM_URL=http://litellm:4000
-  - LITELLM_MODEL=your-model-name
-```
+   ```yaml title="litellm.config.yaml"
+   model_list:
+     - model_name: claude-sonnet
+       litellm_params:
+         model: anthropic/claude-sonnet-4-6
+         api_key: os.environ/ANTHROPIC_API_KEY
+   ```
 
-- **`CHATBOT`** — qualquer valor verdadeiro ativa o widget de chat flutuante.
-- **`LITELLM_URL`** — o URL base do teu proxy LiteLLM.
-- **`LITELLM_MODEL`** — um nome de modelo correspondente a uma entrada do teu `litellm.config.yaml`.
+2. Põe a chave de API do teu fornecedor num ficheiro chamado `.env` na mesma pasta:
 
-O chatbot pode responder a perguntas sobre os **teus próprios dados** (as tuas iscas, pontos, capturas e equipamento).
+   ```bash title=".env"
+   ANTHROPIC_API_KEY=sk-ant-...
+   ```
 
-## Executar o LiteLLM como sidecar
+3. Substitui o teu `docker-compose.yml` por esta versão. É o ficheiro de instalação mais as linhas de
+   IA e o serviço `litellm`; mantém as tuas linhas de endereço, fuso horário e palavra-passe.
 
-Executa o LiteLLM ao lado do OpenFishing no mesmo projeto compose:
+   ```yaml title="docker-compose.yml" wrap=false
+   services:
+     openfishing:
+       image: ghcr.io/m1ndgames/openfishing
+       container_name: openfishing
+       restart: unless-stopped
+       ports:
+         - "3000:3000"
+       volumes:
+         - openfishing-db:/app/data
+         - openfishing-uploads:/app/uploads
+       environment:
+         # Endereço onde o abres
+         - BASE_URL=http://192.168.1.50:3000
+         # O teu fuso horário
+         - TZ=Europe/Berlin
+         # Login: tira #, põe palavra-passe
+         # - ADMIN_PASSWORD=
+         - CHATBOT=true
+         - LITELLM_URL=http://litellm:4000
+         - LITELLM_MODEL=claude-sonnet
+       depends_on:
+         - litellm
 
-```yaml
-services:
-  openfishing:
-    image: ghcr.io/m1ndgames/openfishing:latest
-    ports:
-      - "3000:3000"
-    environment:
-      - CHATBOT=true
-      - LITELLM_URL=http://litellm:4000
-      - LITELLM_MODEL=your-model-name
-      - LITELLM_VISION_MODEL=your-vision-model   # opcional
-    volumes:
-      - openfishing-db:/app/data
-      - openfishing-uploads:/app/uploads
+     litellm:
+       image: ghcr.io/berriai/litellm:main-latest
+       command: ["--config", "/config.yaml"]
+       volumes:
+         - ./litellm.config.yaml:/config.yaml
+       env_file:
+         - .env
 
-  litellm:
-    image: ghcr.io/berriai/litellm:main-latest
-    command: ["--config", "/app/config.yaml"]
-    volumes:
-      - ./litellm.config.yaml:/app/config.yaml
-    # Fornece aqui as chaves de API do teu fornecedor, p. ex. através de um env_file
+   volumes:
+     openfishing-db:
+     openfishing-uploads:
+   ```
 
-volumes:
-  openfishing-db:
-  openfishing-uploads:
-```
+4. Volta a correr `docker compose up -d`, ou reimplementa a stack na app do teu NAS.
 
-O teu `litellm.config.yaml` define os modelos (`LITELLM_MODEL` / `LITELLM_VISION_MODEL` têm de corresponder aos
-nomes que declara). As chaves de API do fornecedor são configuradas do lado do **LiteLLM** e nunca chegam ao
-frontend do OpenFishing.
+Preferes a OpenAI? Em `litellm.config.yaml`, usa `model: openai/gpt-4o` com
+`api_key: os.environ/OPENAI_API_KEY` e põe `OPENAI_API_KEY` no `.env` em vez disso. `LITELLM_MODEL` tem de
+corresponder a um `model_name` do ficheiro.
 
-## Identificação por foto
+## Amigo Pescador
 
-Se definires **`LITELLM_VISION_MODEL`** (um modelo com capacidade de visão), o OpenFishing adiciona:
+Com `CHATBOT=true`, um botão de chat abre o **Amigo Pescador**. Responde a perguntas sobre as tuas iscas,
+locais, capturas e equipamento, e sabe o tempo atual quando perguntas por um local. Com início de
+sessão, o admin pode desligá-lo por pessoa em **Definições → Admin** (**Chatbot: ligado**).
 
-- **Identificação de peixes** — sugerir uma espécie a partir de uma foto no **formulário de captura**.
-- **Identificação de iscas** — reconhecer uma isca a partir de uma foto no **formulário de adicionar isca**.
+## Identificar pela foto
 
-Se `LITELLM_VISION_MODEL` não estiver definido, a identificação recorre a `LITELLM_MODEL`.
+Quando adicionas uma captura ou isca nova, o botão **Identificar pela foto** aparece assim que há uma foto. Sugere a
+espécie, ou os dados da isca. Precisa de `LITELLM_URL` e usa `LITELLM_VISION_MODEL` se o definires
+(um modelo que lê imagens), senão `LITELLM_MODEL`. Não precisa de `CHATBOT`. Sem IA configurada, o
+botão aparece na mesma, mas responde «Algo deu errado. Tente novamente.»
 
 :::note
-As funcionalidades de IA são totalmente opcionais. Sem nenhuma destas variáveis definida, o OpenFishing funciona
-exatamente como antes — sem chatbot, sem identificação.
+Sem estas definições não há chatbot e **Identificar pela foto** não consegue responder; o resto funciona igual.
+Todas as definições estão em [Variáveis de ambiente](/pt/docs/configuration/environment-variables).
 :::

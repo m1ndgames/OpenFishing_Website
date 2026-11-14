@@ -8,12 +8,12 @@ entrada en tu biblioteca.
 
 ## Imprimir etiquetas
 
-- Las etiquetas tienen el tamaño para material de etiquetas de **12,5 mm** — lo bastante pequeñas para caber en
-  un señuelo o su caja.
-- Puedes imprimir etiquetas para **señuelos sin etiquetar** en un lote.
-- Cada etiqueta codifica un enlace construido a partir de tu **`BASE_URL`**, de modo que al escanearla se abre
-  el señuelo correcto. Asegúrate de que `BASE_URL` esté definido con tu URL pública real — consulta
-  [Variables de entorno](/es/docs/configuration/environment-variables).
+1. Abre **Ajustes → Códigos QR**. La página **Etiquetas QR faltantes** lista los señuelos que aún no tienen etiqueta.
+2. Selecciona **Imprimir códigos QR** e imprime en etiquetas de **12,5 mm**, lo bastante pequeñas para un señuelo o su caja. Cada etiqueta mide unos 41 mm de largo.
+3. Pega cada etiqueta y selecciona **Colocar etiqueta** en ese señuelo para que salga de la lista.
+
+Cada etiqueta lleva un enlace hecho con tu **`BASE_URL`**, así que al escanearla se abre ese señuelo.
+Pon en `BASE_URL` la dirección con la que abres OpenFishing; mira [Variables de entorno](/es/docs/configuration/environment-variables). Con inicio de sesión, el señuelo solo se abre en un móvil con la sesión iniciada.
 
 ## Relacionado
 

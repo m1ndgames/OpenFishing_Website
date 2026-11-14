@@ -1,17 +1,49 @@
 ---
-title: Instalacja (docker-compose)
-description: Kompletna konfiguracja docker-compose dla OpenFishing z trwałymi wolumenami i podstawowymi zmiennymi środowiskowymi.
+title: Instalacja OpenFishing
+description: Czego potrzebujesz, plik docker-compose, gdzie go uruchomić, co powinieneś zobaczyć i jak aktualizować.
 ---
 
-Do wszystkiego poza szybkim testem uruchamiaj OpenFishing za pomocą **docker-compose**. Daje to
-nazwane wolumeny, zmienne środowiskowe w jednym miejscu i łatwe restarty.
+OpenFishing działa jako jeden kontener Docker na komputerze, który należy do Ciebie. Ta strona
+prowadzi od pustej maszyny do Twojej własnej działającej instancji. Chcesz najpierw się
+rozejrzeć? [Demo na żywo](https://demo.openfishing.org) nie wymaga instalacji ani rejestracji.
 
-## docker-compose.yml
+## Zanim zaczniesz
 
-```yaml
+Potrzebujesz:
+
+- **Komputera, który jest stale włączony**, np. NAS-a, mini PC lub serwera domowego.
+- **Dockera z Docker Compose** zainstalowanego na nim. Na wielu NAS-ach Docker jest aplikacją w
+  centrum pakietów; na Linuksie skorzystaj z [instrukcji instalacji Dockera](https://docs.docker.com/engine/install/). Na Synology nazywa się Container Manager, na QNAP Container Station.
+- **64-bitowego procesora Intel lub AMD (amd64).** Obraz istnieje tylko dla amd64, więc maszyny
+  z procesorem ARM nie mogą go uruchomić. Aby to sprawdzić, uruchom `uname -m` na maszynie:
+  `x86_64` oznacza, że wszystko gra; `aarch64` lub `armv7l` oznacza maszynę ARM.
+  Bez terminala? Sprawdź procesor swojego modelu NAS w jego specyfikacji.
+
+## Tylko chcesz wypróbować?
+
+Na szybki rzut oka bez pliku compose wystarczy jedno polecenie:
+
+```bash
+docker run -d -p 3000:3000 \
+  -e BASE_URL=http://192.168.1.50:3000 \
+  -v openfishing-db:/app/data \
+  -v openfishing-uploads:/app/uploads \
+  ghcr.io/m1ndgames/openfishing
+```
+
+Zamień `192.168.1.50` na adres swojej maszyny, aby linki i etykiety QR działały też na innych urządzeniach.
+
+Tak uruchomiony OpenFishing działa bez logowania. Gdy zdecydujesz się go zatrzymać, przejdź na
+plik compose: trzyma Twoje ustawienia w jednym miejscu.
+
+## 1. Utwórz plik compose
+
+Utwórz folder `openfishing` i zapisz w nim ten plik:
+
+```yaml title="docker-compose.yml"
 services:
   openfishing:
-    image: ghcr.io/m1ndgames/openfishing:latest
+    image: ghcr.io/m1ndgames/openfishing
     container_name: openfishing
     restart: unless-stopped
     ports:
@@ -20,48 +52,117 @@ services:
       - openfishing-db:/app/data
       - openfishing-uploads:/app/uploads
     environment:
-      # Trwały plik bazy danych SQLite (w wolumenie /app/data)
-      - DATABASE_URL=/app/data/openfishing.db
-      # Katalog przesłanych plików (w wolumenie /app/uploads)
-      - UPLOAD_PATH=/app/uploads
-      # Publiczny adres URL — używany do linków kodów QR i resetu hasła
-      - BASE_URL=https://fishing.yourdomain.com
-      # Ustaw, aby włączyć logowanie; pomiń dla w pełni otwartej instancji jednodostępowej
-      - ADMIN_PASSWORD=change_me
+      # Adres, pod którym go otwierasz
+      - BASE_URL=http://192.168.1.50:3000
+      # Twoja strefa czasowa
+      - TZ=Europe/Berlin
+      # Logowanie: usuń # i dodaj hasło
+      # - ADMIN_PASSWORD=
 
 volumes:
   openfishing-db:
   openfishing-uploads:
 ```
 
-Uruchom:
+**Zmień te linie przed uruchomieniem:**
+
+- `BASE_URL`: adres, który wpiszesz w przeglądarce, z `http://` i portem, np. adres Twojego
+  NAS-a. **Jest wymagany:** bez niego OpenFishing zakłada HTTPS i każdy zapis kończy się błędem
+  „Cross-site POST form submissions are forbidden". Trafia też do kodów QR, więc użyj adresu,
+  pod którym inne urządzenia widzą maszynę.
+  Nadaj maszynie stały adres w routerze (*rezerwacja DHCP*), inaczej może się zmienić, a kody
+  QR przestaną na nią wskazywać.
+- `TZ`: Twoja [strefa czasowa](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), żeby godziny połowów nie były przesunięte.
+- `ADMIN_PASSWORD`: bez niego nie ma ekranu logowania i każdy w Twojej sieci ma pełny dostęp.
+  Usuń `#` i dodaj własne hasło, zanim inni lub internet dotrą do aplikacji. Nazwa użytkownika
+  to zawsze `admin`.
+
+## 2. Uruchom
+
+**Używasz aplikacji Docker na NAS-ie lub Portainera?** Utwórz nowy *stack* (lub *projekt*),
+wklej powyższy plik i wdróż go.
+
+**Używasz terminala?** Połącz się z maszyną (np. przez SSH), przejdź do folderu i uruchom:
 
 ```bash
 docker compose up -d
 ```
 
-Następnie przejdź do swojego `BASE_URL` (lub lokalnie `http://localhost:3000`).
+Pierwsze uruchomienie trwa minutę lub dwie, bo Docker pobiera obraz.
 
-## Trwałe wolumeny są wymagane
+## 3. Otwórz
 
-Oba wolumeny nie są opcjonalne:
+Otwórz adres wpisany w `BASE_URL`, np. **`http://192.168.1.50:3000`**
+(lub `http://localhost:3000` na samej maszynie). Powinieneś zobaczyć pustą kolekcję przynęt,
+gotową na pierwszą przynętę. Jeśli ustawiłeś `ADMIN_PASSWORD`, najpierw zaloguj się jako **`admin`**.
 
-- `/app/data` przechowuje **bazę danych SQLite** — Twoje przynęty, łowiska, połowy i sprzęt.
-- `/app/uploads` przechowuje każde **zdjęcie**, które dodasz.
+Jeśli strona jeszcze się nie ładuje, pierwsze uruchomienie może trwać: `docker compose logs openfishing`
+pokazuje `Listening on`, gdy wszystko jest gotowe.
+
+Gotowe. Teraz [dodaj pierwszą przynętę](/pl/docs/features/lures).
+
+## Gdzie są Twoje dane
+
+- **Baza SQLite (przynęty, łowiska, połowy, sprzęt)**: ścieżka w kontenerze `/app/data`, wolumen `openfishing-db`
+- **Twoje zdjęcia**: ścieżka w kontenerze `/app/uploads`, wolumen `openfishing-uploads`
 
 :::caution
-Jeśli którakolwiek ścieżka nie jest zamontowana do trwałego wolumenu, te dane zostaną zniszczone, gdy
-kontener zostanie odtworzony. Zawsze twórz kopię zapasową obu — zobacz [Kopia zapasowa i przywracanie](/pl/docs/backup/backup-restore).
+Zachowaj oba wolumeny. Kontener uruchomiony bez nich traci wszystko po usunięciu. Kopie w innym
+miejscu zrobisz przez [Kopię zapasową i przywracanie](/pl/docs/backup/backup-restore).
 :::
 
-## Podstawowe zmienne środowiskowe
+## Aktualizacja
 
-Powyższy przykład używa najważniejszych. Pełna lista — SMTP, AI, tryb demonstracyjny, limity przesyłania i
-więcej — jest udokumentowana w [dokumentacji zmiennych środowiskowych](/pl/docs/configuration/environment-variables).
+Najpierw zrób kopię zapasową (w **Ustawieniach**, zob.
+[Kopia zapasowa i przywracanie](/pl/docs/backup/backup-restore)), potem pobierz nowy obraz i
+uruchom ponownie:
 
-## Reverse proxy
+```bash
+docker compose pull
+docker compose up -d
+```
 
-Umieść OpenFishing za swoim reverse proxy (nginx, Caddy, Traefik…) i tam zakończ TLS.
-Ustaw **`BASE_URL`** na publiczny adres HTTPS, aby kody QR i linki resetu hasła wskazywały
-właściwe miejsce, i przekaż standardowe nagłówki proxy. Zobacz
-[FAQ](/pl/docs/help/faq), aby uzyskać szczegóły.
+Migracje bazy uruchamiają się automatycznie przy starcie, a Twoje dane zostają w wolumenach. W
+aplikacji Docker na NAS-ie lub w Portainerze użyj akcji *pobierz i wdróż ponownie* (lub
+*aktualizuj*) dla stacka.
+
+Uruchomiłeś pojedynczym poleceniem? Wykonaj `docker pull ghcr.io/m1ndgames/openfishing`,
+usuń stary kontener (`docker rm -f <nazwa>`) i ponownie uruchom to samo polecenie `docker run`:
+nazwane wolumeny zachowują Twoje dane.
+
+Chcesz sam decydować, kiedy aktualizować? Zamień obraz na tag wersji ze
+[strony wydań](https://github.com/m1ndgames/OpenFishing/releases), np. `ghcr.io/m1ndgames/openfishing:<version>`, i zmieniaj go, gdy będziesz
+gotowy. Przy przenoszeniu kopii trzymaj obie maszyny na tej samej wersji.
+
+## Reverse proxy i HTTPS
+
+Aby korzystać z OpenFishing spoza domu, postaw go za reverse proxy obsługującym HTTPS i ustaw
+`BASE_URL` na adres publiczny. W Caddy to cała konfiguracja:
+
+```text title="Caddyfile"
+fishing.example.com {
+  reverse_proxy localhost:3000
+}
+```
+
+W nginx przekaż standardowe nagłówki proxy i pozwól na przesyłanie plików wielkości zdjęć:
+
+```nginx title="nginx"
+location / {
+  proxy_pass http://localhost:3000;
+  proxy_set_header Host $host;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  client_max_body_size 100m;
+}
+```
+
+Najpierw ustaw `ADMIN_PASSWORD`: instancja bez logowania nigdy nie powinna być wystawiona do internetu.
+
+## Następne kroki
+
+- Dodaj pierwszą przynętę: [Przynęty](/pl/docs/features/lures) pokazują, co możesz zapisać.
+- Wszystkie ustawienia (e-mail, AI, limity przesyłania, tryb demo) znajdziesz w
+  [opisie zmiennych środowiskowych](/pl/docs/configuration/environment-variables).
+- Dla przyjaciół i rodziny: [Wielu użytkowników i uwierzytelnianie](/pl/docs/multi-user/authentication).
+- Coś nie działa? Zobacz [FAQ i rozwiązywanie problemów](/pl/docs/help/faq).
